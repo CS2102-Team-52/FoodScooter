@@ -1,0 +1,19 @@
+plugins {
+  id 'java'
+  id 'org.springframework.boot' version '2.2.4.RELEASE'
+  id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+}
+
+group = 'cs2102.52'
+version = '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile("org.springframework.boot:spring-boot-starter-web")
+}

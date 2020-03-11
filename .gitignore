@@ -1,9 +1,8 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
-
 # compiled output
 /dist
 /tmp
 /out-tsc
+
 # Only exists if Bazel was run
 /bazel-out
 
@@ -31,6 +30,10 @@ speed-measure-plugin.json
 !.vscode/extensions.json
 .history/*
 
+# gradle
+build/
+.gradle/
+
 # misc
 /.sass-cache
 /connect.lock
@@ -41,6 +44,6 @@ yarn-error.log
 testem.log
 /typings
 
-# System Files
+-# System Files
 .DS_Store
 Thumbs.db

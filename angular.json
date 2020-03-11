@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "FoodScooter"
+    }
+  },
+  "defaultProject": "FoodScooter",
+  "cli": {
+    "analytics": false
+  }
 }
