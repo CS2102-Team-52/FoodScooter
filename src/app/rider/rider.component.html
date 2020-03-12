@@ -1,0 +1,22 @@
+<div>
+    <mat-card>
+        <button mat-raised-button (click)="viewOrder()" color="primary">View Orders</button>
+        <button mat-raised-button (click)="viewSummary()" color="accent">View Summary</button>
+    </mat-card>
+
+    <div *ngIf="showOrder">
+    <ul class="orderList">
+        <li *ngFor="let o of orderList">
+          <!-- <span class="badge">{{hero.id}}</span> {{hero.name}} -->
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="showSummary">
+    <ul class="summaryList">
+        <li *ngFor="let s of summaryList">
+          <!-- <span class="badge">{{hero.id}}</span> {{hero.name}} -->
+        </li>
+      </ul>
+    </div>
+</div>  
