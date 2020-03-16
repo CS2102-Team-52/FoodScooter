@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Order } from '../../store/order';
-import { RiderOrderService } from '../../service/rider/rider-order.service';
+import { RiderOrderService } from './order/rider-order.service';
 
 @Component({
   selector: 'app-rider',
@@ -10,7 +9,8 @@ import { RiderOrderService } from '../../service/rider/rider-order.service';
 })
 export class RiderComponent implements OnInit {
 
-  constructor(private router: Router, private riderOrderService: RiderOrderService) { }
+  constructor(private riderOrderService: RiderOrderService) { 
+  }
 
   showSummary: boolean;
   showOrder: boolean;
@@ -21,7 +21,7 @@ export class RiderComponent implements OnInit {
   ngOnInit(): void {
     this.showOrder = false;
     this.showSummary = false;
-    this.getRiderType;
+    //this.getRiderType();
   }
 
   getRiderType() {
@@ -31,16 +31,16 @@ export class RiderComponent implements OnInit {
   viewOrder() : void {
     this.showOrder = true;
     this.showSummary = false;
-    this.getOrder;
+    //this.getOrder();
   }
 
   viewSummary() : void {
     this.showSummary = true;
     this.showOrder = false;
-    this.getSummary;
+    //this.getSummary();
   }
 
-  getOrder(): void {
+/*   getOrder(): void {
     if (this.isFullTime) {
       this.riderOrderService.fetchFullTimeOrders().subscribe((data: any[])=>{
         console.log(data);
@@ -59,6 +59,6 @@ export class RiderComponent implements OnInit {
       console.log(data);
       this.summaryList = data;
     })  
-  }
+  } */
 
 }

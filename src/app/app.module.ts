@@ -9,18 +9,18 @@ import { MaterialModule } from './core/material.module';
 import { LoginComponent } from './login/login.component';
 import { RiderComponent } from './users/rider/rider.component';
 import { CustomerComponent } from './users/customer/customer.component';
-import { RiderOrderComponent } from './service/rider/rider-order/rider-order.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RiderComponent,
-    CustomerComponent,
-    RiderOrderComponent
+    CustomerComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,

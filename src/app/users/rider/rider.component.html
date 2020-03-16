@@ -5,18 +5,15 @@
     </mat-card>
 
     <div *ngIf="showOrder">
-    <ul class="orderList">
-        <li *ngFor="let o of orderList">
-          {{o}}
-        </li>
-      </ul>
+      <mat-list role="list">
+        <mat-list-item role="listitem" *ngFor="let o of orderList">{{o}}</mat-list-item>
+      </mat-list>
     </div>
 
     <div *ngIf="showSummary">
-    <ul class="summaryList">
-        <li *ngFor="let s of summaryList">
-          {{s}}
-        </li>
-      </ul>
+      <mat-list role="list">
+        <mat-list-item role="listitem" *ngFor="let s of summaryList">{{s}}</mat-list-item>
+      </mat-list>
     </div>
+    
 </div>  
