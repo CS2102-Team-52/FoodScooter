@@ -9,13 +9,15 @@ import { MaterialModule } from './core/material.module';
 import { LoginComponent } from './login/login.component';
 import { RiderComponent } from './users/rider/rider.component';
 import { CustomerComponent } from './users/customer/customer.component';
+import { RiderOrderComponent } from './service/rider/rider-order/rider-order.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RiderComponent,
-    CustomerComponent
+    CustomerComponent,
+    RiderOrderComponent
   ],
   imports: [
     BrowserModule,
