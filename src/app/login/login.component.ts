@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MatDialogModule } from '@angular/material/dialog';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {LoginService} from "./services/login.service";
 
 @Component({
   selector: 'app-login',
@@ -9,20 +9,19 @@ import { MatDialogModule } from '@angular/material/dialog';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router: Router) { }
-  
+  constructor(
+    private router: Router,
+    private loginService: LoginService) {
+  }
+
   username: string;
   password: string;
 
   ngOnInit(): void {
   }
 
-  login() : void {
-    if(this.username == 'admin' && this.password == 'admin'){
-     this.router.navigate(["rider"]);
-    }else {
-      alert("Invalid credentials");
-    }
+  login(): void {
+    const path = this.loginService.login(this.username, this.password);
+    this.router.navigate([path]);
   }
-
 }
