@@ -9,47 +9,47 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE DeliveryRiders (
-	drid INTEGER PRIMARY KEY,
-	salary MONEY,
-	FOREIGN KEY (drid) REFERENCES Users (uid) ON DELETE CASCADE	
+    drid INTEGER PRIMARY KEY,
+    salary MONEY,
+    FOREIGN KEY (drid) REFERENCES Users (uid) ON DELETE CASCADE    
 );
 
 -- daysEnum specifies the starting day of the 5 consecutive days
 -- shiftsEnum specifies the starting hour of the respective shift option
 CREATE TABLE FTSchedules (
-	fsid INTEGER PRIMARY KEY,
-	daysOption daysEnum,
-	shiftsOption shiftsEnum
+    fsid INTEGER PRIMARY KEY,
+    daysOption daysEnum,
+    shiftsOption shiftsEnum
 );
 
 -- fsid = id of assigned schedule
 CREATE TABLE FTRiders (
-	drid INTEGER PRIMARY KEY,
-	fsid INTEGER,
-	FOREIGN KEY (drid) REFERENCES DeliveryRiders,
-	FOREIGN KEY (fsid) REFERENCES FTSchedules
+    drid INTEGER PRIMARY KEY,
+    fsid INTEGER,
+    FOREIGN KEY (drid) REFERENCES DeliveryRiders ON DELETE CASCADE,
+    FOREIGN KEY (fsid) REFERENCES FTSchedules
 );
 
 CREATE TABLE PTSchedules (
-	psid INTEGER PRIMARY KEY,
-	totalHours INTEGER
+    psid INTEGER PRIMARY KEY,
+    totalHours INTEGER
 );
 
 CREATE TABLE PTShifts (
-	ptsid INTEGER PRIMARY KEY,
-	psid INTEGER,
-	day daysEnum,
-	startHour hoursEnum,
-	endHour hoursEnum,
-	FOREIGN KEY (psid) REFERENCES PTSchedules ON DELETE CASCADE
+    ptsid INTEGER PRIMARY KEY,
+    psid INTEGER,
+    day daysEnum,
+    startHour hoursEnum,
+    endHour hoursEnum,
+    FOREIGN KEY (psid) REFERENCES PTSchedules ON DELETE CASCADE
 );
 
 -- psid = id of assigned schedule
 CREATE TABLE PTRiders (
-	drid INTEGER PRIMARY KEY,
-	psid INTEGER,
-	FOREIGN KEY (drid) REFERENCES DeliveryRiders,
-	FOREIGN KEY (psid) REFERENCES PTSchedules
+    drid INTEGER PRIMARY KEY,
+    psid INTEGER,
+    FOREIGN KEY (drid) REFERENCES DeliveryRiders ON DELETE CASCADE,
+    FOREIGN KEY (psid) REFERENCES PTSchedules
 );
 
 CREATE TABLE Customers (
@@ -61,54 +61,48 @@ CREATE TABLE Customers (
 );
 
 CREATE TABLE FDSManagers (
-	fmid INTEGER PRIMARY KEY,
-	FOREIGN KEY (fmid) REFERENCES Users (uid) ON DELETE CASCADE
+    fmid INTEGER PRIMARY KEY,
+    FOREIGN KEY (fmid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
 CREATE TABLE Promotions (
-	pid INTEGER PRIMARY KEY,
-	startDate TIMESTAMP,
-	endDate TIMESTAMP,
-	promotionType VARCHAR(100),
-	discount NUMERIC
+    pid INTEGER PRIMARY KEY,
+    startDate TIMESTAMP,
+    endDate TIMESTAMP,
+    promotionType VARCHAR(100),
+    discount NUMERIC
 );
 
 -- pid = id of promotion offered by restaurant
 CREATE TABLE Restaurants (
-	rid INTEGER PRIMARY KEY,
-	name VARCHAR(100),
-	mininumPurchase MONEY,
-	pid INTEGER,
-	FOREIGN KEY (pid) REFERENCES promotions
+    rid INTEGER PRIMARY KEY,
+    name VARCHAR(100),
+    mininumPurchase MONEY,
+    pid INTEGER,
+    FOREIGN KEY (pid) REFERENCES promotions
 );
 
 CREATE TABLE RestaurantStaff (
-	rsid INTEGER PRIMARY KEY,
-	employedBy INTEGER NOT NULL,
-	FOREIGN KEY (rsid) REFERENCES Users (uid) ON DELETE CASCADE,
-	FOREIGN KEY (employedBy) REFERENCES Restaurants (rid)
+    rsid INTEGER PRIMARY KEY,
+    employedBy INTEGER NOT NULL,
+    FOREIGN KEY (rsid) REFERENCES Users (uid) ON DELETE CASCADE,
+    FOREIGN KEY (employedBy) REFERENCES Restaurants (rid)
 );
 
 CREATE TABLE FoodItems (
-	fid INTEGER PRIMARY KEY,
-	rid INTEGER,
-	name VARCHAR(100),
-	category VARCHAR(100),
-	price MONEY,
-	dailyLimit INTEGER,
-	FOREIGN KEY (rid) REFERENCES Restaurants ON DELETE CASCADE
-);
-
-CREATE TABLE Reviews (
-	rvid INTEGER PRIMARY KEY,
-	rating INTEGER,
-	content VARCHAR(1000)
+    fid INTEGER PRIMARY KEY,
+    rid INTEGER,
+    name VARCHAR(100),
+    category VARCHAR(100),
+    price MONEY,
+    dailyLimit INTEGER,
+    FOREIGN KEY (rid) REFERENCES Restaurants ON DELETE CASCADE
 );
 
 CREATE TABLE Orders (
     oid INTEGER PRIMARY KEY,
-	drid INTEGER,
-	rvid INTEGER,
+    cid INTEGER,
+    drid INTEGER,
     totalCost INTEGER,
     deliveryFee MONEY,
     paymentType INTEGER,
@@ -118,14 +112,16 @@ CREATE TABLE Orders (
     restaurantArrivalTime TIMESTAMP,
     restaurantDepartureTime TIMESTAMP,
     deliveryTime TIMESTAMP,
-	FOREIGN KEY (drid) REFERENCES DeliveryRiders,
-	FOREIGN KEY (rvid) REFERENCES Reviews
+    FOREIGN KEY (cid) REFERENCES Customers,
+    FOREIGN KEY (drid) REFERENCES DeliveryRiders
 );
 
-CREATE TABLE OrdersContains (
-	oid INTEGER,
-	fid INTEGER,
-	PRIMARY KEY (oid, fid),
-	FOREIGN KEY (oid) REFERENCES Orders,
-	FOREIGN KEY (fid) REFERENCES FoodItems
+CREATE TABLE Reviews (
+    rvid INTEGER PRIMARY KEY,
+    fid INTEGER,
+    oid INTEGER,
+    rating INTEGER,
+    content VARCHAR(1000),
+    FOREIGN KEY (fid) REFERENCES FoodItems,
+    FOREIGN KEY (oid) REFERENCES Orders
 );
