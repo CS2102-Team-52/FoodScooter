@@ -14,6 +14,10 @@ public class JdbcCustomerRepository implements CustomerRepository {
 
   @Override
   public List<Customer> getAll() {
-    return jdbcTemplate.queryForList("SELECT * FROM Customers", Customer.class);
+//    jdbcTemplate.execute("INSERT INTO Users values(90000000, 'abc', 'a');");
+//    jdbcTemplate.execute("INSERT INTO Customers values(90000000, 2, 3, ARRAY [4, 4]);");
+    return jdbcTemplate.query(
+      "SELECT cid FROM Customers;",
+      ((rs, rowNum) -> new Customer(rs.getInt(1))));
   }
 }

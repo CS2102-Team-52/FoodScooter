@@ -5,6 +5,14 @@
   </button>
 </mat-form-field>
 
+<button mat-raised-button (click)="fetchCustomers()" color="primary">View Orders</button>
+
+<mat-list>
+  <mat-list-item *ngFor="let customer of customers">
+    {{customer.id}}
+  </mat-list-item>
+</mat-list>
+
 <div>
   <div class="hello1">
     <mat-list role="list">
