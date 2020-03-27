@@ -1,3 +1,23 @@
+DROP TYPE IF EXISTS daysEnum CASCADE;
+DROP TYPE IF EXISTS shiftsEnum CASCADE;
+DROP TYPE IF EXISTS hoursEnum CASCADE;
+
+DROP TABLE IF EXISTS Users CASCADE;
+DROP TABLE IF EXISTS DeliveryRiders CASCADE;
+DROP TABLE IF EXISTS FTRiders CASCADE;
+DROP TABLE IF EXISTS FTSchedules CASCADE;
+DROP TABLE IF EXISTS PTRiders CASCADE;
+DROP TABLE IF EXISTS PTSchedules CASCADE;
+DROP TABLE IF EXISTS PTShifts CASCADE;
+DROP TABLE IF EXISTS Customers CASCADE;
+DROP TABLE IF EXISTS FDSManagers CASCADE;
+DROP TABLE IF EXISTS Promotions CASCADE;
+DROP TABLE IF EXISTS Restaurants CASCADE;
+DROP TABLE IF EXISTS RestaurantStaff CASCADE;
+DROP TABLE IF EXISTS FoodItems CASCADE;
+DROP TABLE IF EXISTS Orders CASCADE;
+DROP TABLE IF EXISTS Reviews CASCADE;
+
 CREATE TYPE daysEnum AS ENUM ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
 CREATE TYPE shiftsEnum AS ENUM ('10am', '11am', '12pm', '1pm');
 CREATE TYPE hoursEnum AS ENUM ('10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm');
@@ -11,7 +31,7 @@ CREATE TABLE Users (
 CREATE TABLE DeliveryRiders (
     drid INTEGER PRIMARY KEY,
     salary MONEY,
-    FOREIGN KEY (drid) REFERENCES Users (uid) ON DELETE CASCADE    
+    FOREIGN KEY (drid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
 -- daysEnum specifies the starting day of the 5 consecutive days
