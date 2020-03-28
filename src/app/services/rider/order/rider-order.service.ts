@@ -10,14 +10,14 @@ export class RiderOrderService {
   constructor(private httpClient: HttpClient) { }
 
   public fetchPartTimeOrders(){  
-    return this.httpClient.get(`${Util.baseURL}/partTimeOrders`);  
+    return this.httpClient.get(`${Util.baseURL}/rider/partTimeOrders`);  
 }  
 
 public fetchFullTimeOrders(){  
-    return this.httpClient.get(`${Util.baseURL}/fullTimeOrders`);  
+    return this.httpClient.get(`${Util.baseURL}/rider/fullTimeOrders`);  
 } 
 
 public fetchRiderSummary(){  
-    return this.httpClient.get(`${Util.baseURL}/riderSummary`);  
+    return this.httpClient.get(`${Util.baseURL}/rider/riderSummary`);  
 }  
 }
