@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Order } from '../../store/order';
-import { RiderOrderService } from './order/rider-order.service';
+import { RiderOrderService } from '../../services/rider/order/rider-order.service';
+import { RiderService } from 'src/app/services/rider/rider.service';
 
 @Component({
   selector: 'app-rider',
@@ -9,7 +10,9 @@ import { RiderOrderService } from './order/rider-order.service';
 })
 export class RiderComponent implements OnInit {
 
-  constructor(private riderOrderService: RiderOrderService) { 
+  constructor(
+    private riderService: RiderService,
+    private riderOrderService: RiderOrderService) { 
   }
 
   showSummary: boolean;
@@ -21,35 +24,38 @@ export class RiderComponent implements OnInit {
   ngOnInit(): void {
     this.showOrder = false;
     this.showSummary = false;
-    //this.getRiderType();
+    this.getRiderType();
   }
 
   getRiderType() {
-    //TO-DO 
+    this.riderService.fetchRiderType().subscribe((data: any[])=>{
+      console.log(data);
+      this.orderList = data;
+    })
   }
 
   viewOrder() : void {
     this.showOrder = true;
     this.showSummary = false;
-    //this.getOrder();
+    this.getOrder();
   }
 
   viewSummary() : void {
     this.showSummary = true;
     this.showOrder = false;
-    //this.getSummary();
+    this.getSummary();
   }
 
-/*   getOrder(): void {
+   getOrder(): void {
     if (this.isFullTime) {
       this.riderOrderService.fetchFullTimeOrders().subscribe((data: any[])=>{
         console.log(data);
-        this.summaryList = data;
+        this.orderList = data;
       })
     } else {
       this.riderOrderService.fetchPartTimeOrders().subscribe((data: any[])=>{
         console.log(data);
-        this.summaryList = data;
+        this.orderList = data;
       })
     }
   }
@@ -59,6 +65,6 @@ export class RiderComponent implements OnInit {
       console.log(data);
       this.summaryList = data;
     })  
-  } */
+  } 
 
 }
