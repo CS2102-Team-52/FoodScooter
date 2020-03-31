@@ -1,17 +1,18 @@
 package foodscooter.model;
 
-public class Rider {
-  private int id;
+public class Rider extends User {
+  private boolean isFullTime;
 
-  public Rider(int id) {
-    this.id = id;
+  public Rider(int id, String username, String password, boolean isFullTime) {
+    super(id, username, password);
+    this.isFullTime = isFullTime;
   }
 
-  public int getId() {
-    return id;
+  public boolean isFullTime() {
+    return isFullTime;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public void setFullTime(boolean fullTime) {
+    isFullTime = fullTime;
   }
 }

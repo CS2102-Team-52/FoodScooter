@@ -1,3 +1,8 @@
-export interface Rider {
-  id: number;
+import { User } from '../user';
+
+export interface Rider extends User {
+  //id: number;
+  //username: string;
+  //password: string;
+  isFullTime: boolean;
 }

@@ -1,19 +1,24 @@
 import {Injectable} from '@angular/core';
+import { User } from 'src/app/users/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  rider = 'rider';
-  customer = 'customer';
-  fds = 'fds';
-  restaurant = 'restaurant';
+  private rider = 'rider';
+  private customer = 'customer';
+  private fds = 'fds';
+  private restaurant = 'restaurant';
+  private username: string;
+  private password: string;
 
 
   constructor() {
   }
 
   login(username: string, password: string): string {
+    this.username = username;
+    this.password = password;
     if (username == this.rider && password == this.rider) {
       return this.rider;
     } else if (username == this.customer && password == this.customer) {
@@ -25,5 +30,14 @@ export class LoginService {
     } else {
       alert("Invalid credentials");
     }
+  }
+
+  getUser() {
+    const user: User = {
+      id: null,
+      username: this.username,
+      password: this.password
+    }
+    return user;
   }
 }
