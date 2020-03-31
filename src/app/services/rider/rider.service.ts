@@ -16,6 +16,7 @@ export class RiderService {
    }
 
    fetchRiderInfo(data: User): Observable<any> {
+    console.log(data);
     return this.httpClient.post(`${Util.baseURL}/riderInfo`, data);
    }
 }

@@ -17,6 +17,7 @@ import java.util.List;
 public class RiderController extends BaseController {
   @Autowired
   private JdbcRiderRepository repository;
+  @Autowired
   private JdbcUserRepository userRepository;
 
   @GetMapping("/riders")
@@ -29,7 +30,7 @@ public class RiderController extends BaseController {
     User newUser = userRepository.getUser(user.getUsername(), user.getPassword());
     boolean isFullTime = repository.checkFullTime(newUser.getId());
     boolean isPartTime = repository.checkPartTime(newUser.getId());
-    if (isFullTime ^ isPartTime) {
+    if (!(isFullTime ^ isPartTime)) {
       // return error
       return null;
     } else if (isFullTime) {

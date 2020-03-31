@@ -34,7 +34,7 @@ export class LoginService {
 
   getUser() {
     const user: User = {
-      id: null,
+      id: 0,
       username: this.username,
       password: this.password
     }
