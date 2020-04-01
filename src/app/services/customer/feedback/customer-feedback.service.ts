@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { Util } from "../../../users/util";
+import { FeedbackService } from "../../common/feedback/feedback.service";
+import { Review } from "../../../store/review";
 
 /**
  * Provides services to:
@@ -11,5 +15,19 @@ import { Injectable } from '@angular/core';
 })
 export class CustomerFeedbackService {
 
-  constructor() { }
+  constructor(
+    private feedbackService: FeedbackService
+  ) { }
+
+  public rateRider(id: number, rating: number) {
+    return this.feedbackService.rateRider(id, rating);
+  }
+
+  public reviewFoodItem(review: Review) {
+    return this.feedbackService.reviewFoodItem(review);
+  }
+
+  public fetchReviews(restaurantId: number, foodItemId: number) {
+    return this.feedbackService.fetchReviews(restaurantId, foodItemId);
+  }
 }
