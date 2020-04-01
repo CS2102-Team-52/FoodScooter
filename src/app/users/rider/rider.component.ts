@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Order } from '../../store/order';
-import { RiderOrderService } from '../../services/rider/order/rider-order.service';
-import { RiderService } from 'src/app/services/rider/rider.service';
+import { RiderOrderService } from '../../services/users/rider/order/rider-order.service';
+import { RiderService } from 'src/app/services/users/rider/rider.service';
 import { Rider } from './rider';
 import { User } from '../user';
 import { LoginService } from 'src/app/services/login/login.service';
+import { RiderType } from "../../store/rider-type.enum";
 
 @Component({
   selector: 'app-rider',
@@ -53,7 +54,7 @@ export class RiderComponent implements OnInit {
   }
 
    getOrder(): void {
-    if (this.rider.isFullTime) {
+    if (this.rider.riderType == RiderType.FULL_TIME) {
      /*  this.riderOrderService.fetchFullTimeOrders().subscribe((data: any[])=>{
         console.log(data);
         this.orderList = data;
