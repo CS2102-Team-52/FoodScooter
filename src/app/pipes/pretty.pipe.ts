@@ -1,5 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * Formats an enumeration to make it "pretty".
+ */
 @Pipe({
   name: 'pretty'
 })

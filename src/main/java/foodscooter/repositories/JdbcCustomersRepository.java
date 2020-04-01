@@ -6,9 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Repository
 public class JdbcCustomersRepository implements CustomersRepository {
   public JdbcTemplate jdbcTemplate;
@@ -19,17 +16,7 @@ public class JdbcCustomersRepository implements CustomersRepository {
   }
 
   @Override
-  public List<Customer> getAll() {
-    return jdbcTemplate.query(
-      "SELECT * FROM Customers;",
-      ((rs, rowNum) -> {
-        List<String> recentPlaces = rs.getObject(4, ArrayList.class);
-        return new Customer(
-          rs.getInt(1),
-          rs.getString(2),
-          rs.getInt(3),
-          recentPlaces);
-      }
-      ));
+  public void add(Customer customer) {
+
   }
 }

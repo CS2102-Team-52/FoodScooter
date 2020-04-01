@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface CustomersRepository {
   void add(Customer customer);
-  List<Customer> getAll();
 }

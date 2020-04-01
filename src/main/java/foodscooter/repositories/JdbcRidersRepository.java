@@ -1,5 +1,6 @@
 package foodscooter.repositories;
 
+import foodscooter.model.RiderType;
 import foodscooter.model.users.Rider;
 import foodscooter.repositories.specifications.RidersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class JdbcRidersRepository implements RidersRepository {
   public List<Rider> getAll() {
     return jdbcTemplate.query(
       "SELECT rid FROM Riders;",
-      ((rs, rowNum) -> new Rider(rs.getInt(1), null, null, true)));
+      ((rs, rowNum) -> new Rider(rs.getInt(1), null, null, RiderType.FULL_TIME)));
   }
 
   @Override

@@ -1,5 +1,6 @@
 package foodscooter.api.controllers;
 
+import foodscooter.model.RiderType;
 import foodscooter.model.users.Rider;
 import foodscooter.model.users.User;
 import foodscooter.repositories.JdbcRidersRepository;
@@ -40,9 +41,9 @@ public class RiderController extends BaseController {
       // return error
       return null;
     } else if (isFullTime) {
-      return new Rider(newUser.getId(), newUser.getUsername(), newUser.getPassword(), true);
+      return new Rider(newUser.getId(), newUser.getUsername(), newUser.getPassword(), RiderType.FULL_TIME);
     } else {
-      return new Rider(newUser.getId(), newUser.getUsername(), newUser.getPassword(), false);
+      return new Rider(newUser.getId(), newUser.getUsername(), newUser.getPassword(), RiderType.PART_TIME);
     }
   }
 
