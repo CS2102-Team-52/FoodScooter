@@ -76,7 +76,7 @@ CREATE TABLE Customers (
     cid INTEGER PRIMARY KEY,
     creditCardNumber INTEGER,
     rewardPoints INTEGER,
-    recentPlaces INTEGER ARRAY,
+    recentPlaces VARCHAR(100) ARRAY,
     FOREIGN KEY (cid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 

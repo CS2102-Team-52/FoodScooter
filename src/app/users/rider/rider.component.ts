@@ -16,7 +16,7 @@ export class RiderComponent implements OnInit {
   constructor(
     private riderService: RiderService,
     private riderOrderService: RiderOrderService,
-    private loginService: LoginService) { 
+    private loginService: LoginService) {
   }
 
   showSummary: boolean;
@@ -66,7 +66,7 @@ export class RiderComponent implements OnInit {
         location: "te",
         orderTime: null,
         deliveryTime: null
-      }
+      };
       this.orderList = [order1];
     } else {
       /* this.riderOrderService.fetchPartTimeOrders().subscribe((data: any[])=>{
@@ -81,7 +81,7 @@ export class RiderComponent implements OnInit {
         location: "te",
         orderTime: null,
         deliveryTime: null
-      }
+      };
       this.orderList = [order2];
     }
   }
@@ -90,7 +90,7 @@ export class RiderComponent implements OnInit {
     this.riderOrderService.fetchRiderSummary().subscribe((data: any[])=>{
       console.log(data);
       this.summaryList = data;
-    })  
-  } 
+    })
+  }
 
 }

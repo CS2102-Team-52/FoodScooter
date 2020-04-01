@@ -7,17 +7,18 @@ import { Util } from '../../../users/util';
 })
 export class RiderOrderService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+  }
 
-  public fetchPartTimeOrders(){  
-    return this.httpClient.get(`${Util.baseURL}/rider/partTimeOrders`);  
-}  
+  public fetchPartTimeOrders() {
+    return this.httpClient.get(`${Util.baseURL}/rider/partTimeOrders`);
+  }
 
-public fetchFullTimeOrders(){  
-    return this.httpClient.get(`${Util.baseURL}/rider/fullTimeOrders`);  
-} 
+  public fetchFullTimeOrders() {
+    return this.httpClient.get(`${Util.baseURL}/rider/fullTimeOrders`);
+  }
 
-public fetchRiderSummary(){  
-    return this.httpClient.get(`${Util.baseURL}/rider/riderSummary`);  
-}  
+  public fetchRiderSummary() {
+    return this.httpClient.get(`${Util.baseURL}/rider/riderSummary`);
+  }
 }
