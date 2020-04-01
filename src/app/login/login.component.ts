@@ -32,7 +32,8 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  login() {
+  showLogin() {
+    this.router.navigate(['login'])
     const path = this.loginService.login(this.username, this.password).subscribe(
       (data: string) => {
         this.path = `${data}/${this.username}`;
@@ -41,7 +42,7 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  createAccount() {
+  showCreateAccount() {
     this.loginService.createUser(this.username, this.password, this.userType, this.riderType);
   }
 }

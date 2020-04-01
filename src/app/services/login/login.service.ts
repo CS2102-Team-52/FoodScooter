@@ -26,7 +26,7 @@ export class LoginService {
 
   createUser(username: string, password: string, userType: UserType, riderType: RiderType) {
     switch (userType) {
-      case UserType.RIDER:
+      case UserType.DELIVERY_RIDER:
         const rider: Rider = {
           id: -1,
           username: username,
