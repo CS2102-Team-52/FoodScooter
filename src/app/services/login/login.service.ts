@@ -3,81 +3,62 @@ import { User } from 'src/app/users/user';
 import { HttpClient } from "@angular/common/http";
 import { Rider } from "../../users/rider/rider";
 import { Customer } from "../../users/customer/customer";
-import { CustomerService } from "../customer/customer.service";
-import { RiderService } from "../rider/rider.service";
+import { CustomerService } from "../users/customer/customer.service";
+import { RiderService } from "../users/rider/rider.service";
+import { AuthenticationService } from "./authentication/authentication.service";
+import { UserType } from "../../store/user-type.enum";
+import { RiderType } from "../../store/rider-type.enum";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  private rider = 'rider';
-  private customer = 'customer';
-  private fds = 'fds';
-  private restaurant = 'restaurant';
-
-  private username: string;
-  private password: string;
-
-  private isFullTime: boolean;
-
   constructor(
     private httpClient: HttpClient,
+    private authenticationService: AuthenticationService,
     private riderService: RiderService,
     private customerService: CustomerService
   ) { }
 
-  login(username: string, password: string): string {
-    this.username = username;
-    this.password = password;
-    if (username == this.rider && password == this.rider) {
-      return this.rider;
-    } else if (username == this.customer && password == this.customer) {
-      return this.customer;
-    } else if (username == this.fds && password == this.fds) {
-      return this.fds;
-    } else if (username == this.restaurant && password == this.restaurant) {
-      return this.restaurant;
-    } else {
-      alert("Invalid credentials");
-    }
+  login(username: string, password: string) {
+    return this.authenticationService.authenticate(username, password);
   }
 
-  createUser(username: string, password: string, userType: string) {
+  createUser(username: string, password: string, userType: UserType, riderType: RiderType) {
     switch (userType) {
-      case this.rider:
+      case UserType.RIDER:
         const rider: Rider = {
           id: -1,
-          username: this.username,
-          password: this.password,
-          isFullTime: true
+          username: username,
+          password: password,
+          riderType: riderType
         };
-        this.riderService.addRider(rider);
-        break;
-      case this.customer:
+        return this.riderService.addRider(rider);
+      case UserType.CUSTOMER:
         const customer: Customer = {
           id: -1,
-          username: this.username,
-          password: this.password,
+          username: username,
+          password: password,
           creditCardNumber: '',
           rewardPoints: 0,
           recentPlaces: []
         };
-        this.customerService.addCustomer(customer);
+        return this.customerService.addCustomer(customer);
+      case UserType.RESTAURANT_STAFF:
         break;
-      case this.fds:
-        break;
-      case this.restaurant:
+      case UserType.FDS_MANAGER:
         break;
       default:
         // will not reach here
     }
   }
 
+  //TODO
   getUser() {
     const user: User = {
       id: -1,
-      username: this.username,
-      password: this.password
+      username: "username",
+      password: "password"
     };
     return user;
   }

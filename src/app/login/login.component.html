@@ -19,6 +19,30 @@
             </mat-form-field>
           </td>
         </tr>
+        <tr>
+          <td>
+            <mat-form-field>
+              <mat-label>User Type</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let userType of userTypes" [value]="userType">
+                  {{userType | pretty}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field>
+              <mat-label>Rider Type</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let riderType of riderTypes" [value]="riderType">
+                  {{riderType | pretty}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </tr>
       </table>
     </form>
     <!-- <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner> -->

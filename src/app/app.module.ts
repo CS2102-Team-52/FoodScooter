@@ -12,6 +12,7 @@ import { RiderComponent } from './users/rider/rider.component';
 import { CustomerComponent } from './users/customer/customer.component';
 import { CustomerRestaurantViewerComponent } from './users/customer/restaurant-viewer/customer-restaurant-viewer.component';
 import { CustomerFoodItemViewerComponent } from './users/customer/food-item-viewer/customer-food-item-viewer.component';
+import { PrettyPipe } from './pipes/pretty.pipe';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { CustomerFoodItemViewerComponent } from './users/customer/food-item-view
     RiderComponent,
     CustomerComponent,
     CustomerRestaurantViewerComponent,
-    CustomerFoodItemViewerComponent
+    CustomerFoodItemViewerComponent,
+    PrettyPipe
   ],
   imports: [
     BrowserModule,
