@@ -19,21 +19,13 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.customerService.getAllCustomers().subscribe((data: Customer[]) => {
-    //   this.customers = data;
-    //   console.log(this.customers);
-    // });
-    // console.log("hello");
 
-    // this.restaurants = this.fetchRestaurants();
   }
 
   fetchCustomers() {
-    this.customerService.getAllCustomers().subscribe((data: Customer[]) => {
+    this.customerService.fetchCustomers().subscribe((data: Customer[]) => {
       this.customers = data;
-      console.log(this.customers);
     });
-    // this.customerService.getAllCustomers().subscribe((data: Customer[]) => this.customers = data);
   }
 
   fetchRestaurants(): string[] {

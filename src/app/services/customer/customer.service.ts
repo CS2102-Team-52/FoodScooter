@@ -10,7 +10,7 @@ export class CustomerService {
     private httpClient: HttpClient
   ) { }
 
-  getAllCustomers(): Observable<any> {
+  fetchAllCustomers(): Observable<any> {
    return this.httpClient.get("http://localhost:8080/api/customers");
   }
 }

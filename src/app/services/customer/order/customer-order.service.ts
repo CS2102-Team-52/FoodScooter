@@ -18,15 +18,15 @@ export class CustomerOrderService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public placeOrder(order: Order) {
-    return this.httpClient.post(`${Util.baseURL}/customer/order`, order);
+  public placeOrder(customerId: number, order: Order) {
+    return this.httpClient.post(`${Util.baseURL}/customers/${customerId}/orders`, order);
   }
 
-  public fetchOrders() {
-    return this.httpClient.get(`${Util.baseURL}/customer/order`);
+  public fetchOrders(customerId: number) {
+    return this.httpClient.get(`${Util.baseURL}/customers/${customerId}/orders`);
   }
 
-  public deleteOrder(id: number) {
-    return this.httpClient.delete(`${Util.baseURL}/customer/order/${id}`);
+  public deleteOrder(customerId: number, orderId: number) {
+    return this.httpClient.delete(`${Util.baseURL}/customers/${customerId}/orders/${orderId}`);
   }
 }

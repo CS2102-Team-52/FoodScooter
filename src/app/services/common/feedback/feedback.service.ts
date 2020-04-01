@@ -17,8 +17,8 @@ export class FeedbackService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public rateRider(id: number, rating: number) {
-    return this.httpClient.post(`${Util.baseURL}/reviews/rider`, rating)
+  public rateRider(riderId: number, rating: number) {
+    return this.httpClient.post(`${Util.baseURL}/reviews/riders/${riderId}`, rating)
   }
 
   public reviewFoodItem(review: Review) {

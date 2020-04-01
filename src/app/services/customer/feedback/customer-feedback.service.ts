@@ -19,8 +19,8 @@ export class CustomerFeedbackService {
     private feedbackService: FeedbackService
   ) { }
 
-  public rateRider(id: number, rating: number) {
-    return this.feedbackService.rateRider(id, rating);
+  public rateRider(riderId: number, rating: number) {
+    return this.feedbackService.rateRider(riderId, rating);
   }
 
   public reviewFoodItem(review: Review) {

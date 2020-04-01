@@ -2,7 +2,7 @@ import { User } from "../user";
 
 export interface Customer extends User{
   id: number;
-  creditCardNumber: number;
+  creditCardNumber: string;
   rewardPoints: number;
   recentPlaces: string[];
 }
