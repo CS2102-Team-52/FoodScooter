@@ -97,6 +97,7 @@ CREATE TABLE Promotions (
 CREATE TABLE Restaurants (
     rid INTEGER PRIMARY KEY,
     name VARCHAR(100),
+    description VARCHAR(1000),
     mininumPurchase MONEY,
     pid INTEGER,
     FOREIGN KEY (pid) REFERENCES promotions
