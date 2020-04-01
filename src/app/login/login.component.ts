@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {LoginService} from "./services/login.service";
+import {LoginService} from "../services/login/login.service";
 
 @Component({
   selector: 'app-login',
@@ -16,12 +16,17 @@ export class LoginComponent implements OnInit {
 
   username: string;
   password: string;
+  userType: string;
 
   ngOnInit(): void {
   }
 
-  login(): void {
+  login() {
     const path = this.loginService.login(this.username, this.password);
     this.router.navigate([path]);
+  }
+
+  createAccount() {
+
   }
 }

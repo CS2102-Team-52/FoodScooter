@@ -4,7 +4,7 @@ import { RiderOrderService } from '../../services/rider/order/rider-order.servic
 import { RiderService } from 'src/app/services/rider/rider.service';
 import { Rider } from './rider';
 import { User } from '../user';
-import { LoginService } from 'src/app/login/services/login.service';
+import { LoginService } from 'src/app/services/login/login.service';
 
 @Component({
   selector: 'app-rider',
