@@ -2,25 +2,16 @@ package foodscooter.model.users;
 
 import java.util.List;
 
-public class Customer {
-  private int id;
+public class Customer extends User {
   private String creditCardNumber;
   private int rewardPoints;
   private List<String> recentPlaces;
 
-  public Customer(int id, String creditCardNumber, int rewardPoints, List<String> recentPlaces) {
-    this.id = id;
+  public Customer(int id, String username, String password, String creditCardNumber, int rewardPoints, List<String> recentPlaces) {
+    super(id, username, password);
     this.creditCardNumber = creditCardNumber;
     this.rewardPoints = rewardPoints;
     this.recentPlaces = recentPlaces;
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
   }
 
   public String getCreditCardNumber() {
