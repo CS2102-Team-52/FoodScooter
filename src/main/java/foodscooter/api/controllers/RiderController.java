@@ -1,12 +1,11 @@
 package foodscooter.api.controllers;
 
-import foodscooter.model.Rider;
-import foodscooter.model.User;
-import foodscooter.repositories.JdbcRiderRepository;
-import foodscooter.repositories.JdbcUserRepository;
+import foodscooter.model.users.Rider;
+import foodscooter.model.users.User;
+import foodscooter.repositories.JdbcRidersRepository;
+import foodscooter.repositories.JdbcUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,21 +14,28 @@ import java.util.List;
 
 @RestController
 public class RiderController extends BaseController {
+  private JdbcRidersRepository riderRepository;
+  private JdbcUsersRepository userRepository;
+
   @Autowired
-  private JdbcRiderRepository repository;
-  @Autowired
-  private JdbcUserRepository userRepository;
+  public RiderController(
+    JdbcRidersRepository riderRepository,
+    JdbcUsersRepository userRepository
+  ) {
+    this.riderRepository = riderRepository;
+    this.userRepository = userRepository;
+  }
 
   @GetMapping("/riders")
   public List<Rider> getAllRiders() {
-    return repository.getAll();
+    return riderRepository.getAll();
   }
 
   @PostMapping("/riderInfo")
   public Rider getRiderInfo(@RequestBody User user) {
     User newUser = userRepository.getUser(user.getUsername(), user.getPassword());
-    boolean isFullTime = repository.checkFullTime(newUser.getId());
-    boolean isPartTime = repository.checkPartTime(newUser.getId());
+    boolean isFullTime = riderRepository.checkFullTime(newUser.getId());
+    boolean isPartTime = riderRepository.checkPartTime(newUser.getId());
     if (!(isFullTime ^ isPartTime)) {
       // return error
       return null;
