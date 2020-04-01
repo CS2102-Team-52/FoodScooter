@@ -1,21 +1,21 @@
 package foodscooter.repositories;
 
-import foodscooter.model.Customer;
-import foodscooter.model.User;
+import foodscooter.model.users.User;
+import foodscooter.repositories.specifications.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class JdbcUserRepository implements UserRepository {
-  @Autowired
+public class JdbcUsersRepository implements UsersRepository {
   public JdbcTemplate jdbcTemplate;
+
+  @Autowired
+  public JdbcUsersRepository(JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
 
   @Override
   public List<User> getAll() {

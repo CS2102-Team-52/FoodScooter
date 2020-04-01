@@ -1,7 +1,7 @@
 package foodscooter.repositories;
 
-import foodscooter.model.Rider;
-import foodscooter.model.User;
+import foodscooter.model.users.Rider;
+import foodscooter.repositories.specifications.RidersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -9,9 +9,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class JdbcRiderRepository implements RiderRepository {
-  @Autowired
+public class JdbcRidersRepository implements RidersRepository {
   public JdbcTemplate jdbcTemplate;
+
+  @Autowired
+  public JdbcRidersRepository(JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
 
   @Override
   public List<Rider> getAll() {
