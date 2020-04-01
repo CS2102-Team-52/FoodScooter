@@ -46,7 +46,7 @@ export class LoginService {
         return this.customerService.addCustomer(customer);
       case UserType.RESTAURANT_STAFF:
         break;
-      case UserType.FDS_MANAGER:
+      case UserType.FOOD_SCOOTER_MANAGER:
         break;
       default:
         // will not reach here
