@@ -1,4 +1,4 @@
-package foodscooter.model;
+package foodscooter.model.users;
 
 public class User {
   private int id;

@@ -1,4 +1,4 @@
-package foodscooter.model;
+package foodscooter.model.users;
 
 public class Rider extends User {
   private boolean isFullTime;
