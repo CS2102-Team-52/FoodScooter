@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Order } from '../../store/order';
-import { RiderOrderService } from '../../services/rider/order/rider-order.service';
-import { RiderService } from 'src/app/services/rider/rider.service';
+import { RiderOrderService } from '../../services/users/rider/order/rider-order.service';
+import { RiderService } from 'src/app/services/users/rider/rider.service';
 import { Rider } from './rider';
 import { User } from '../user';
-import { LoginService } from 'src/app/login/services/login.service';
+import { LoginService } from 'src/app/services/login/login.service';
+import { RiderType } from "../../store/rider-type.enum";
 
 @Component({
   selector: 'app-rider',
@@ -16,7 +17,7 @@ export class RiderComponent implements OnInit {
   constructor(
     private riderService: RiderService,
     private riderOrderService: RiderOrderService,
-    private loginService: LoginService) { 
+    private loginService: LoginService) {
   }
 
   showSummary: boolean;
@@ -53,7 +54,7 @@ export class RiderComponent implements OnInit {
   }
 
    getOrder(): void {
-    if (this.rider.isFullTime) {
+    if (this.rider.riderType == RiderType.FULL_TIME) {
      /*  this.riderOrderService.fetchFullTimeOrders().subscribe((data: any[])=>{
         console.log(data);
         this.orderList = data;
@@ -66,7 +67,7 @@ export class RiderComponent implements OnInit {
         location: "te",
         orderTime: null,
         deliveryTime: null
-      }
+      };
       this.orderList = [order1];
     } else {
       /* this.riderOrderService.fetchPartTimeOrders().subscribe((data: any[])=>{
@@ -81,7 +82,7 @@ export class RiderComponent implements OnInit {
         location: "te",
         orderTime: null,
         deliveryTime: null
-      }
+      };
       this.orderList = [order2];
     }
   }
@@ -90,7 +91,7 @@ export class RiderComponent implements OnInit {
     this.riderOrderService.fetchRiderSummary().subscribe((data: any[])=>{
       console.log(data);
       this.summaryList = data;
-    })  
-  } 
+    })
+  }
 
 }

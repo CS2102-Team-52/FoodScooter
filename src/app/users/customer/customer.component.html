@@ -1,17 +1,14 @@
-<mat-form-field class="example-form-field">
-  <input matInput type="text" [(ngModel)]="value">
-  <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
-    <mat-icon>close</mat-icon>
-  </button>
-</mat-form-field>
-
-<button mat-raised-button (click)="fetchCustomers()" color="primary">View Orders</button>
-
-<mat-list>
-  <mat-list-item *ngFor="let customer of customers">
-    {{customer.id}}
-  </mat-list-item>
-</mat-list>
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/restaurants">Order Food</a>
+      <a mat-list-item routerLink="/customers">View Orders</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
 
 <div>
   <div class="hello1">

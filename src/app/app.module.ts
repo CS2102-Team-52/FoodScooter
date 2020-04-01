@@ -10,13 +10,19 @@ import { MaterialModule } from './core/material.module';
 import { LoginComponent } from './login/login.component';
 import { RiderComponent } from './users/rider/rider.component';
 import { CustomerComponent } from './users/customer/customer.component';
+import { CustomerRestaurantViewerComponent } from './users/customer/restaurant-viewer/customer-restaurant-viewer.component';
+import { CustomerFoodItemViewerComponent } from './users/customer/food-item-viewer/customer-food-item-viewer.component';
+import { PrettyPipe } from './pipes/pretty.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RiderComponent,
-    CustomerComponent
+    CustomerComponent,
+    CustomerRestaurantViewerComponent,
+    CustomerFoodItemViewerComponent,
+    PrettyPipe
   ],
   imports: [
     BrowserModule,
