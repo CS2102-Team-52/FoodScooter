@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Util } from "../../../users/util";
 import { Order } from "../../../store/order";
-import { Customer } from "../../../users/customer/customer";
-import { Observable } from "rxjs";
 
 /**
  * Provides services to:

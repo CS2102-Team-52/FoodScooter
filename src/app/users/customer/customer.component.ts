@@ -23,7 +23,7 @@ export class CustomerComponent implements OnInit {
   }
 
   fetchCustomers() {
-    this.customerService.fetchCustomers().subscribe((data: Customer[]) => {
+    this.customerService.fetchAllCustomers().subscribe((data: Customer[]) => {
       this.customers = data;
     });
   }
