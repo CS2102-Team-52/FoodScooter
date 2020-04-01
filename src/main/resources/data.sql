@@ -74,7 +74,7 @@ CREATE TABLE PTRiders (
 
 CREATE TABLE Customers (
     cid INTEGER PRIMARY KEY,
-    creditCardNumber INTEGER,
+    creditCardNumber VARCHAR(16),
     rewardPoints INTEGER,
     recentPlaces VARCHAR(100) ARRAY,
     FOREIGN KEY (cid) REFERENCES Users (uid) ON DELETE CASCADE
