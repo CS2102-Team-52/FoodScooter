@@ -3,7 +3,7 @@ package foodscooter.model;
 import java.time.LocalDateTime;
 
 public class Order {
-  private int id;
+  private int oid;
   private int customerId;
   private int riderId;
 
@@ -25,7 +25,7 @@ public class Order {
   }
 
   public Order(
-    int id,
+    int oid,
     int customerId,
     int riderId,
     float totalCost,
@@ -37,7 +37,7 @@ public class Order {
     LocalDateTime restaurantArrivalTime,
     LocalDateTime restaurantDepartureTime,
     LocalDateTime deliveryTime) {
-    this.id = id;
+    this.oid = oid;
     this.customerId = customerId;
     this.riderId = riderId;
     this.totalCost = totalCost;
@@ -51,12 +51,12 @@ public class Order {
     this.deliveryTime = deliveryTime;
   }
 
-  public int getId() {
-    return id;
+  public int getOid() {
+    return oid;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public void setOid(int oid) {
+    this.oid = oid;
   }
 
   public int getCustomerId() {

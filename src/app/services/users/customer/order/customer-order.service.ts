@@ -39,7 +39,7 @@ export class CustomerOrderService {
     return this.httpClient.get(`${Util.baseURL}/customers/${customerId}/orders`);
   }
 
-  public deleteOrder(customerId: number, orderId: number) {
-    return this.httpClient.delete(`${Util.baseURL}/customers/${customerId}/orders/${orderId}`);
+  public deleteOrder(orderId: number) {
+    return this.httpClient.delete(`${Util.baseURL}/orders/${orderId}`);
   }
 }

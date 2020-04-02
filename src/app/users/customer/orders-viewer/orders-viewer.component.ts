@@ -31,9 +31,8 @@ export class OrdersViewerComponent implements OnInit {
   }
 
   public deleteOrder(orderId: number) {
-    const customerId = Number(this.activatedRoute.snapshot.paramMap.get('customerId'));
-    this.orderService.deleteOrder(customerId, orderId).subscribe(
-      _ => this.orders.filter(order => order.oid != orderId)
+    this.orderService.deleteOrder(orderId).subscribe(
+      _ => this.orders = this.orders.filter(order => order.oid !== orderId)
     );
   }
 }

@@ -3,6 +3,8 @@ package foodscooter.api.controllers;
 import foodscooter.model.Order;
 import foodscooter.repositories.JdbcOrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,8 +27,9 @@ public class CustomerController extends BaseController {
     return orderRepository.getByCustomer(customerId);
   }
 
-  @DeleteMapping("/customers/{customerId}/orders/{orderId}")
-  public void deleteOrder(@PathVariable int customerId, @PathVariable int orderId) {
-    orderRepository.delete(customerId, orderId);
+  @DeleteMapping("/orders/{orderId}")
+  public ResponseEntity<?> deleteOrder(@PathVariable int orderId) {
+    orderRepository.delete(orderId);
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 }

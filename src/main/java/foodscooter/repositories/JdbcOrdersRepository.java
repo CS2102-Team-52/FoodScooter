@@ -22,7 +22,7 @@ public class JdbcOrdersRepository implements OrdersRepository {
     jdbcTemplate.update(
       "INSERT INTO Orders "
     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      order.getId(),
+      order.getOid(),
       order.getCustomerId(),
       order.getRiderId(),
       order.getTotalCost(),
@@ -38,8 +38,7 @@ public class JdbcOrdersRepository implements OrdersRepository {
 
   @Override
   public List<Order> getByCustomer(int customerId) {
-    System.out.println(customerId);
-    List<Order> orders = jdbcTemplate.query(
+    return jdbcTemplate.query(
       "SELECT * "
         + "FROM Orders "
         + "WHERE cid = ?",
@@ -58,17 +57,14 @@ public class JdbcOrdersRepository implements OrdersRepository {
         rs.getTimestamp(11).toLocalDateTime(),
         rs.getTimestamp(12).toLocalDateTime()))
     );
-    System.out.println("Size");
-    System.out.println(orders.size());
-    return orders;
   }
 
   @Override
-  public void delete(int customerId, int orderId) {
+  public void delete(int orderId) {
     jdbcTemplate.update(
       "DELETE FROM Orders "
-        + "WHERE cid = ? AND oid = ?",
-      customerId, orderId
+        + "WHERE oid = ?",
+      orderId
     );
   }
 }
