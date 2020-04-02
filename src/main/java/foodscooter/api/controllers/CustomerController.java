@@ -29,7 +29,8 @@ public class CustomerController extends BaseController {
 
   @GetMapping("/customers")
   public List<Customer> getAllCustomers() {
-    return customerRepository.getAll();
+    //return customerRepository.getAll();
+    return null;
   }
 
   @PostMapping("/customers/{customerId}/orders")

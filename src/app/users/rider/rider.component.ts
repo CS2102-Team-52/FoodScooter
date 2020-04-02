@@ -55,7 +55,7 @@ export class RiderComponent implements OnInit {
 
    getOrder(): void {
     if (this.rider.riderType == RiderType.FULL_TIME) {
-     /*  this.riderOrderService.fetchFullTimeOrders().subscribe((data: any[])=>{
+     /*  this.riderOrderService.fetchFullTimeOrders(this.rider.id).subscribe((data: any[])=>{
         console.log(data);
         this.orderList = data;
       }) */
@@ -70,7 +70,7 @@ export class RiderComponent implements OnInit {
       };
       this.orderList = [order1];
     } else {
-      /* this.riderOrderService.fetchPartTimeOrders().subscribe((data: any[])=>{
+      /* this.riderOrderService.fetchPartTimeOrders(this.rider.id).subscribe((data: any[])=>{
         console.log(data);
         this.orderList = data;
       }) */
@@ -88,7 +88,7 @@ export class RiderComponent implements OnInit {
   }
 
   getSummary(): void {
-    this.riderOrderService.fetchRiderSummary().subscribe((data: any[])=>{
+    this.riderOrderService.fetchRiderSummary(this.rider.id).subscribe((data: any[])=>{
       console.log(data);
       this.summaryList = data;
     })

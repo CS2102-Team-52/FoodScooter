@@ -1,4 +1,4 @@
-package foodscooter.model;
+package foodscooter.model.rider;
 
 public enum RiderType {
   FULL_TIME,
