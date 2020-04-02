@@ -1,11 +1,16 @@
 package foodscooter.repositories.specifications;
 
+import foodscooter.model.Order;
+import foodscooter.model.rider.FullTimeSchedule;
 import foodscooter.model.users.Rider;
 
 import java.util.List;
 
 public interface RidersRepository {
   List<Rider> getAll();
-  boolean checkFullTime(int rid);
-  boolean checkPartTime(int rid);
+  boolean checkFullTime(int drid);
+  boolean checkPartTime(int drid);
+  FullTimeSchedule getFullTimeSchedule(int drid);
+  List<Order> getFullTimeOrders(String dayOption, String shift1, String shift2);
+  List<Order> getOrderSummary(int drid);
 }
