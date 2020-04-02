@@ -5,7 +5,7 @@ import foodscooter.model.Order;
 import java.util.List;
 
 public interface OrdersRepository {
-  void add(int customerId, Order order);
+  void add(Order order);
   List<Order> getByCustomer(int customerId);
   void delete(int customerId, int orderId);
 }

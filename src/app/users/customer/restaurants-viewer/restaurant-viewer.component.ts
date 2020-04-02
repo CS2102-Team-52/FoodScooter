@@ -24,7 +24,6 @@ export class RestaurantViewer implements OnInit {
   public fetchRestaurants() {
     this.restaurantService.fetchRestaurants().subscribe(
       (data: Restaurant[]) => {
-        console.log(data);
         this.restaurants = data;
       })
   }

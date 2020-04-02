@@ -161,3 +161,23 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
        (1, 3, 'Regular Chicken Rice', 'Singaporean', 3, 500),
        (2, 3, 'Cabbage with Sesame Oil', 'Singaporean', 3, 500),
        (3, 3, 'Char Siew', 'Singaporean', 3, 500);
+
+INSERT INTO Users
+VALUES (1, 'admin', 'admin', 'Customer'),
+       (2, 'rider', 'rider', 'Delivery Rider');
+
+INSERT INTO Customers
+VALUES (1);
+
+INSERT INTO DeliveryRiders
+VALUES (2);
+
+INSERT INTO Orders
+VALUES (1, 1, 2, 100, 10, 'Credit Card', 'Seoul Good',
+        '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
+       (2, 1, 2, 100, 10, 'Credit Card', 'Seoul Good',
+        '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
+       (3, 1, 2, 100, 10, 'Credit Card', 'Seoul Good',
+        '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
+       (4, 1, 2, 100, 10, 'Credit Card', 'Seoul Good',
+        '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06');

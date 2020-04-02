@@ -1,0 +1,12 @@
+<mat-list *ngFor="let order of orders">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        {{order.oid}}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      {{order.totalCost}}
+    </mat-card-content>
+  </mat-card>
+</mat-list>
