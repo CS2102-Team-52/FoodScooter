@@ -119,7 +119,7 @@ CREATE TABLE Orders (
     drid INTEGER,
     totalCost MONEY, -- changed INTEGER to MONEY
     deliveryFee MONEY,
-    paymentType INTEGER,
+    paymentType VARCHAR(100), -- changed INTEGER to VARCHAR
     location VARCHAR(100),
     orderTime TIMESTAMP,
     departureTime TIMESTAMP,
