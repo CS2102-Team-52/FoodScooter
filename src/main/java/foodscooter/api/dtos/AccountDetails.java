@@ -1,7 +1,7 @@
 package foodscooter.api.dtos;
 
-import foodscooter.model.RiderType;
 import foodscooter.model.UserType;
+import foodscooter.model.rider.RiderType;
 
 public class AccountDetails {
   private String username;
