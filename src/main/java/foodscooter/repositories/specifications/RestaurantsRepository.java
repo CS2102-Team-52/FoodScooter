@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface RestaurantsRepository {
   List<Restaurant> getAll();
-  List<FoodItem> getFoodItems(int restaurantId);
+  List<FoodItem> getMenu(int restaurantId);
 }
