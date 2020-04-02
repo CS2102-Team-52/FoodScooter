@@ -1,4 +1,4 @@
-import { UserType } from "../../store/user-type.enum";
+import { UserType } from "../../../store/user-type.enum";
 
 export interface LoginResponse {
   isAuthenticated: boolean;

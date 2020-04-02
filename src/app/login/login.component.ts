@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { LoginService } from "../services/login/login.service";
 import { UserType } from "../store/user-type.enum";
 import { RiderType } from "../store/rider-type.enum";
-import { LoginResponse } from "../services/login/login-response";
+import { LoginResponse } from "../services/login/dto/login-response";
 
 @Component({
   selector: 'app-login',
