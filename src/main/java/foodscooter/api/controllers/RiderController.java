@@ -1,12 +1,15 @@
 package foodscooter.api.controllers;
 
-import foodscooter.model.RiderType;
+import foodscooter.model.Order;
+import foodscooter.model.rider.FullTimeSchedule;
+import foodscooter.model.rider.RiderType;
 import foodscooter.model.users.Rider;
 import foodscooter.model.users.User;
 import foodscooter.repositories.JdbcRidersRepository;
 import foodscooter.repositories.JdbcUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,15 +51,62 @@ public class RiderController extends BaseController {
     }
   }
 
-  /*
-  @GetMapping("/rider/{id}/orders")
-  public List<Order> getRiderOrders(@PathVariable Long id) {
-    return repository.getAll();
+
+  @GetMapping("/rider/{drid}/orders")
+  public List<Order> getRiderOrders(@PathVariable int drid) {
+    FullTimeSchedule schedule = riderRepository.getFullTimeSchedule(drid);
+    String dayStr = "";
+    String shift1Str = "";
+    String shift2Str = "";
+    switch (schedule.getDayOption()) {
+      case 1:
+        dayStr = "(1, 2, 3, 4, 5)";
+        break;
+      case 2:
+        dayStr = "(2, 3, 4, 5, 6)";
+        break;
+      case 3:
+        dayStr = "(3, 4, 5, 6, 7)";
+        break;
+      case 4:
+        dayStr = "(1, 4, 5, 6, 7)";
+        break;
+      case 5:
+        dayStr = "(1, 2, 5, 6, 7)";
+        break;
+      case 6:
+        dayStr = "(1, 2, 3, 6, 7)";
+        break;
+      case 7:
+        dayStr = "(1, 2, 3, 4, 7)";
+        break;
+      default:
+        dayStr = ""; // error
+    }
+    switch (schedule.getShiftOption()) {
+      case 1:
+        shift1Str = "BETWEEN TIME '10:00:00' AND '14:00:00'";
+        shift2Str = "BETWEEN TIME '15:00:00' AND '19:00:00'";
+        break;
+      case 2:
+        shift1Str = "BETWEEN TIME '11:00:00' AND '15:00:00'";
+        shift2Str = "BETWEEN TIME '16:00:00' AND '20:00:00'";
+        break;
+      case 3:
+        shift1Str = "BETWEEN TIME '12:00:00' AND '16:00:00'";
+        shift2Str = "BETWEEN TIME '17:00:00' AND '21:00:00'";
+        break;
+      case 4:
+        shift1Str = "BETWEEN TIME '13:00:00' AND '17:00:00'";
+        shift2Str = "BETWEEN TIME '18:00:00' AND '20:00:00'";
+        break;
+      default:
+    }
+    return riderRepository.getFullTimeOrders(dayStr, shift1Str, shift2Str);
   }
 
-  @GetMapping("/rider/{id}/summary")
-  public List<Order> getRiderSummary(@PathVariable Long id) {
-    return repository.getAll();
+  @GetMapping("/rider/{drid}/summary")
+  public List<Order> getRiderSummary(@PathVariable int drid) {
+    return riderRepository.getOrderSummary(drid);
   }
-  */
 }

@@ -35,20 +35,11 @@ CREATE TABLE DeliveryRiders (
     FOREIGN KEY (drid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
--- daysEnum specifies the starting day of the 5 consecutive days
--- shiftsEnum specifies the starting hour of the respective shift option
-CREATE TABLE FTSchedules (
-    fsid INTEGER PRIMARY KEY,
-    daysOption daysEnum,
-    shiftsOption shiftsEnum
-);
-
--- fsid = id of assigned schedule
 CREATE TABLE FTRiders (
     drid INTEGER PRIMARY KEY,
-    fsid INTEGER,
+    dayOption INTEGER check(dayOption in (1,2,3,4,5,6,7)),
+	shiftOption INTEGER check(shiftOption in (1,2,3,4)),
     FOREIGN KEY (drid) REFERENCES DeliveryRiders ON DELETE CASCADE,
-    FOREIGN KEY (fsid) REFERENCES FTSchedules
 );
 
 CREATE TABLE PTSchedules (

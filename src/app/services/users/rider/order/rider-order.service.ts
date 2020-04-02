@@ -10,15 +10,15 @@ export class RiderOrderService {
   constructor(private httpClient: HttpClient) {
   }
 
-  public fetchPartTimeOrders() {
-    return this.httpClient.get(`${Util.baseURL}/rider/partTimeOrders`);
+  public fetchPartTimeOrders(drid: number) {
+    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/partTimeOrders`);
   }
 
-  public fetchFullTimeOrders() {
-    return this.httpClient.get(`${Util.baseURL}/rider/fullTimeOrders`);
+  public fetchFullTimeOrders(drid: number) {
+    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/fullTimeOrders`);
   }
 
-  public fetchRiderSummary() {
-    return this.httpClient.get(`${Util.baseURL}/rider/riderSummary`);
+  public fetchRiderSummary(drid: number) {
+    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/riderSummary`);
   }
 }
