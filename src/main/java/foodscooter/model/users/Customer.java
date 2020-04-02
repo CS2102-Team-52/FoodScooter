@@ -1,5 +1,7 @@
 package foodscooter.model.users;
 
+import foodscooter.model.UserType;
+
 import java.util.List;
 
 public class Customer extends User {
@@ -8,7 +10,7 @@ public class Customer extends User {
   private List<String> recentPlaces;
 
   public Customer(int id, String username, String password, String creditCardNumber, int rewardPoints, List<String> recentPlaces) {
-    super(id, username, password);
+    super(id, username, password, UserType.CUSTOMER);
     this.creditCardNumber = creditCardNumber;
     this.rewardPoints = rewardPoints;
     this.recentPlaces = recentPlaces;

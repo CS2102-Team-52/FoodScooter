@@ -35,9 +35,10 @@ public class RiderController extends BaseController {
     return riderRepository.getAll();
   }
 
+  //TODO
   @PostMapping("/riderInfo")
   public Rider getRiderInfo(@RequestBody User user) {
-    User newUser = userRepository.getUser(user.getUsername(), user.getPassword());
+    User newUser = userRepository.get(user.getUsername(), user.getPassword()).get();
     boolean isFullTime = riderRepository.checkFullTime(newUser.getId());
     boolean isPartTime = riderRepository.checkPartTime(newUser.getId());
     if (!(isFullTime ^ isPartTime)) {

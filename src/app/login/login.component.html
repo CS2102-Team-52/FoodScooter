@@ -27,7 +27,7 @@
         <!-- <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner> -->
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button (click)="showLogin()" color="primary">Login</button>
+        <button mat-raised-button (click)="login()" color="primary">Login</button>
       </mat-card-actions>
     </mat-card>
   </mat-tab>
@@ -58,7 +58,7 @@
               <td>
                 <mat-form-field>
                   <mat-label>User Type</mat-label>
-                  <mat-select>
+                  <mat-select [(value)]="userType" required>
                     <mat-option *ngFor="let userType of userTypes" [value]="userType">
                       {{userType | pretty}}
                     </mat-option>
@@ -68,9 +68,9 @@
             </tr>
             <tr>
               <td>
-                <mat-form-field>
+                <mat-form-field *ngIf="isDeliveryRider()">
                   <mat-label>Rider Type</mat-label>
-                  <mat-select>
+                  <mat-select [(value)]="riderType" required>
                     <mat-option *ngFor="let riderType of riderTypes" [value]="riderType">
                       {{riderType | pretty}}
                     </mat-option>
@@ -83,7 +83,7 @@
         <!-- <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner> -->
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button (click)="showCreateAccount()" color="primary">Create</button>
+        <button mat-raised-button (click)="createAccount()" color="primary">Create</button>
       </mat-card-actions>
     </mat-card>
   </mat-tab>

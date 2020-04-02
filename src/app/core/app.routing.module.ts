@@ -8,8 +8,8 @@ import { CustomerRestaurantViewerComponent } from "../users/customer/restaurant-
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'rider', component: RiderComponent},
-  {path: 'customer', component: CustomerComponent},
+  {path: 'riders/:id', component: RiderComponent},
+  {path: 'customers/:id', component: CustomerComponent},
   {path: 'restaurants', component: CustomerRestaurantViewerComponent}
 ];
 

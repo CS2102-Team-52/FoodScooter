@@ -18,10 +18,10 @@ export class RiderService {
 
   fetchAllRiders(): Observable<any> {
     return this.httpClient.get(`${Util.baseURL}/riders`);
-   }
+  }
 
-   fetchRiderInfo(data: User): Observable<any> {
+  fetchRiderInfo(data: User): Observable<any> {
     console.log(data);
     return this.httpClient.post(`${Util.baseURL}/riderInfo`, data);
-   }
+  }
 }

@@ -1,7 +1,6 @@
 package foodscooter.api.controllers;
 
 import foodscooter.model.Order;
-import foodscooter.model.users.Customer;
 import foodscooter.repositories.JdbcCustomersRepository;
 import foodscooter.repositories.JdbcOrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +24,6 @@ public class CustomerController extends BaseController {
     JdbcOrdersRepository orderRepository) {
     this.customerRepository = customerRepository;
     this.orderRepository = orderRepository;
-  }
-
-  @GetMapping("/customers")
-  public List<Customer> getAllCustomers() {
-    //return customerRepository.getAll();
-    return null;
   }
 
   @PostMapping("/customers/{customerId}/orders")
