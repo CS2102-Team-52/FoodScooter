@@ -26,7 +26,7 @@ CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
-    type VARCHAR(50) NOT NULL -- NEW
+    type VARCHAR(50) NOT NULL /* NEW */
 );
 
 CREATE TABLE DeliveryRiders (
@@ -39,7 +39,7 @@ CREATE TABLE FTRiders (
     drid INTEGER PRIMARY KEY,
     dayOption INTEGER check(dayOption in (1,2,3,4,5,6,7)),
 	shiftOption INTEGER check(shiftOption in (1,2,3,4)),
-    FOREIGN KEY (drid) REFERENCES DeliveryRiders ON DELETE CASCADE,
+    FOREIGN KEY (drid) REFERENCES DeliveryRiders ON DELETE CASCADE
 );
 
 CREATE TABLE PTSchedules (
@@ -56,7 +56,7 @@ CREATE TABLE PTShifts (
     FOREIGN KEY (psid) REFERENCES PTSchedules ON DELETE CASCADE
 );
 
--- psid = id of assigned schedule
+/* psid = id of assigned schedule */
 CREATE TABLE PTRiders (
     drid INTEGER PRIMARY KEY,
     psid INTEGER,
@@ -85,11 +85,11 @@ CREATE TABLE Promotions (
     discount NUMERIC
 );
 
--- pid = id of promotion offered by restaurant
+/* pid = id of promotion offered by restaurant */
 CREATE TABLE Restaurants (
     rid INTEGER PRIMARY KEY,
     name VARCHAR(100),
-    description VARCHAR(1000), -- NEW
+    description VARCHAR(1000), /* NEW */
     mininumPurchase MONEY,
     pid INTEGER,
     FOREIGN KEY (pid) REFERENCES promotions
