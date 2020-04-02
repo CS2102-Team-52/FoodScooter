@@ -25,7 +25,8 @@ CREATE TYPE hoursEnum AS ENUM ('10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm
 CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(100) NOT NULL
+    password VARCHAR(100) NOT NULL,
+    type VARCHAR(50) NOT NULL -- NEW
 );
 
 CREATE TABLE DeliveryRiders (
@@ -97,7 +98,7 @@ CREATE TABLE Promotions (
 CREATE TABLE Restaurants (
     rid INTEGER PRIMARY KEY,
     name VARCHAR(100),
-    description VARCHAR(1000),
+    description VARCHAR(1000), -- NEW
     mininumPurchase MONEY,
     pid INTEGER,
     FOREIGN KEY (pid) REFERENCES promotions

@@ -1,26 +1,16 @@
-package foodscooter.model.users;
+package foodscooter.api.dtos;
 
+import foodscooter.model.RiderType;
 import foodscooter.model.UserType;
 
-public class User {
-  private int id;
+public class AccountDetails {
   private String username;
   private String password;
   private UserType userType;
+  private RiderType riderType;
 
-  public User(int id, String username, String password, UserType userType) {
-    this.id = id;
-    this.username = username;
-    this.password = password;
-    this.userType = userType;
-  }
+  public AccountDetails() {
 
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
   }
 
   public String getUsername() {
@@ -45,5 +35,13 @@ public class User {
 
   public void setUserType(UserType userType) {
     this.userType = userType;
+  }
+
+  public RiderType getRiderType() {
+    return riderType;
+  }
+
+  public void setRiderType(RiderType riderType) {
+    this.riderType = riderType;
   }
 }

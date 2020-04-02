@@ -16,7 +16,7 @@ public class JdbcCustomersRepository implements CustomersRepository {
   }
 
   @Override
-  public void add(Customer customer) {
+  public void add() {
 
   }
 }

@@ -1,6 +1,6 @@
 export enum UserType {
-  DELIVERY_RIDER = "delivery-rider",
-  CUSTOMER = "customer",
-  RESTAURANT_STAFF = "restaurant-staff",
-  FOOD_SCOOTER_MANAGER = "food-scooter-manager"
+  DELIVERY_RIDER = "Delivery Rider",
+  CUSTOMER = "Customer",
+  RESTAURANT_STAFF = "Restaurant Staff",
+  FOOD_SCOOTER_MANAGER = "Food Scooter Manager"
 }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { LoginService } from "../services/login/login.service";
 import { UserType } from "../store/user-type.enum";
 import { RiderType } from "../store/rider-type.enum";
+import { LoginResponse } from "../services/login/login-response";
 
 @Component({
   selector: 'app-login',
@@ -29,20 +30,45 @@ export class LoginComponent implements OnInit {
     this.riderTypes = Object.keys(RiderType);
   }
 
+  isDeliveryRider(): boolean {
+    return UserType[this.userType] == UserType.DELIVERY_RIDER;
+  }
+
   ngOnInit(): void {
   }
 
-  showLogin() {
-    this.router.navigate(['login'])
-    const path = this.loginService.login(this.username, this.password).subscribe(
+  login() {
+    this.loginService.login(this.username, this.password).subscribe(
       (data: string) => {
         this.path = `${data}/${this.username}`;
-        this.router.navigate([path]).then(() => {});
+        this.router.navigate([this.path]).then(() => {});
       }
     );
   }
 
-  showCreateAccount() {
-    this.loginService.createUser(this.username, this.password, this.userType, this.riderType);
+  createAccount() {
+    this.loginService.createAccount(this.username, this.password, this.userType, this.riderType).subscribe(
+      (data: LoginResponse) => {
+        if (!data.isAuthenticated) {
+          return; // do nothing
+        }
+        let type;
+        switch (UserType[data.userType]) {
+          case UserType.DELIVERY_RIDER:
+            type = 'riders';
+            break;
+          case UserType.CUSTOMER:
+            type = 'customers';
+            break;
+          case UserType.RESTAURANT_STAFF:
+            type = 'staff';
+            break;
+          case UserType.FOOD_SCOOTER_MANAGER:
+            type = 'managers'
+        }
+        this.path = `${type}/${data.userId}`;
+        this.router.navigate([this.path]).then(() => {});
+      }
+    );
   }
 }
