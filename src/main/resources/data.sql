@@ -117,7 +117,7 @@ CREATE TABLE Orders (
     oid INTEGER PRIMARY KEY,
     cid INTEGER,
     drid INTEGER,
-    totalCost INTEGER,
+    totalCost MONEY, -- changed INTEGER to MONEY
     deliveryFee MONEY,
     paymentType INTEGER,
     location VARCHAR(100),
