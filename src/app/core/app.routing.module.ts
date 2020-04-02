@@ -3,14 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { RiderComponent } from '../users/rider/rider.component';
 import { LoginComponent } from '../login/login.component';
 import { CustomerComponent } from "../users/customer/customer.component";
-import { CustomerRestaurantViewerComponent } from "../users/customer/restaurant-viewer/customer-restaurant-viewer.component";
+import { RestaurantViewer } from "../users/customer/restaurant-viewer/restaurant-viewer.component";
+import { MenuViewer } from "../users/customer/menu-viewer/menu-viewer.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'riders/:id', component: RiderComponent},
   {path: 'customers/:id', component: CustomerComponent},
-  {path: 'restaurants', component: CustomerRestaurantViewerComponent}
+  {path: 'customers/:id/restaurants', component: RestaurantViewer},
+  {path: 'customers/:id/restaurants/:restaurantId/menu', component: MenuViewer}
 ];
 
 @NgModule({
