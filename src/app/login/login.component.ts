@@ -39,9 +39,8 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.loginService.login(this.username, this.password).subscribe(
-      (data: string) => {
-        this.path = `${data}/${this.username}`;
-        this.router.navigate([this.path]).then(() => {});
+      (data: LoginResponse) => {
+        this.navigateToUserPage(data)
       }
     );
   }
@@ -49,26 +48,30 @@ export class LoginComponent implements OnInit {
   createAccount() {
     this.loginService.createAccount(this.username, this.password, this.userType, this.riderType).subscribe(
       (data: LoginResponse) => {
-        if (!data.isAuthenticated) {
-          return; // do nothing
-        }
-        let type;
-        switch (UserType[data.userType]) {
-          case UserType.DELIVERY_RIDER:
-            type = 'riders';
-            break;
-          case UserType.CUSTOMER:
-            type = 'customers';
-            break;
-          case UserType.RESTAURANT_STAFF:
-            type = 'staff';
-            break;
-          case UserType.FOOD_SCOOTER_MANAGER:
-            type = 'managers'
-        }
-        this.path = `${type}/${data.userId}`;
-        this.router.navigate([this.path]).then(() => {});
+        this.navigateToUserPage(data);
       }
     );
+  }
+
+  private navigateToUserPage(response: LoginResponse) {
+    if (!response.isAuthenticated) {
+      return; // do nothing
+    }
+    let type;
+    switch (UserType[response.userType]) {
+      case UserType.DELIVERY_RIDER:
+        type = 'riders';
+        break;
+      case UserType.CUSTOMER:
+        type = 'customers';
+        break;
+      case UserType.RESTAURANT_STAFF:
+        type = 'staff';
+        break;
+      case UserType.FOOD_SCOOTER_MANAGER:
+        type = 'managers'
+    }
+    this.path = `${type}/${response.userId}`;
+    this.router.navigate([this.path]).then(() => {});
   }
 }

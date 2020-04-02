@@ -63,14 +63,15 @@ public class JdbcUsersRepository implements UsersRepository {
       "SELECT * FROM Users U WHERE U.username = ? and U.password = ? ;",
       new Object[] { username, password },
       ((rs, rowNum) -> {
-        if (!rs.isBeforeFirst()) {
+        int userId = rs.getInt(1);
+        if (userId == 0) {
           return Optional.empty();
         }
         User user = new User(
-          rs.getInt(1),
+          userId,
           rs.getString(2),
           rs.getString(3),
-          UserType.valueOf(rs.getString(4)));
+          UserType.map(rs.getString(4)));
         return Optional.of(user);
       }));
   }
