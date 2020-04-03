@@ -2,6 +2,7 @@ package foodscooter.api.controllers;
 
 import foodscooter.model.Order;
 import foodscooter.model.rider.FullTimeSchedule;
+import foodscooter.model.rider.PartTimeShift;
 import foodscooter.model.rider.RiderType;
 import foodscooter.model.users.Rider;
 import foodscooter.model.users.User;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -51,9 +53,31 @@ public class RiderController extends BaseController {
     }
   }
 
+  @GetMapping("/rider/{drid}/partTimeOrders")
+  public List<Order> getPartTimeRiderOrders(@PathVariable int drid) {
+    List<PartTimeShift> partTimeShiftList = riderRepository.getPartTimeShift(drid);
+    StringBuilder builder = new StringBuilder();
+    boolean notFirst = false;
+    List<Object> objectList = new ArrayList<>();
+    for (PartTimeShift pts : partTimeShiftList) {
+      if (notFirst) {
+        builder.append("UNION ");
+      }
+      builder.append("SELECT * FROM Orders WHERE drid IS NULL AND EXTRACT(ISODOW FROM orderTime) = ? " +
+        "AND EXTRACT(HOUR FROM orderTime) >= ? AND EXTRACT(HOUR FROM orderTime) <= ? ");
+      objectList.add(pts.getDow());
+      objectList.add(pts.getStartTime());
+      objectList.add(pts.getEndTime());
+      notFirst = true;
+    }
+    builder.append(";");
+    Object[] objectArr = new Object[objectList.size()];
+    objectList.toArray(objectArr);
+    return riderRepository.getPartTimeOrders(builder.toString(), objectArr);
+  }
 
-  @GetMapping("/rider/{drid}/orders")
-  public List<Order> getRiderOrders(@PathVariable int drid) {
+  @GetMapping("/rider/{drid}/fullTimeOrders")
+  public List<Order> getFullTimeRiderOrders(@PathVariable int drid) {
     FullTimeSchedule schedule = riderRepository.getFullTimeSchedule(drid);
     String dayStr = "";
     String shift1Str = "";

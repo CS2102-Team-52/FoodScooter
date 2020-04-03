@@ -2,6 +2,7 @@ package foodscooter.repositories;
 
 import foodscooter.model.Order;
 import foodscooter.model.rider.FullTimeSchedule;
+import foodscooter.model.rider.PartTimeShift;
 import foodscooter.model.rider.RiderType;
 import foodscooter.model.users.Rider;
 import foodscooter.repositories.specifications.RidersRepository;
@@ -70,7 +71,7 @@ public class JdbcRidersRepository implements RidersRepository {
   @Override
   public List<Order> getFullTimeOrders(String dayOption, String shift1, String shift2) {
     return jdbcTemplate.query(
-      "SELECT * FROM Orders WHERE drid IS NULL AND EXTRACT(ISODOW FROM TIMESTAMP orderTime) IN " +
+      "SELECT * FROM Orders WHERE drid IS NULL AND EXTRACT(ISODOW FROM orderTime) IN " +
         dayOption + " AND ((orderTime::TIME " + shift1 + ") OR (orderTime::TIME " + shift2 + "));",
       ((rs, rowNum) -> new Order()));
   }
@@ -80,6 +81,21 @@ public class JdbcRidersRepository implements RidersRepository {
     return jdbcTemplate.query(
       "SELECT * FROM Orders WHERE drid = ?;",
       new Object[] { drid },
+      ((rs, rowNum) -> new Order()));
+  }
+
+  @Override
+  public List<PartTimeShift> getPartTimeShift(int drid) {
+    return jdbcTemplate.query(
+      "SELECT * FROM PTShifts WHERE drid = ?;",
+      new Object[] { drid },
+      ((rs, rowNum) -> new PartTimeShift(rs.getInt(1), rs.getInt(3),
+        rs.getInt(4), rs.getInt(5))));
+  }
+
+  @Override
+  public List<Order> getPartTimeOrders(String sqlQuery, Object[] objectArr) {
+    return jdbcTemplate.query(sqlQuery, objectArr,
       ((rs, rowNum) -> new Order()));
   }
 }

@@ -18,9 +18,11 @@ DROP TABLE IF EXISTS FoodItems CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
 
+/*
 CREATE TYPE daysEnum AS ENUM ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
 CREATE TYPE shiftsEnum AS ENUM ('10am', '11am', '12pm', '1pm');
 CREATE TYPE hoursEnum AS ENUM ('10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm');
+*/
 
 CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
@@ -35,25 +37,28 @@ CREATE TABLE DeliveryRiders (
     FOREIGN KEY (drid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
-CREATE TABLE FTRiders (
+CREATE TABLE FTRiders (   
     drid INTEGER PRIMARY KEY,
     dayOption INTEGER check(dayOption in (1,2,3,4,5,6,7)),
 	shiftOption INTEGER check(shiftOption in (1,2,3,4)),
     FOREIGN KEY (drid) REFERENCES DeliveryRiders ON DELETE CASCADE
 );
 
+/*
 CREATE TABLE PTSchedules (
     psid INTEGER PRIMARY KEY,
     totalHours INTEGER
 );
+*/
 
 CREATE TABLE PTShifts (
     ptsid INTEGER PRIMARY KEY,
-    psid INTEGER,
-    day daysEnum,
-    startHour hoursEnum,
-    endHour hoursEnum,
-    FOREIGN KEY (psid) REFERENCES PTSchedules ON DELETE CASCADE
+    drid INTEGER,
+    dow INTEGER check(dow in (1,2,3,4,5,6,7)),
+    startHour INTEGER check(startHour in (10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21)),
+    endHour INTEGER check(endHour in (11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22)),
+	FOREIGN KEY (drid) REFERENCES PTRiders ON DELETE CASCADE,
+	CHECK (startHour <= endHour)
 );
 
 /* psid = id of assigned schedule */
