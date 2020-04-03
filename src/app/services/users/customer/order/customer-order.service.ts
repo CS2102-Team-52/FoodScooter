@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Util } from "../../../../users/util";
 import { Order } from "../../../../store/order";
+import { FoodItem } from "../../../../store/food-item";
 
 /**
  * Provides services to:
@@ -13,8 +14,22 @@ import { Order } from "../../../../store/order";
   providedIn: 'root'
 })
 export class CustomerOrderService {
+  private foodItems: FoodItem[];
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient,
+  ) { }
+
+  public addFoodItem(foodItemId: number) {
+    const foodItem: FoodItem = {
+      id: foodItemId,
+      name: '',
+      category: '',
+      price: -1,
+      dailyLimit: -1
+    };
+    this.foodItems.push(foodItem);
+  }
 
   public placeOrder(customerId: number, order: Order) {
     return this.httpClient.post(`${Util.baseURL}/customers/${customerId}/orders`, order);
@@ -24,7 +39,7 @@ export class CustomerOrderService {
     return this.httpClient.get(`${Util.baseURL}/customers/${customerId}/orders`);
   }
 
-  public deleteOrder(customerId: number, orderId: number) {
-    return this.httpClient.delete(`${Util.baseURL}/customers/${customerId}/orders/${orderId}`);
+  public deleteOrder(orderId: number) {
+    return this.httpClient.delete(`${Util.baseURL}/orders/${orderId}`);
   }
 }
