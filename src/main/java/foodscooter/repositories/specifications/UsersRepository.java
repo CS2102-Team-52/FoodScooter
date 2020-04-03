@@ -10,4 +10,5 @@ public interface UsersRepository {
   int add(String username, String password, UserType userType);
   List<User> getAll();
   Optional<User> get(String username, String password);
+  Optional<User> get(int uid);
 }

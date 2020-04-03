@@ -38,11 +38,11 @@ public class RiderController extends BaseController {
   }
 
   //TODO
-  @PostMapping("/riderInfo")
-  public Rider getRiderInfo(@RequestBody User user) {
-    User newUser = userRepository.get(user.getUsername(), user.getPassword()).get();
-    boolean isFullTime = riderRepository.checkFullTime(newUser.getId());
-    boolean isPartTime = riderRepository.checkPartTime(newUser.getId());
+  @GetMapping("/riderInfo/{drid}")
+  public Rider getRiderInfo(@PathVariable int drid) {
+    User newUser = userRepository.get(drid).get();
+    boolean isFullTime = riderRepository.checkFullTime(drid);
+    boolean isPartTime = riderRepository.checkPartTime(drid);
     if (!(isFullTime ^ isPartTime)) {
       // return error
       return null;
@@ -129,7 +129,7 @@ public class RiderController extends BaseController {
     return riderRepository.getFullTimeOrders(dayStr, shift1Str, shift2Str);
   }
 
-  @GetMapping("/rider/{drid}/summary")
+  @GetMapping("/rider/{drid}/orderSummary")
   public List<Order> getRiderSummary(@PathVariable int drid) {
     return riderRepository.getOrderSummary(drid);
   }

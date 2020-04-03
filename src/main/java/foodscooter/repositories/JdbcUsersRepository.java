@@ -75,4 +75,23 @@ public class JdbcUsersRepository implements UsersRepository {
         return Optional.of(user);
       }));
   }
+
+  @Override
+  public Optional<User> get(int uid) {
+    return jdbcTemplate.queryForObject(
+      "SELECT * FROM Users U WHERE U.uid = ? ;",
+      new Object[] { uid },
+      ((rs, rowNum) -> {
+        int userId = rs.getInt(1);
+        if (userId == 0) {
+          return Optional.empty();
+        }
+        User user = new User(
+          userId,
+          rs.getString(2),
+          rs.getString(3),
+          UserType.map(rs.getString(4)));
+        return Optional.of(user);
+      }));
+  }
 }
