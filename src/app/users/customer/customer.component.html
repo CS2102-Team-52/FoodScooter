@@ -1,8 +1,8 @@
 <mat-sidenav-container>
   <mat-sidenav mode="side" opened>
     <mat-nav-list>
-      <a mat-list-item routerLink="/restaurants">Order Food</a>
-      <a mat-list-item routerLink="/customers">View Orders</a>
+      <a mat-list-item [routerLink]="['restaurants']">Place Order</a>
+      <a mat-list-item [routerLink]="['orders']">View Orders</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

@@ -18,6 +18,6 @@ export class RestaurantService {
   }
 
   public fetchFoodItems(restaurantId: number) {
-    return this.httpClient.get(`${Util.baseURL}/restaurants/${restaurantId}/food-items`);
+    return this.httpClient.get(`${Util.baseURL}/restaurants/${restaurantId}/menu`);
   }
 }

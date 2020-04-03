@@ -10,9 +10,10 @@ import { MaterialModule } from './core/material.module';
 import { LoginComponent } from './login/login.component';
 import { RiderComponent } from './users/rider/rider.component';
 import { CustomerComponent } from './users/customer/customer.component';
-import { CustomerRestaurantViewerComponent } from './users/customer/restaurant-viewer/customer-restaurant-viewer.component';
-import { CustomerFoodItemViewerComponent } from './users/customer/food-item-viewer/customer-food-item-viewer.component';
+import { RestaurantViewer } from './users/customer/restaurants-viewer/restaurant-viewer.component';
+import { MenuViewer } from './users/customer/menu-viewer/menu-viewer.component';
 import { PrettyPipe } from './pipes/pretty.pipe';
+import { OrdersViewerComponent } from './users/customer/orders-viewer/orders-viewer.component';
 
 @NgModule({
   declarations: [
@@ -20,9 +21,10 @@ import { PrettyPipe } from './pipes/pretty.pipe';
     LoginComponent,
     RiderComponent,
     CustomerComponent,
-    CustomerRestaurantViewerComponent,
-    CustomerFoodItemViewerComponent,
-    PrettyPipe
+    RestaurantViewer,
+    MenuViewer,
+    PrettyPipe,
+    OrdersViewerComponent,
   ],
   imports: [
     BrowserModule,

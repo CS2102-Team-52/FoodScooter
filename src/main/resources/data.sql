@@ -108,12 +108,13 @@ CREATE TABLE RestaurantStaff (
 );
 
 CREATE TABLE FoodItems (
-    fid INTEGER PRIMARY KEY,
+    fid INTEGER,
     rid INTEGER,
     name VARCHAR(100),
     category VARCHAR(100),
     price MONEY,
     dailyLimit INTEGER,
+    PRIMARY KEY (fid, rid), -- make a composite key consisting of partial key and rid
     FOREIGN KEY (rid) REFERENCES Restaurants ON DELETE CASCADE
 );
 
@@ -121,9 +122,9 @@ CREATE TABLE Orders (
     oid INTEGER PRIMARY KEY,
     cid INTEGER,
     drid INTEGER,
-    totalCost INTEGER,
+    totalCost MONEY, -- changed INTEGER to MONEY
     deliveryFee MONEY,
-    paymentType INTEGER,
+    paymentType VARCHAR(100), -- changed INTEGER to VARCHAR
     location VARCHAR(100),
     orderTime TIMESTAMP,
     departureTime TIMESTAMP,
@@ -137,9 +138,51 @@ CREATE TABLE Orders (
 CREATE TABLE Reviews (
     rvid INTEGER PRIMARY KEY,
     fid INTEGER,
+    rid INTEGER, -- new
     oid INTEGER,
     rating INTEGER,
     content VARCHAR(1000),
-    FOREIGN KEY (fid) REFERENCES FoodItems,
+    FOREIGN KEY (fid, rid) REFERENCES FoodItems,
     FOREIGN KEY (oid) REFERENCES Orders
 );
+
+
+INSERT INTO Restaurants
+VALUES (1, 'Ikea', 'A Swedish furniture company that is also known for their meatballs.', 10),
+       (2, 'Seoul Good', 'A Korean fusion cafe by Punggol Promenade', 8),
+       (3, 'Mr Chicken Rice', 'An up and coming restaurant that reinvented the Chicken Rice', 4);
+
+INSERT INTO FoodItems
+VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
+       (2, 1, 'Fried Rice', 'Local', 3, 100),
+       (3, 1, 'Mushroom Soup', 'Western', 6, 100),
+       (4, 1, 'Dumplings', 'Asian', 2, 150),
+
+       (1, 2, 'Grilled Chicken Rice', 'Korean', 9.80, 100),
+       (2, 2, 'Grilled Salmon Rice', 'Korean', 11.80, 100),
+       (3, 2, 'Army Stew', 'Korean', 23.90, 50),
+       (4, 2, 'Squid Ink Pasta', 'Western', 11.90, 100),
+
+       (1, 3, 'Regular Chicken Rice', 'Singaporean', 3, 500),
+       (2, 3, 'Cabbage with Sesame Oil', 'Singaporean', 3, 500),
+       (3, 3, 'Char Siew', 'Singaporean', 3, 500);
+
+INSERT INTO Users
+VALUES (1, 'admin', 'admin', 'Customer'),
+       (2, 'rider', 'rider', 'Delivery Rider');
+
+INSERT INTO Customers
+VALUES (1);
+
+INSERT INTO DeliveryRiders
+VALUES (2);
+
+INSERT INTO Orders
+VALUES (1, 1, 2, 100, 10, 'Credit Card', 'Seoul Good',
+        '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
+       (2, 1, 2, 100, 10, 'Credit Card', 'Seoul Good',
+        '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
+       (3, 1, 2, 100, 10, 'Credit Card', 'Seoul Good',
+        '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
+       (4, 1, 2, 100, 10, 'Credit Card', 'Seoul Good',
+        '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06');

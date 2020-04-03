@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Customer } from "./customer";
 import { CustomerService } from "../../services/users/customer/customer.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-customer',
@@ -9,54 +9,15 @@ import { CustomerService } from "../../services/users/customer/customer.service"
   providers: [CustomerService]
 })
 export class CustomerComponent implements OnInit {
-  value = "Hello";
-  restaurants;
-  customers: Customer[];
+  id: number;
 
   constructor(
-    private customerService: CustomerService
+    private activatedRoute: ActivatedRoute
   ) {
+    this.id = Number(activatedRoute.snapshot.paramMap.get('id'));
   }
 
   ngOnInit(): void {
-
-  }
-
-  fetchCustomers() {
-    this.customerService.fetchAllCustomers().subscribe((data: Customer[]) => {
-      this.customers = data;
-    });
-  }
-
-  fetchRestaurants(): string[] {
-    return ['McDonald\'s', 'Peranakan Boat'];
-  }
-
-  fetchMenu(restaurant: string) {
-
-  }
-
-  placeOrder() {
-
-  }
-
-  deleteOrder() {
-
-  }
-
-  fetchOrderHistory() {
-
-  }
-
-  rateRider() {
-
-  }
-
-  reviewFood() {
-
-  }
-
-  fetchReviews() {
 
   }
 }
