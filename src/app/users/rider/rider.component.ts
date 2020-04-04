@@ -22,6 +22,7 @@ export class RiderComponent implements OnInit {
 
   showSummary: boolean;
   showOrder: boolean;
+  acceptedOrderList: Order[];
   summaryList: Order[];
   orderList: Order[];
   rider: Rider;
@@ -32,12 +33,20 @@ export class RiderComponent implements OnInit {
     this.showSummary = false;
     this.loginResponse = this.loginService.getLoginResponse();
     this.getRiderType();
+    this.getAcceptedOrders();
   }
 
   getRiderType() {
     this.riderService.fetchRiderInfo(this.loginResponse.userId).subscribe((data: any)=>{
       console.log(data);
       this.rider = data;
+    })
+  }
+
+  getAcceptedOrders() {
+    this.riderService.fetchAcceptedOrders(this.rider.id).subscribe((data: any[])=>{
+      console.log(data);
+      this.acceptedOrderList = data;
     })
   }
 
@@ -93,6 +102,12 @@ export class RiderComponent implements OnInit {
     this.riderOrderService.fetchRiderSummary(this.rider.id).subscribe((data: any[])=>{
       console.log(data);
       this.summaryList = data;
+    })
+  }
+
+  acceptOrder(orderId: number) {
+    this.riderService.acceptOrder(this.rider.id, orderId).subscribe((data:any)=>{
+
     })
   }
 

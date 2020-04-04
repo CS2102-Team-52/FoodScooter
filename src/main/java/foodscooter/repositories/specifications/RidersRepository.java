@@ -18,4 +18,6 @@ public interface RidersRepository {
   List<Order> getFullTimeOrders(String dayOption, String shift1, String shift2);
   List<Order> getPartTimeOrders(String sqlQuery, Object[] objectArr);
   List<Order> getOrderSummary(int drid);
+  List<Order> getAcceptedOrders(int drid);
+  void acceptedOrder(int drid, int oid);
 }

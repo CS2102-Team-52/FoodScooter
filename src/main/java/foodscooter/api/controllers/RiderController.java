@@ -1,5 +1,6 @@
 package foodscooter.api.controllers;
 
+import foodscooter.api.dtos.AccountDetails;
 import foodscooter.model.Order;
 import foodscooter.model.rider.FullTimeSchedule;
 import foodscooter.model.rider.PartTimeShift;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -132,5 +134,16 @@ public class RiderController extends BaseController {
   @GetMapping("/rider/{drid}/orderSummary")
   public List<Order> getRiderSummary(@PathVariable int drid) {
     return riderRepository.getOrderSummary(drid);
+  }
+
+  @GetMapping("/rider/{drid}/acceptedOrders")
+  public List<Order> getAcceptedOrders(@PathVariable int drid) {
+    return riderRepository.getAcceptedOrders(drid);
+  }
+
+  @PutMapping("/rider/{drid}/acceptOrder")
+  public List<Order> acceptedOrder(@PathVariable int drid, @RequestBody int oid) {
+    riderRepository.acceptedOrder(drid, oid);
+    return riderRepository.getAcceptedOrders(drid);
   }
 }

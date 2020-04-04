@@ -85,6 +85,20 @@ public class JdbcRidersRepository implements RidersRepository {
   }
 
   @Override
+  public List<Order> getAcceptedOrders(int drid) {
+    return jdbcTemplate.query(
+      "SELECT * FROM Orders WHERE drid = ? AND deliveryTime IS NOT NULL;",
+      new Object[] { drid },
+      ((rs, rowNum) -> new Order()));
+  }
+
+  @Override
+  public void acceptedOrder(int drid, int oid) {
+    jdbcTemplate.update(
+      "UPDATE Orders SET drid = ? WHERE oid = ?", new Object[]{ drid, oid});
+  }
+
+  @Override
   public List<PartTimeShift> getPartTimeShift(int drid) {
     return jdbcTemplate.query(
       "SELECT * FROM PTShifts WHERE drid = ?;",
