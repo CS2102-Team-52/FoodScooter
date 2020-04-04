@@ -19,6 +19,6 @@ export class RiderOrderService {
   }
 
   public fetchRiderSummary(drid: number) {
-    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/riderSummary`);
+    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/orderSummary`);
   }
 }

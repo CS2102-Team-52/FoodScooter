@@ -6,6 +6,7 @@ import { Rider } from './rider';
 import { User } from '../user';
 import { LoginService } from 'src/app/services/login/login.service';
 import { RiderType } from "../../store/rider-type.enum";
+import { LoginResponse } from 'src/app/services/login/dto/login-response';
 
 @Component({
   selector: 'app-rider',
@@ -25,17 +26,17 @@ export class RiderComponent implements OnInit {
   summaryList: Order[];
   orderList: Order[];
   rider: Rider;
-  user: User;
+  loginResponse: LoginResponse;
 
   ngOnInit(): void {
     this.showOrder = false;
     this.showSummary = false;
-    this.user = this.loginService.getUser();
+    this.loginResponse = this.loginService.getLoginResponse();
     this.getRiderType();
   }
 
   getRiderType() {
-    this.riderService.fetchRiderInfo(this.user).subscribe((data: any)=>{
+    this.riderService.fetchRiderInfo(this.loginResponse.userId).subscribe((data: any)=>{
       console.log(data);
       this.rider = data;
     })
@@ -54,12 +55,14 @@ export class RiderComponent implements OnInit {
   }
 
    getOrder(): void {
-    if (this.rider.riderType == RiderType.FULL_TIME) {
-     /*  this.riderOrderService.fetchFullTimeOrders(this.rider.id).subscribe((data: any[])=>{
-        console.log(data);
-        this.orderList = data;
-      }) */
-      const order1: Order = {
+    let type = RiderType[this.rider.riderType];
+    console.log(type);
+    if (RiderType[this.rider.riderType] === RiderType.FULL_TIME) {
+        /*  this.riderOrderService.fetchFullTimeOrders(this.rider.id).subscribe((data: any[])=>{
+          console.log(data);
+          this.orderList = data;
+        }) */
+        const order1: Order = {
         oid: 1,
         totalCost: 1,
         deliveryFee: 1,
@@ -70,7 +73,7 @@ export class RiderComponent implements OnInit {
       };
       this.orderList = [order1];
     } else {
-      /* this.riderOrderService.fetchPartTimeOrders(this.rider.id).subscribe((data: any[])=>{
+        /* this.riderOrderService.fetchPartTimeOrders(this.rider.id).subscribe((data: any[])=>{
         console.log(data);
         this.orderList = data;
       }) */

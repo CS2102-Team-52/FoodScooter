@@ -71,6 +71,7 @@ export class LoginComponent implements OnInit {
       case UserType.FOOD_SCOOTER_MANAGER:
         type = 'managers'
     }
+    this.loginService.setLoginResponse(response);
     this.path = `${type}/${response.userId}`;
     this.router.navigate([this.path]).then(() => {});
   }
