@@ -21,6 +21,6 @@ export class RiderService {
   }
 
   fetchRiderInfo(drid: number): Observable<any> {
-    return this.httpClient.get(`${Util.baseURL}/riderInfo/${drid}`);
+    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/riderInfo`);
   }
 }

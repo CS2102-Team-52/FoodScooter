@@ -9,8 +9,8 @@ public class Customer extends User {
   private int rewardPoints;
   private List<String> recentPlaces;
 
-  public Customer(int id, String username, String password, String creditCardNumber, int rewardPoints, List<String> recentPlaces) {
-    super(id, username, password, UserType.CUSTOMER);
+  public Customer(int id, String creditCardNumber, int rewardPoints, List<String> recentPlaces) {
+    super(id, UserType.CUSTOMER);
     this.creditCardNumber = creditCardNumber;
     this.rewardPoints = rewardPoints;
     this.recentPlaces = recentPlaces;

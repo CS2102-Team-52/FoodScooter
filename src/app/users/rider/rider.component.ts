@@ -3,7 +3,6 @@ import { Order } from '../../store/order';
 import { RiderOrderService } from '../../services/users/rider/order/rider-order.service';
 import { RiderService } from 'src/app/services/users/rider/rider.service';
 import { Rider } from './rider';
-import { User } from '../user';
 import { LoginService } from 'src/app/services/login/login.service';
 import { RiderType } from "../../store/rider-type.enum";
 import { LoginResponse } from 'src/app/services/login/dto/login-response';

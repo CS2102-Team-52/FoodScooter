@@ -32,7 +32,7 @@ public class JdbcRidersRepository implements RidersRepository {
   public List<Rider> getAll() {
     return jdbcTemplate.query(
       "SELECT drid FROM DeliveryRiders;",
-      ((rs, rowNum) -> new Rider(rs.getInt(1), null, null, RiderType.FULL_TIME)));
+      ((rs, rowNum) -> new Rider(rs.getInt(1), RiderType.FULL_TIME)));
   }
 
   @Override

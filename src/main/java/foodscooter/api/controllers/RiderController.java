@@ -38,7 +38,7 @@ public class RiderController extends BaseController {
   }
 
   //TODO
-  @GetMapping("/riderInfo/{drid}")
+  @GetMapping("/rider/{drid}/riderInfo")
   public Rider getRiderInfo(@PathVariable int drid) {
     User newUser = userRepository.get(drid).get();
     boolean isFullTime = riderRepository.checkFullTime(drid);
@@ -47,9 +47,9 @@ public class RiderController extends BaseController {
       // return error
       return null;
     } else if (isFullTime) {
-      return new Rider(newUser.getId(), newUser.getUsername(), newUser.getPassword(), RiderType.FULL_TIME);
+      return new Rider(newUser.getId(), RiderType.FULL_TIME);
     } else {
-      return new Rider(newUser.getId(), newUser.getUsername(), newUser.getPassword(), RiderType.PART_TIME);
+      return new Rider(newUser.getId(), RiderType.PART_TIME);
     }
   }
 
