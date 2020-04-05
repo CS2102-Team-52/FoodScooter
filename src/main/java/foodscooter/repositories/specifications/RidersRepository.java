@@ -19,5 +19,6 @@ public interface RidersRepository {
   List<Order> getPartTimeOrders(String sqlQuery, Object[] objectArr);
   List<Order> getOrderSummary(int drid);
   List<Order> getAcceptedOrders(int drid);
-  void acceptedOrder(int drid, int oid);
+  void acceptOrder(int drid, int oid);
+  void doneOrder(int drid, int oid);
 }

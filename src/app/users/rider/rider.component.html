@@ -4,7 +4,40 @@
         <button mat-raised-button (click)="viewSummary()" color="accent">View Summary</button>
     </mat-card>
 
-    <div *ngIf="showOrder">
+    <div class="mat-typography"> 
+      <h2>Accepted Orders</h2>
+      <mat-list *ngFor="let o of acceptedOrderList">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>
+              {{o.oid}}
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-list>
+              <mat-list-item>
+                {{o.orderTime}}
+              </mat-list-item>
+              <mat-list-item>
+                {{o.deliveryFee}}
+              </mat-list-item>
+              <mat-list-item>
+                {{o.paymentType}}
+              </mat-list-item>
+              <mat-list-item>
+                {{o.location}}
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button (click)="refreshDoneOrder(o.oid)" color="primary">Order delivered</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-list>
+    </div>
+
+    <div *ngIf="showOrder" class="mat-typography"> 
+      <h2>Available Orders</h2>
       <mat-list *ngFor="let o of orderList">
         <mat-card>
           <mat-card-header>
@@ -29,13 +62,14 @@
             </mat-list>
           </mat-card-content>
           <mat-card-actions>
-            <button mat-raised-button (click)="acceptOrder(o.oid)" color="primary">Accept Order</button>
+            <button mat-raised-button (click)="refreshAcceptOrder(o.oid)" color="primary">Accept Order</button>
           </mat-card-actions>
         </mat-card>
       </mat-list>
     </div>
 
-    <div *ngIf="showSummary">
+    <div *ngIf="showSummary" class="mat-typography">
+      <h2>Order Summary</h2>
       <mat-list *ngFor="let s of summaryList">
         <mat-card>
           <mat-card-header>

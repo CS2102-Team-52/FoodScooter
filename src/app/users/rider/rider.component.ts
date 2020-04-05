@@ -44,7 +44,7 @@ export class RiderComponent implements OnInit {
   }
 
   getAcceptedOrders() {
-    this.riderService.fetchAcceptedOrders(this.rider.id).subscribe((data: any[])=>{
+    this.riderService.fetchAcceptedOrders(this.loginResponse.userId).subscribe((data: any[])=>{
       console.log(data);
       this.acceptedOrderList = data;
     })
@@ -63,8 +63,6 @@ export class RiderComponent implements OnInit {
   }
 
    getOrder(): void {
-    let type = RiderType[this.rider.riderType];
-    console.log(type);
     if (RiderType[this.rider.riderType] === RiderType.FULL_TIME) {
         /*  this.riderOrderService.fetchFullTimeOrders(this.rider.id).subscribe((data: any[])=>{
           console.log(data);
@@ -106,9 +104,26 @@ export class RiderComponent implements OnInit {
   }
 
   acceptOrder(orderId: number) {
-    this.riderService.acceptOrder(this.rider.id, orderId).subscribe((data:any)=>{
-
+    this.riderService.acceptOrder(this.rider.id, orderId).subscribe((data:any[])=>{
+      console.log(data);
+      this.acceptedOrderList = data;
     })
   }
 
+  doneOrder(orderId: number) {
+    this.riderService.doneOrder(this.rider.id, orderId).subscribe((data:any[])=>{
+      console.log(data);
+      this.summaryList = data;
+    })
+  }
+
+  refreshAcceptOrders(orderId: number) {
+    this.acceptOrder(orderId);
+    this.getOrder();
+  }
+
+  refreshDoneOrders(orderId: number) {
+    this.doneOrder(orderId);
+    this.getAcceptedOrders();
+  }
 }

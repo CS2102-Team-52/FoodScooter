@@ -142,8 +142,14 @@ public class RiderController extends BaseController {
   }
 
   @PutMapping("/rider/{drid}/acceptOrder")
-  public List<Order> acceptedOrder(@PathVariable int drid, @RequestBody int oid) {
-    riderRepository.acceptedOrder(drid, oid);
+  public List<Order> acceptOrder(@PathVariable int drid, @RequestBody int oid) {
+    riderRepository.acceptOrder(drid, oid);
     return riderRepository.getAcceptedOrders(drid);
+  }
+
+  @PutMapping("/rider/{drid}/doneOrder")
+  public List<Order> doneOrder(@PathVariable int drid, @RequestBody int oid) {
+    riderRepository.doneOrder(drid, oid);
+    return riderRepository.getOrderSummary(drid);
   }
 }
