@@ -4,6 +4,7 @@ import foodscooter.model.Order;
 import foodscooter.model.rider.FullTimeSchedule;
 import foodscooter.model.rider.PartTimeShift;
 import foodscooter.model.rider.RiderType;
+import foodscooter.model.rider.SalaryInfo;
 import foodscooter.model.users.Rider;
 import foodscooter.repositories.specifications.RidersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,35 +38,26 @@ public class JdbcRidersRepository implements RidersRepository {
 
   @Override
   public boolean checkFullTime(int drid) {
-    /*
     Integer fullTime = jdbcTemplate.queryForObject(
       "SELECT 1 FROM FTRiders R WHERE R.drid = ?;",
       new Object[] { drid }, ((rs, rowNum) -> new Integer(rs.getInt(1))));
     return fullTime != null;
-    */
-    return true;
   }
 
   @Override
   public boolean checkPartTime(int drid) {
-    /*
     Integer partTime = jdbcTemplate.queryForObject(
       "SELECT 1 FROM PTRiders R WHERE R.drid = ?;",
       new Object[] { drid }, ((rs, rowNum) -> new Integer(rs.getInt(1))));
     return partTime != null;
-     */
-    return false;
   }
 
   @Override
   public FullTimeSchedule getFullTimeSchedule(int drid) {
-    /*
     return jdbcTemplate.queryForObject(
       "SELECT dayOption, shiftOption FROM FTRiders WHERE drid = ?;",
       new Object[] { drid },
       ((rs, rowNum) -> new FullTimeSchedule(rs.getInt(1), rs.getInt(2))));
-     */
-    return  null;
   }
 
   @Override
@@ -103,7 +95,33 @@ public class JdbcRidersRepository implements RidersRepository {
     jdbcTemplate.update(
       "UPDATE Orders SET deliveryTime = LOCALTIMESTAMP WHERE drid = ? AND oid = ?", new Object[]{drid, oid});
   }
-  
+
+  @Override
+  public int getBaseSalary(int drid) {
+    return jdbcTemplate.queryForObject(
+      "SELECT salary FROM DeliveryRiders WHERE drid = ?;",
+      new Object[] { drid },
+      ((rs, rowNum) -> new Integer(rs.getInt(1))));
+  }
+
+  @Override
+  public SalaryInfo getSummaryCurrentMonth(int drid, int baseSalary) {
+    return jdbcTemplate.queryForObject(
+      "SELECT COUNT(oid), SUM(deliveryFee) FROM Orders WHERE drid = ? AND MONTH(orderTime) = MONTH(CURRENT_DATE()) " +
+        "AND YEAR(orderTime) = YEAR(CURRENT_DATE());",
+      new Object[] { drid },
+      ((rs, rowNum) -> new SalaryInfo(rs.getInt(1), rs.getInt(2) + baseSalary)));
+  }
+
+  @Override
+  public SalaryInfo getSummaryCurrentWeek(int drid, int baseSalary) {
+    return jdbcTemplate.queryForObject(
+      "SELECT COUNT(oid), SUM(deliveryFee) FROM Orders WHERE drid = ? AND MONTH(orderTime) = MONTH(CURRENT_DATE()) " +
+        "AND YEAR(orderTime) = YEAR(CURRENT_DATE()) AND EXTRACT (WEEK FROM orderTime) = EXTRACT (WEEK FROM CURRENT_DATE());",
+      new Object[] { drid },
+      ((rs, rowNum) -> new SalaryInfo(rs.getInt(1), rs.getInt(2) + baseSalary)));
+  }
+
   @Override
   public List<PartTimeShift> getPartTimeShift(int drid) {
     return jdbcTemplate.query(

@@ -69,7 +69,24 @@
     </div>
 
     <div *ngIf="showSummary" class="mat-typography">
-      <h2>Order Summary</h2>
+      <h2>Salary Summary</h2>
+      <h3>Note: Full-time will have summary of the current month and Part-time will have summary of the current week.</h3>
+      <mat-card>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item>
+              {{salaryInfo.numOfOrder}}
+            </mat-list-item>
+            <mat-list-item>
+              {{salaryInfo.riderSalary}}
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div *ngIf="showSummary" class="mat-typography">
+      <h3>Order Summary</h3>
       <mat-list *ngFor="let s of summaryList">
         <mat-card>
           <mat-card-header>

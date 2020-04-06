@@ -6,6 +6,7 @@ import { Rider } from './rider';
 import { LoginService } from 'src/app/services/login/login.service';
 import { RiderType } from "../../store/rider-type.enum";
 import { LoginResponse } from 'src/app/services/login/dto/login-response';
+import { SalaryInfo } from 'src/app/store/salary-info';
 
 @Component({
   selector: 'app-rider',
@@ -27,6 +28,7 @@ export class RiderComponent implements OnInit {
   orderList: Order[];
   rider: Rider;
   loginResponse: LoginResponse;
+  salaryInfo: SalaryInfo;
 
   ngOnInit(): void {
     this.showOrder = false;
@@ -44,7 +46,7 @@ export class RiderComponent implements OnInit {
   }
 
   getAcceptedOrders() {
-    this.riderService.fetchAcceptedOrders(this.loginResponse.userId).subscribe((data: any[])=>{
+    this.riderOrderService.fetchAcceptedOrders(this.loginResponse.userId).subscribe((data: any[])=>{
       console.log(data);
       this.acceptedOrderList = data;
     })
@@ -98,20 +100,24 @@ export class RiderComponent implements OnInit {
 
   getSummary(): void {
     this.riderOrderService.fetchRiderSummary(this.rider.id).subscribe((data: any[])=>{
-      console.log(data);
       this.summaryList = data;
     })
+    this.riderService.fetchSalaryInfo(this.rider.id).subscribe((data: any)=>{
+      console.log(data);
+      this.salaryInfo = data;
+    })
+
   }
 
   acceptOrder(orderId: number) {
-    this.riderService.acceptOrder(this.rider.id, orderId).subscribe((data:any[])=>{
+    this.riderOrderService.acceptOrder(this.rider.id, orderId).subscribe((data:any[])=>{
       console.log(data);
       this.acceptedOrderList = data;
     })
   }
 
   doneOrder(orderId: number) {
-    this.riderService.doneOrder(this.rider.id, orderId).subscribe((data:any[])=>{
+    this.riderOrderService.doneOrder(this.rider.id, orderId).subscribe((data:any[])=>{
       console.log(data);
       this.summaryList = data;
     })

@@ -16,23 +16,16 @@ export class RiderService {
     return this.httpClient.post(`${Util.baseURL}/riders`, rider);
   }
 
-  acceptOrder(drid: number, orderId: number) {
-    return this.httpClient.put(`${Util.baseURL}/rider/${drid}/acceptOrder/`, orderId);
-  }
-
-  doneOrder(drid: number, orderId: number) {
-    return this.httpClient.put(`${Util.baseURL}/rider/${drid}/doneOrder/`, orderId);
-  }
-
-  fetchAcceptedOrders(drid: number) {
-    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/acceptedOrders/`);
-  }
-
+  
   fetchAllRiders(): Observable<any> {
     return this.httpClient.get(`${Util.baseURL}/riders`);
   }
 
   fetchRiderInfo(drid: number): Observable<any> {
     return this.httpClient.get(`${Util.baseURL}/rider/${drid}/riderInfo`);
+  }
+
+  fetchSalaryInfo(drid: number) {
+    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/salaryInfo/`);
   }
 }
