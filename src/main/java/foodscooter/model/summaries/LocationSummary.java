@@ -9,6 +9,8 @@ public class LocationSummary {
   private int numOrders;
 
   public LocationSummary(LocalDateTime hour, String location, int numOrders) {
+    this.hour = hour;
+    this.location = location;
     this.numOrders = numOrders;
   }
 

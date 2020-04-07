@@ -4,6 +4,7 @@ import java.util.List;
 
 import foodscooter.model.summaries.CustomerSummary;
 import foodscooter.model.summaries.LocationSummary;
+import foodscooter.model.summaries.RiderSummary;
 
 /**
  * Support the browsing of summary information for FDS managers. The summary information could include the following:
@@ -36,5 +37,5 @@ public interface SummaryRepository {
    * of ratings received by the rider for all the orders delivered for that month, and the average
    * rating received by the rider for all the orders delivered for that month.
    */
-  //TODO
+  List<RiderSummary> getRiderSummary();
 }
