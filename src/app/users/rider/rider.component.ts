@@ -3,10 +3,10 @@ import { Order } from '../../store/order';
 import { RiderOrderService } from '../../services/users/rider/order/rider-order.service';
 import { RiderService } from 'src/app/services/users/rider/rider.service';
 import { Rider } from './rider';
-import { User } from '../user';
 import { LoginService } from 'src/app/services/login/login.service';
 import { RiderType } from "../../store/rider-type.enum";
 import { LoginResponse } from 'src/app/services/login/dto/login-response';
+import { SalaryInfo } from 'src/app/store/salary-info';
 
 @Component({
   selector: 'app-rider',
@@ -23,22 +23,32 @@ export class RiderComponent implements OnInit {
 
   showSummary: boolean;
   showOrder: boolean;
+  acceptedOrderList: Order[];
   summaryList: Order[];
   orderList: Order[];
   rider: Rider;
   loginResponse: LoginResponse;
+  salaryInfo: SalaryInfo;
 
   ngOnInit(): void {
     this.showOrder = false;
     this.showSummary = false;
     this.loginResponse = this.loginService.getLoginResponse();
     this.getRiderType();
+    this.getAcceptedOrders();
   }
 
   getRiderType() {
     this.riderService.fetchRiderInfo(this.loginResponse.userId).subscribe((data: any)=>{
       console.log(data);
       this.rider = data;
+    })
+  }
+
+  getAcceptedOrders() {
+    this.riderOrderService.fetchAcceptedOrders(this.loginResponse.userId).subscribe((data: any[])=>{
+      console.log(data);
+      this.acceptedOrderList = data;
     })
   }
 
@@ -55,8 +65,6 @@ export class RiderComponent implements OnInit {
   }
 
    getOrder(): void {
-    let type = RiderType[this.rider.riderType];
-    console.log(type);
     if (RiderType[this.rider.riderType] === RiderType.FULL_TIME) {
         /*  this.riderOrderService.fetchFullTimeOrders(this.rider.id).subscribe((data: any[])=>{
           console.log(data);
@@ -92,9 +100,36 @@ export class RiderComponent implements OnInit {
 
   getSummary(): void {
     this.riderOrderService.fetchRiderSummary(this.rider.id).subscribe((data: any[])=>{
+      this.summaryList = data;
+    })
+    this.riderService.fetchSalaryInfo(this.rider.id).subscribe((data: any)=>{
+      console.log(data);
+      this.salaryInfo = data;
+    })
+
+  }
+
+  acceptOrder(orderId: number) {
+    this.riderOrderService.acceptOrder(this.rider.id, orderId).subscribe((data:any[])=>{
+      console.log(data);
+      this.acceptedOrderList = data;
+    })
+  }
+
+  doneOrder(orderId: number) {
+    this.riderOrderService.doneOrder(this.rider.id, orderId).subscribe((data:any[])=>{
       console.log(data);
       this.summaryList = data;
     })
   }
 
+  refreshAcceptOrders(orderId: number) {
+    this.acceptOrder(orderId);
+    this.getOrder();
+  }
+
+  refreshDoneOrders(orderId: number) {
+    this.doneOrder(orderId);
+    this.getAcceptedOrders();
+  }
 }

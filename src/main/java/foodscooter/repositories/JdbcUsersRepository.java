@@ -35,8 +35,6 @@ public class JdbcUsersRepository implements UsersRepository {
       "SELECT * FROM Users;",
       ((rs, rowNum) -> new User(
         rs.getInt(1),
-        rs.getString(2),
-        rs.getString(3),
         UserType.valueOf(rs.getString(4)))));
   }
 
@@ -52,8 +50,6 @@ public class JdbcUsersRepository implements UsersRepository {
         }
         User user = new User(
           userId,
-          rs.getString(2),
-          rs.getString(3),
           UserType.map(rs.getString(4)));
         return Optional.of(user);
       }));
@@ -71,8 +67,6 @@ public class JdbcUsersRepository implements UsersRepository {
         }
         User user = new User(
           userId,
-          rs.getString(2),
-          rs.getString(3),
           UserType.map(rs.getString(4)));
         return Optional.of(user);
       }));

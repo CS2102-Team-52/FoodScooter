@@ -21,4 +21,17 @@ export class RiderOrderService {
   public fetchRiderSummary(drid: number) {
     return this.httpClient.get(`${Util.baseURL}/rider/${drid}/orderSummary`);
   }
+
+  public acceptOrder(drid: number, orderId: number) {
+    return this.httpClient.put(`${Util.baseURL}/rider/${drid}/acceptOrder/`, orderId);
+  }
+
+  public doneOrder(drid: number, orderId: number) {
+    return this.httpClient.put(`${Util.baseURL}/rider/${drid}/doneOrder/`, orderId);
+  }
+
+  public fetchAcceptedOrders(drid: number) {
+    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/acceptedOrders/`);
+  }
+
 }
