@@ -19,14 +19,11 @@ import java.util.List;
 @RestController
 public class RestaurantController extends BaseController {
   private JdbcRestaurantsRepository restaurantsRepository;
-  private JdbcOrdersRepository ordersRepository;
 
   @Autowired
   public RestaurantController(
-    JdbcRestaurantsRepository restaurantsRepository,
-    JdbcOrdersRepository ordersRepository) {
+    JdbcRestaurantsRepository restaurantsRepository) {
     this.restaurantsRepository = restaurantsRepository;
-    this.ordersRepository = ordersRepository;
   }
 
   @GetMapping("/restaurants")

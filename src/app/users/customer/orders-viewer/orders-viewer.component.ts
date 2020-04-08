@@ -30,6 +30,10 @@ export class OrdersViewerComponent implements OnInit {
     );
   }
 
+  public giveFeedback(orderId: number) {
+    this.router.navigate([orderId, 'review'], {relativeTo: this.activatedRoute});
+  }
+
   public deleteOrder(orderId: number) {
     this.orderService.deleteOrder(orderId).subscribe(
       _ => this.orders = this.orders.filter(order => order.oid !== orderId)

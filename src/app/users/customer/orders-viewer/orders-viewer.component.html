@@ -16,6 +16,7 @@
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
+      <button mat-raised-button (click)="giveFeedback(order.oid)" color="primary">Feedback</button>
       <button mat-raised-button (click)="deleteOrder(order.oid)" color="primary">Delete</button>
     </mat-card-actions>
   </mat-card>

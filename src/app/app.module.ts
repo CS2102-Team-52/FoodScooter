@@ -15,6 +15,7 @@ import { MenuViewer } from './users/customer/menu-viewer/menu-viewer.component';
 import { PrettyPipe } from './pipes/pretty.pipe';
 import { OrdersViewerComponent } from './users/customer/orders-viewer/orders-viewer.component';
 import { LoginService } from "./services/login/login.service";
+import { CustomerFeedbackComponent } from './users/customer/customer-feedback/customer-feedback.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { LoginService } from "./services/login/login.service";
     MenuViewer,
     PrettyPipe,
     OrdersViewerComponent,
+    CustomerFeedbackComponent,
   ],
   imports: [
     BrowserModule,
