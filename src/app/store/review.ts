@@ -1,6 +1,6 @@
 export interface Review {
   id: number;
-  foodItemId: number;
+  restaurantId: number;
   orderId: number;
   rating: number;
   content: string;

@@ -37,7 +37,7 @@ CREATE TABLE DeliveryRiders (
     FOREIGN KEY (drid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
-CREATE TABLE FTRiders (   
+CREATE TABLE FTRiders (
     drid INTEGER PRIMARY KEY,
     dayOption INTEGER check(dayOption in (1,2,3,4,5,6,7)),
 	shiftOption INTEGER check(shiftOption in (1,2,3,4)),
@@ -135,14 +135,14 @@ CREATE TABLE Orders (
     FOREIGN KEY (drid) REFERENCES DeliveryRiders
 );
 
+/* remove fid */
 CREATE TABLE Reviews (
     rvid INTEGER PRIMARY KEY,
-    fid INTEGER,
     rid INTEGER, -- new
-    oid INTEGER,
+    oid INTEGER, 
     rating INTEGER,
     content VARCHAR(1000),
-    FOREIGN KEY (fid, rid) REFERENCES FoodItems,
+    FOREIGN KEY (rid) REFERENCES FoodItems,
     FOREIGN KEY (oid) REFERENCES Orders
 );
 
