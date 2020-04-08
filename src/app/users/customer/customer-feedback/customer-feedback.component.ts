@@ -9,29 +9,29 @@ import { ActivatedRoute } from "@angular/router";
   styleUrls: ['./customer-feedback.component.css']
 })
 export class CustomerFeedbackComponent implements OnInit {
-  ratings: number[];
+  ratingChoices: number[];
 
-  ratingz: number;
-  content: string;
+  rating: number;
+  review: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private customerFeedbackService: CustomerFeedbackService
   ) {
-    this.ratings = [1, 2, 3, 4, 5];
+    this.ratingChoices = [1, 2, 3, 4, 5];
   }
 
   ngOnInit(): void {
   }
 
-  public submitReview() {
+  public submitFeedback() {
     const review: Review = {
       id: -1,
       restaurantId: 1,
       orderId: 1,
-      rating: this.ratingz,
-      content: this.content
+      rating: this.rating,
+      review: this.review
     };
-    this.customerFeedbackService.reviewFoodItem(review)
+    this.customerFeedbackService.submitFeedback(review)
   }
 }

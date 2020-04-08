@@ -3,5 +3,5 @@ export interface Review {
   restaurantId: number;
   orderId: number;
   rating: number;
-  content: string;
+  review: string;
 }
