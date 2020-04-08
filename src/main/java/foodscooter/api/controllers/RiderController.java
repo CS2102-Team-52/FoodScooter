@@ -1,9 +1,11 @@
 package foodscooter.api.controllers;
 
+import foodscooter.api.dtos.AccountDetails;
 import foodscooter.model.Order;
 import foodscooter.model.rider.FullTimeSchedule;
 import foodscooter.model.rider.PartTimeShift;
 import foodscooter.model.rider.RiderType;
+import foodscooter.model.rider.SalaryInfo;
 import foodscooter.model.users.Rider;
 import foodscooter.model.users.User;
 import foodscooter.repositories.JdbcRidersRepository;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,18 +41,17 @@ public class RiderController extends BaseController {
   }
 
   //TODO
-  @GetMapping("/riderInfo/{drid}")
+  @GetMapping("/rider/{drid}/riderInfo")
   public Rider getRiderInfo(@PathVariable int drid) {
-    User newUser = userRepository.get(drid).get();
     boolean isFullTime = riderRepository.checkFullTime(drid);
     boolean isPartTime = riderRepository.checkPartTime(drid);
     if (!(isFullTime ^ isPartTime)) {
       // return error
       return null;
     } else if (isFullTime) {
-      return new Rider(newUser.getId(), newUser.getUsername(), newUser.getPassword(), RiderType.FULL_TIME);
+      return new Rider(drid, RiderType.FULL_TIME);
     } else {
-      return new Rider(newUser.getId(), newUser.getUsername(), newUser.getPassword(), RiderType.PART_TIME);
+      return new Rider(drid, RiderType.PART_TIME);
     }
   }
 
@@ -129,8 +131,40 @@ public class RiderController extends BaseController {
     return riderRepository.getFullTimeOrders(dayStr, shift1Str, shift2Str);
   }
 
+  @GetMapping("/rider/{drid}/SalaryInfo")
+  public SalaryInfo getRiderSalary(@PathVariable int drid) {
+    int baseSalary = riderRepository.getBaseSalary(drid);
+    boolean isFullTime = riderRepository.checkFullTime(drid);
+    boolean isPartTime = riderRepository.checkPartTime(drid);
+    if (!(isFullTime ^ isPartTime)) {
+      // return error
+      return null;
+    } else if (isFullTime) {
+      return riderRepository.getSummaryCurrentMonth(drid, baseSalary);
+    } else {
+      return riderRepository.getSummaryCurrentWeek(drid, baseSalary);
+    }
+  }
+
   @GetMapping("/rider/{drid}/orderSummary")
   public List<Order> getRiderSummary(@PathVariable int drid) {
+    return riderRepository.getOrderSummary(drid);
+  }
+
+  @GetMapping("/rider/{drid}/acceptedOrders")
+  public List<Order> getAcceptedOrders(@PathVariable int drid) {
+    return riderRepository.getAcceptedOrders(drid);
+  }
+
+  @PutMapping("/rider/{drid}/acceptOrder")
+  public List<Order> acceptOrder(@PathVariable int drid, @RequestBody int oid) {
+    riderRepository.acceptOrder(drid, oid);
+    return riderRepository.getAcceptedOrders(drid);
+  }
+
+  @PutMapping("/rider/{drid}/doneOrder")
+  public List<Order> doneOrder(@PathVariable int drid, @RequestBody int oid) {
+    riderRepository.doneOrder(drid, oid);
     return riderRepository.getOrderSummary(drid);
   }
 }
