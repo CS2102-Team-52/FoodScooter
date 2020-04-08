@@ -16,7 +16,7 @@ DROP TABLE IF EXISTS Restaurants CASCADE;
 DROP TABLE IF EXISTS RestaurantStaff CASCADE;
 DROP TABLE IF EXISTS FoodItems CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
-DROP TABLE IF EXISTS Reviews CASCADE;
+DROP TABLE IF EXISTS Feedback CASCADE;
 
 /*
 CREATE TYPE daysEnum AS ENUM ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
@@ -136,12 +136,12 @@ CREATE TABLE Orders (
 );
 
 /* remove fid */
-CREATE TABLE Reviews (
+CREATE TABLE Feedback (
     rvid INTEGER PRIMARY KEY,
     rid INTEGER, -- new
-    oid INTEGER, 
+    oid INTEGER,
     rating INTEGER,
-    content VARCHAR(1000),
+    review VARCHAR(1000),
     FOREIGN KEY (rid) REFERENCES FoodItems,
     FOREIGN KEY (oid) REFERENCES Orders
 );
