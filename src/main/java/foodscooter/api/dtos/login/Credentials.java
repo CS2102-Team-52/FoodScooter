@@ -1,4 +1,4 @@
-package foodscooter.api.dtos;
+package foodscooter.api.dtos.login;
 
 public class Credentials {
   private String username;

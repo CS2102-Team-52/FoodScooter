@@ -1,4 +1,4 @@
-package foodscooter.api.dtos;
+package foodscooter.api.dtos.login;
 
 import foodscooter.model.UserType;
 import foodscooter.model.rider.RiderType;

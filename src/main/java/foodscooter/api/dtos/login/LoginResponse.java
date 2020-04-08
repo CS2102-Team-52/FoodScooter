@@ -1,4 +1,4 @@
-package foodscooter.api.dtos;
+package foodscooter.api.dtos.login;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import foodscooter.model.UserType;
