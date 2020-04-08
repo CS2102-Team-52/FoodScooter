@@ -14,6 +14,7 @@ import { RestaurantViewer } from './users/customer/restaurants-viewer/restaurant
 import { MenuViewer } from './users/customer/menu-viewer/menu-viewer.component';
 import { PrettyPipe } from './pipes/pretty.pipe';
 import { OrdersViewerComponent } from './users/customer/orders-viewer/orders-viewer.component';
+import { LoginService } from "./services/login/login.service";
 
 @NgModule({
   declarations: [

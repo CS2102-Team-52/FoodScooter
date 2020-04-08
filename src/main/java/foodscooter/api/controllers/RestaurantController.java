@@ -38,10 +38,4 @@ public class RestaurantController extends BaseController {
   public List<FoodItem> getMenu(@PathVariable int restaurantId) {
     return restaurantsRepository.getMenu(restaurantId);
   }
-
-  @PostMapping("/restaurants/{restaurantId}/orders")
-  public ResponseEntity<?> placeOrder(@RequestBody Order order) {
-    ordersRepository.add(order);
-    return ResponseEntity.status(HttpStatus.OK).build();
-  }
 }

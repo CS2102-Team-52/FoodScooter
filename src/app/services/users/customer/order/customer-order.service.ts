@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Util } from "../../../../users/util";
-import { Order } from "../../../../store/order";
-import { FoodItem } from "../../../../store/food-item";
+import { OrderedFoodItems } from "./dto/ordered-food-items";
 
 /**
  * Provides services to:
@@ -14,24 +13,11 @@ import { FoodItem } from "../../../../store/food-item";
   providedIn: 'root'
 })
 export class CustomerOrderService {
-  private foodItems: FoodItem[];
-
   constructor(
     private httpClient: HttpClient,
   ) { }
 
-  public addFoodItem(foodItemId: number) {
-    const foodItem: FoodItem = {
-      id: foodItemId,
-      name: '',
-      category: '',
-      price: -1,
-      dailyLimit: -1
-    };
-    this.foodItems.push(foodItem);
-  }
-
-  public placeOrder(customerId: number, order: Order) {
+  public placeOrder(customerId: number, order: OrderedFoodItems) {
     return this.httpClient.post(`${Util.baseURL}/customers/${customerId}/orders`, order);
   }
 

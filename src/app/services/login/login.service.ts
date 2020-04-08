@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { User } from 'src/app/users/user';
 import { HttpClient } from "@angular/common/http";
 import { UserType } from "../../store/user-type.enum";
 import { RiderType } from "../../store/rider-type.enum";

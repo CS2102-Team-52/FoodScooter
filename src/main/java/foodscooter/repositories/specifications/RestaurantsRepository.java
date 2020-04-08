@@ -8,4 +8,5 @@ import java.util.List;
 public interface RestaurantsRepository {
   List<Restaurant> getAll();
   List<FoodItem> getMenu(int restaurantId);
+  void updateAvailability(int restaurantId, int foodItemId, int delta);
 }

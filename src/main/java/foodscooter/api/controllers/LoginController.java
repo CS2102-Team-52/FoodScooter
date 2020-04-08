@@ -1,8 +1,8 @@
 package foodscooter.api.controllers;
 
-import foodscooter.api.dtos.AccountDetails;
-import foodscooter.api.dtos.Credentials;
-import foodscooter.api.dtos.LoginResponse;
+import foodscooter.api.dtos.login.AccountDetails;
+import foodscooter.api.dtos.login.Credentials;
+import foodscooter.api.dtos.login.LoginResponse;
 import foodscooter.model.users.User;
 import foodscooter.repositories.JdbcCustomersRepository;
 import foodscooter.repositories.JdbcRidersRepository;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
-
-import static foodscooter.model.UserType.DELIVERY_RIDER;
 
 @RestController
 public class LoginController extends BaseController {

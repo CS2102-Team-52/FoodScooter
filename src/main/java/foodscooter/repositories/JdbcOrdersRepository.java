@@ -1,7 +1,9 @@
 package foodscooter.repositories;
 
+import foodscooter.api.dtos.orders.CustomerOrderDetails;
 import foodscooter.model.Order;
 import foodscooter.repositories.specifications.OrdersRepository;
+import foodscooter.repositories.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,22 +20,27 @@ public class JdbcOrdersRepository implements OrdersRepository {
   }
 
   @Override
-  public void add(Order order) {
+  public void add(CustomerOrderDetails customerOrderDetails) {
+    int orderId = IdGenerator.generate(jdbcTemplate, "Orders", "oid");
     jdbcTemplate.update(
       "INSERT INTO Orders "
-    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      order.getOid(),
-      order.getCustomerId(),
-      order.getRiderId(),
-      order.getTotalCost(),
-      order.getDeliveryFee(),
-      order.getPaymentType(),
-      order.getLocation(),
-      order.getOrderTime(),
-      order.getDepartureTime(),
-      order.getRestaurantArrivalTime(),
-      order.getRestaurantDepartureTime(),
-      order.getDeliveryTime());
+    + "VALUES (?)",
+      orderId);
+
+    jdbcTemplate.update(
+      "UPDATE Orders "
+      + "SET cid = ?,"
+      + "totalCost = ?,"
+      + "paymentType = ?,"
+      + "location = ?, "
+      + "ordertime = ? "
+      + "WHERE oid = ?;",
+      customerOrderDetails.getCustomerId(),
+      customerOrderDetails.getTotalFoodCost(),
+      customerOrderDetails.getPaymentType(),
+      customerOrderDetails.getLocation(),
+      customerOrderDetails.getOrderTime()
+    );
   }
 
   @Override
