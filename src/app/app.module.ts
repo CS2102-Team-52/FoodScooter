@@ -10,12 +10,14 @@ import { MaterialModule } from './core/material.module';
 import { LoginComponent } from './login/login.component';
 import { RiderComponent } from './users/rider/rider.component';
 import { CustomerComponent } from './users/customer/customer.component';
-import { RestaurantViewer } from './users/customer/restaurants-viewer/restaurant-viewer.component';
-import { MenuViewer } from './users/customer/menu-viewer/menu-viewer.component';
+import { RestaurantsViewerComponent } from './users/customer/restaurants-viewer/restaurants-viewer.component';
+import { RestaurantMenuViewer } from './users/customer/restaurant-menu-viewer/restaurant-menu-viewer.component';
 import { PrettyPipe } from './pipes/pretty.pipe';
 import { OrdersViewerComponent } from './users/customer/orders-viewer/orders-viewer.component';
 import { OrderFeedbackComponent } from './users/customer/orders-viewer/order-feedback/order-feedback.component';
-import { OrderPlacerComponent } from './users/customer/menu-viewer/order-placer/order-placer.component';
+import { RestaurantOrderPlacerComponent } from './users/customer/restaurant-menu-viewer/restaurant-order-placer/restaurant-order-placer.component';
+import { RestaurantViewerComponent } from './users/customer/restaurant-viewer/restaurant-viewer.component';
+import { RestaurantReviewsViewerComponent } from './users/customer/restaurant-reviews-viewer/restaurant-reviews-viewer.component';
 
 @NgModule({
   declarations: [
@@ -23,12 +25,14 @@ import { OrderPlacerComponent } from './users/customer/menu-viewer/order-placer/
     LoginComponent,
     RiderComponent,
     CustomerComponent,
-    RestaurantViewer,
-    MenuViewer,
+    RestaurantsViewerComponent,
+    RestaurantMenuViewer,
     PrettyPipe,
     OrdersViewerComponent,
     OrderFeedbackComponent,
-    OrderPlacerComponent,
+    RestaurantOrderPlacerComponent,
+    RestaurantViewerComponent,
+    RestaurantReviewsViewerComponent,
   ],
   imports: [
     BrowserModule,

@@ -4,11 +4,11 @@ import { RestaurantService } from "../../../services/common/restaurant/restauran
 import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
-  selector: 'app-restaurant-viewer',
-  templateUrl: './restaurant-viewer.component.html',
-  styleUrls: ['./restaurant-viewer.component.css']
+  selector: 'app-restaurants-viewer',
+  templateUrl: './restaurants-viewer.component.html',
+  styleUrls: ['./restaurants-viewer.component.css']
 })
-export class RestaurantViewer implements OnInit {
+export class RestaurantsViewerComponent implements OnInit {
   restaurants: Restaurant[];
 
   constructor(
@@ -29,6 +29,6 @@ export class RestaurantViewer implements OnInit {
   }
 
   public showMenu(restaurantId: number) {
-    this.router.navigate([restaurantId, 'menu'], {relativeTo: this.activatedRoute});
+    this.router.navigate([restaurantId], {relativeTo: this.activatedRoute}).then(_ => {});
   }
 }

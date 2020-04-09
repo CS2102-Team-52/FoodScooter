@@ -20,21 +20,6 @@
 </div>
 
 <div id="right">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>
-        Your Order
-      </mat-card-title>
-      <mat-card-content>
-        <mat-list *ngFor="let foodItem of foodItemsInOrder">
-          <mat-list-item>
-            {{foodItem.name}}
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button (click)="sendOrder()" color="primary">Send Order</button>
-      </mat-card-actions>
-    </mat-card-header>
-  </mat-card>
+  <app-restaurant-order-placer>
+  </app-restaurant-order-placer>
 </div>
