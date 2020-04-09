@@ -3,9 +3,10 @@ package foodscooter.model;
 import java.time.LocalDateTime;
 
 public class Order {
-  private int oid;
+  private int id;
   private int customerId;
   private int riderId;
+  private int restaurantId;
 
   private float totalCost;
   private float deliveryFee;
@@ -19,15 +20,15 @@ public class Order {
   private LocalDateTime restaurantDepartureTime;
   private LocalDateTime deliveryTime;
 
-  //TODO see if need
   public Order() {
 
   }
 
   public Order(
-    int oid,
+    int id,
     int customerId,
     int riderId,
+    int restaurantId,
     float totalCost,
     float deliveryFee,
     String paymentType,
@@ -37,9 +38,10 @@ public class Order {
     LocalDateTime restaurantArrivalTime,
     LocalDateTime restaurantDepartureTime,
     LocalDateTime deliveryTime) {
-    this.oid = oid;
+    this.id = id;
     this.customerId = customerId;
     this.riderId = riderId;
+    this.restaurantId = restaurantId;
     this.totalCost = totalCost;
     this.deliveryFee = deliveryFee;
     this.paymentType = paymentType;
@@ -51,12 +53,12 @@ public class Order {
     this.deliveryTime = deliveryTime;
   }
 
-  public int getOid() {
-    return oid;
+  public int getId() {
+    return id;
   }
 
-  public void setOid(int oid) {
-    this.oid = oid;
+  public void setId(int id) {
+    this.id = id;
   }
 
   public int getCustomerId() {
@@ -73,6 +75,14 @@ public class Order {
 
   public void setRiderId(int riderId) {
     this.riderId = riderId;
+  }
+
+  public int getRestaurantId() {
+    return restaurantId;
+  }
+
+  public void setRestaurantId(int restaurantId) {
+    this.restaurantId = restaurantId;
   }
 
   public float getTotalCost() {

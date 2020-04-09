@@ -1,4 +1,4 @@
-export interface Review {
+export interface Feedback {
   id: number;
   restaurantId: number;
   orderId: number;

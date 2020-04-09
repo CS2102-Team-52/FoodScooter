@@ -1,0 +1,17 @@
+<div>
+  <mat-form-field>
+    <mat-label>Rider Rating</mat-label>
+    <mat-select [(value)]="rating" required>
+      <mat-option *ngFor="let ratingChoice of ratingChoices" [value]="ratingChoice">
+        {{ratingChoice}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Review</mat-label>
+      <textarea matInput placeholder="Review" [(ngModel)]="review"></textarea>
+  </mat-form-field>
+  <br>
+  <button mat-raised-button (click)="submitFeedback()" color="primary">Submit</button>
+</div>

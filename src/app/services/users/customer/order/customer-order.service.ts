@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Util } from "../../../../users/util";
-import { OrderedFoodItems } from "./dto/ordered-food-items";
+import { CustomerOrderDetails } from "./dto/customer-order-details";
 
 /**
  * Provides services to:
@@ -17,7 +17,7 @@ export class CustomerOrderService {
     private httpClient: HttpClient,
   ) { }
 
-  public placeOrder(customerId: number, order: OrderedFoodItems) {
+  public placeOrder(customerId: number, order: CustomerOrderDetails) {
     return this.httpClient.post(`${Util.baseURL}/customers/${customerId}/orders`, order);
   }
 

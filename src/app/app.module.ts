@@ -14,8 +14,8 @@ import { RestaurantViewer } from './users/customer/restaurants-viewer/restaurant
 import { MenuViewer } from './users/customer/menu-viewer/menu-viewer.component';
 import { PrettyPipe } from './pipes/pretty.pipe';
 import { OrdersViewerComponent } from './users/customer/orders-viewer/orders-viewer.component';
-import { LoginService } from "./services/login/login.service";
-import { CustomerFeedbackComponent } from './users/customer/customer-feedback/customer-feedback.component';
+import { OrderFeedbackComponent } from './users/customer/orders-viewer/order-feedback/order-feedback.component';
+import { OrderPlacerComponent } from './users/customer/menu-viewer/order-placer/order-placer.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,8 @@ import { CustomerFeedbackComponent } from './users/customer/customer-feedback/cu
     MenuViewer,
     PrettyPipe,
     OrdersViewerComponent,
-    CustomerFeedbackComponent,
+    OrderFeedbackComponent,
+    OrderPlacerComponent,
   ],
   imports: [
     BrowserModule,

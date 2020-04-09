@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Util } from "../../../../users/util";
-import { Review } from "../../../../store/review";
+import { Feedback } from "../../../../store/feedback";
 
 /**
  * Provides services to:
@@ -18,8 +18,9 @@ export class CustomerFeedbackService {
     private httpClient: HttpClient
   ) { }
 
-  public submitFeedback(review: Review) {
-    return this.httpClient.post(`${Util.baseURL}/reviews/food-items/`, review);
+  public submitFeedback(feedback: Feedback) {
+    console.log("sent");
+    return this.httpClient.post(`${Util.baseURL}/feedback`, feedback);
   }
 
   public fetchReviews(restaurantId: number) {

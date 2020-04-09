@@ -2,7 +2,7 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>
-        {{order.oid}}
+        {{order.id}}
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
@@ -11,13 +11,17 @@
           {{order.totalCost}}
         </mat-list-item>
         <mat-list-item>
-          {{order.oid}}
+          {{order.id}}
         </mat-list-item>
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button (click)="giveFeedback(order.oid)" color="primary">Feedback</button>
-      <button mat-raised-button (click)="deleteOrder(order.oid)" color="primary">Delete</button>
+      <button mat-raised-button (click)="giveFeedback(order.id)" color="primary">Feedback</button>
+      <button mat-raised-button (click)="deleteOrder(order.id)" color="primary">Delete</button>
     </mat-card-actions>
+    <app-order-feedback
+      [restaurantId]="order.restaurantId"
+      [orderId]="order.id">
+    </app-order-feedback>
   </mat-card>
 </mat-list>

@@ -25,18 +25,19 @@ export class OrdersViewerComponent implements OnInit {
     const customerId = Number(this.activatedRoute.snapshot.paramMap.get('customerId'));
     this.orderService.fetchOrders(customerId).subscribe(
       (data: Order[]) => {
+        console.log(data);
         this.orders = data;
       }
     );
   }
 
   public giveFeedback(orderId: number) {
-    this.router.navigate([orderId, 'review'], {relativeTo: this.activatedRoute});
+    this.router.navigate([orderId, 'review'], {relativeTo: this.activatedRoute}).then(_ => {});
   }
 
   public deleteOrder(orderId: number) {
     this.orderService.deleteOrder(orderId).subscribe(
-      _ => this.orders = this.orders.filter(order => order.oid !== orderId)
+      _ => this.orders = this.orders.filter(order => order.id !== orderId)
     );
   }
 }
