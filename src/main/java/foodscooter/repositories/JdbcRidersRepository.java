@@ -24,12 +24,6 @@ public class JdbcRidersRepository implements RidersRepository {
 
   //TODO
   @Override
-  public void add(RiderType riderType) {
-
-  }
-
-  //TODO
-  @Override
   public List<Rider> getAll() {
     return jdbcTemplate.query(
       "SELECT drid FROM DeliveryRiders;",

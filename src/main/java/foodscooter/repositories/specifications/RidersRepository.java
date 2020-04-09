@@ -10,7 +10,6 @@ import foodscooter.model.users.Rider;
 import java.util.List;
 
 public interface RidersRepository {
-  void add(RiderType riderType);
   List<Rider> getAll();
   boolean checkFullTime(int drid);
   boolean checkPartTime(int drid);

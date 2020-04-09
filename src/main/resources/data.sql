@@ -1,7 +1,3 @@
-DROP TYPE IF EXISTS daysEnum CASCADE;
-DROP TYPE IF EXISTS shiftsEnum CASCADE;
-DROP TYPE IF EXISTS hoursEnum CASCADE;
-
 DROP TABLE IF EXISTS Users CASCADE;
 DROP TABLE IF EXISTS DeliveryRiders CASCADE;
 DROP TABLE IF EXISTS FTRiders CASCADE;
@@ -18,11 +14,7 @@ DROP TABLE IF EXISTS FoodItems CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Feedback CASCADE;
 
-/*
-CREATE TYPE daysEnum AS ENUM ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-CREATE TYPE shiftsEnum AS ENUM ('10am', '11am', '12pm', '1pm');
-CREATE TYPE hoursEnum AS ENUM ('10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm');
-*/
+DROP TRIGGER IF EXISTS addSpecificUser ON Users;
 
 CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
@@ -148,6 +140,28 @@ CREATE TABLE Feedback (
     FOREIGN KEY (oid) REFERENCES Orders (oid)
 );
 
+CREATE OR REPLACE FUNCTION addSpecificUser() RETURNS TRIGGER AS $$
+    BEGIN
+        CASE NEW.type
+            WHEN 'Customer' THEN
+                INSERT INTO Customers
+                VALUES(NEW.uid);
+            WHEN 'Delivery Rider' THEN
+                INSERT INTO DeliveryRiders
+                VALUES(NEW.uid);
+            ELSE
+
+        END CASE;
+        RETURN NEW;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER addSpecificUserTrigger
+    AFTER INSERT
+    ON Users
+    FOR EACH ROW
+    EXECUTE FUNCTION addSpecificUser();
+
 
 INSERT INTO Restaurants
 VALUES (1, 'Ikea', 'A Swedish furniture company that is also known for their meatballs.', 10),
@@ -170,21 +184,15 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
        (3, 3, 'Char Siew', 'Singaporean', 3, 500);
 
 INSERT INTO Users
-VALUES (1, 'admin', 'admin', 'Customer'),
+VALUES (1, 'customer', 'customer', 'Customer'),
        (2, 'rider', 'rider', 'Delivery Rider');
 
-INSERT INTO Customers
-VALUES (1);
-
-INSERT INTO DeliveryRiders
-VALUES (2);
-
-INSERT INTO Orders
-VALUES (1, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
-        '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
-       (2, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
-        '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
-       (3, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
-        '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
-       (4, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
-        '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06');
+-- INSERT INTO Orders
+-- VALUES (1, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
+--         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
+--        (2, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
+--         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
+--        (3, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
+--         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
+--        (4, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
+--         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06');
