@@ -41,7 +41,7 @@ CREATE TABLE FTRiders (
     drid INTEGER PRIMARY KEY,
     dayOption INTEGER check(dayOption in (1,2,3,4,5,6,7)),
 	shiftOption INTEGER check(shiftOption in (1,2,3,4)),
-    FOREIGN KEY (drid) REFERENCES DeliveryRiders ON DELETE CASCADE
+    FOREIGN KEY (drid) REFERENCES DeliveryRiders (drid) ON DELETE CASCADE
 );
 
 /*
@@ -51,22 +51,22 @@ CREATE TABLE PTSchedules (
 );
 */
 
+/* psid = id of assigned schedule */
+CREATE TABLE PTRiders (
+    drid INTEGER PRIMARY KEY,
+    psid INTEGER,
+    FOREIGN KEY (drid) REFERENCES DeliveryRiders (drid) ON DELETE CASCADE
+--     FOREIGN KEY (psid) REFERENCES PTSchedules
+);
+
 CREATE TABLE PTShifts (
     ptsid INTEGER PRIMARY KEY,
     drid INTEGER,
     dow INTEGER check(dow in (1,2,3,4,5,6,7)),
     startHour INTEGER check(startHour in (10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21)),
     endHour INTEGER check(endHour in (11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22)),
-	FOREIGN KEY (drid) REFERENCES PTRiders ON DELETE CASCADE,
+	FOREIGN KEY (drid) REFERENCES PTRiders (drid) ON DELETE CASCADE,
 	CHECK (startHour <= endHour)
-);
-
-/* psid = id of assigned schedule */
-CREATE TABLE PTRiders (
-    drid INTEGER PRIMARY KEY,
-    psid INTEGER,
-    FOREIGN KEY (drid) REFERENCES DeliveryRiders ON DELETE CASCADE,
-    FOREIGN KEY (psid) REFERENCES PTSchedules
 );
 
 CREATE TABLE Customers (
@@ -97,7 +97,7 @@ CREATE TABLE Restaurants (
     description VARCHAR(1000), /* NEW */
     mininumPurchase MONEY,
     pid INTEGER,
-    FOREIGN KEY (pid) REFERENCES promotions
+    FOREIGN KEY (pid) REFERENCES Promotions (pid)
 );
 
 CREATE TABLE RestaurantStaff (
@@ -115,13 +115,14 @@ CREATE TABLE FoodItems (
     price MONEY,
     dailyLimit INTEGER,
     PRIMARY KEY (fid, rid), -- make a composite key consisting of partial key and rid
-    FOREIGN KEY (rid) REFERENCES Restaurants ON DELETE CASCADE
+    FOREIGN KEY (rid) REFERENCES Restaurants (rid) ON DELETE CASCADE
 );
 
 CREATE TABLE Orders (
     oid INTEGER PRIMARY KEY,
     cid INTEGER,
     drid INTEGER,
+    rid INTEGER,
     totalCost MONEY, -- changed INTEGER to MONEY
     deliveryFee MONEY,
     paymentType VARCHAR(100), -- changed INTEGER to VARCHAR
@@ -131,19 +132,20 @@ CREATE TABLE Orders (
     restaurantArrivalTime TIMESTAMP,
     restaurantDepartureTime TIMESTAMP,
     deliveryTime TIMESTAMP,
-    FOREIGN KEY (cid) REFERENCES Customers,
-    FOREIGN KEY (drid) REFERENCES DeliveryRiders
+    FOREIGN KEY (cid) REFERENCES Customers (cid),
+    FOREIGN KEY (drid) REFERENCES DeliveryRiders (drid),
+    FOREIGN KEY (rid) REFERENCES Restaurants (rid)
 );
 
 /* remove fid */
 CREATE TABLE Feedback (
-    rvid INTEGER PRIMARY KEY,
+    fid INTEGER PRIMARY KEY,
     rid INTEGER, -- new
     oid INTEGER,
     rating INTEGER,
     review VARCHAR(1000),
-    FOREIGN KEY (rid) REFERENCES FoodItems,
-    FOREIGN KEY (oid) REFERENCES Orders
+    FOREIGN KEY (rid) REFERENCES Restaurants (rid),
+    FOREIGN KEY (oid) REFERENCES Orders (oid)
 );
 
 
@@ -178,11 +180,11 @@ INSERT INTO DeliveryRiders
 VALUES (2);
 
 INSERT INTO Orders
-VALUES (1, 1, 2, 100, 10, 'Credit Card', 'Seoul Good',
+VALUES (1, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
-       (2, 1, 2, 100, 10, 'Credit Card', 'Seoul Good',
+       (2, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
-       (3, 1, 2, 100, 10, 'Credit Card', 'Seoul Good',
+       (3, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
-       (4, 1, 2, 100, 10, 'Credit Card', 'Seoul Good',
+       (4, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06');
