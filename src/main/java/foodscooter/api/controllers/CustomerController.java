@@ -38,7 +38,7 @@ public class CustomerController extends BaseController {
     return orderRepository.getByCustomer(customerId);
   }
 
-  @PostMapping("/customers/{customerId/orders")
+  @PostMapping("/customers/{customerId}/orders")
   public ResponseEntity<?> placeOrder(
     @PathVariable int customerId,
     @RequestBody CustomerOrderDetails customerOrderDetails) {
@@ -48,7 +48,7 @@ public class CustomerController extends BaseController {
     int foodItemsCount = foodItems.size();
     int restaurantId = customerOrderDetails.getRestaurantId();
     for (int i = 0; i <  foodItemsCount; i++) {
-      restaurantsRepository.updateAvailability(0, foodItems.get(i), quantity.get(i));
+      restaurantsRepository.updateAvailability(restaurantId, foodItems.get(i), quantity.get(i));
     }
 
     orderRepository.add(customerOrderDetails);
@@ -64,7 +64,6 @@ public class CustomerController extends BaseController {
 
   @PostMapping("/feedback")
   public ResponseEntity<?> submitFeedback(@RequestBody Feedback feedback) {
-    System.out.println("RECEVIED");
     feedbackRepository.add(feedback);
     return ResponseEntity.ok().build();
   }
