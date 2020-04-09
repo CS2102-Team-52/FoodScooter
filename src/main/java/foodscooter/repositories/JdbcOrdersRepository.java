@@ -13,15 +13,19 @@ import java.util.List;
 @Repository
 public class JdbcOrdersRepository implements OrdersRepository {
   private JdbcTemplate jdbcTemplate;
+  private IdGenerator idGenerator;
 
   @Autowired
-  public JdbcOrdersRepository(JdbcTemplate jdbcTemplate) {
+  public JdbcOrdersRepository(
+    JdbcTemplate jdbcTemplate,
+    IdGenerator idGenerator) {
     this.jdbcTemplate = jdbcTemplate;
+    this.idGenerator = idGenerator;
   }
 
   @Override
   public void add(CustomerOrderDetails customerOrderDetails) {
-    int orderId = IdGenerator.generate(jdbcTemplate, "Orders", "oid");
+    int orderId = idGenerator.generate( "oid", "Orders");
     jdbcTemplate.update(
       "INSERT INTO Orders "
     + "VALUES (?)",
@@ -54,15 +58,16 @@ public class JdbcOrdersRepository implements OrdersRepository {
         rs.getInt(1),
         rs.getInt(2),
         rs.getInt(3),
-        rs.getFloat(4),
+        rs.getInt(4),
         rs.getFloat(5),
-        rs.getString(6),
+        rs.getFloat(6),
         rs.getString(7),
-        rs.getTimestamp(8).toLocalDateTime(),
+        rs.getString(8),
         rs.getTimestamp(9).toLocalDateTime(),
         rs.getTimestamp(10).toLocalDateTime(),
         rs.getTimestamp(11).toLocalDateTime(),
-        rs.getTimestamp(12).toLocalDateTime()))
+        rs.getTimestamp(12).toLocalDateTime(),
+        rs.getTimestamp(13).toLocalDateTime()))
     );
   }
 

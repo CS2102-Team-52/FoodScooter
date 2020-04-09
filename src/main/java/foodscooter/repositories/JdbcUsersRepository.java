@@ -14,17 +14,22 @@ import java.util.Optional;
 @Repository
 public class JdbcUsersRepository implements UsersRepository {
   private JdbcTemplate jdbcTemplate;
+  private IdGenerator idGenerator;
 
   @Autowired
-  public JdbcUsersRepository(JdbcTemplate jdbcTemplate) {
+  public JdbcUsersRepository(
+    JdbcTemplate jdbcTemplate,
+    IdGenerator idGenerator) {
     this.jdbcTemplate = jdbcTemplate;
+    this.idGenerator = idGenerator;
   }
 
   @Override
   public int add(String username, String password, UserType userType) {
-    int userId = IdGenerator.generate(jdbcTemplate, "Users", "uid");
+    int userId = idGenerator.generate("uid", "Users");
     jdbcTemplate.update(
-      "INSERT INTO Users VALUES (?, ?, ?, ?)",
+      "INSERT INTO Users "
+      + " VALUES (?, ?, ?, ?)",
       userId, username, password, userType.toString());
     return userId;
   }
@@ -41,7 +46,9 @@ public class JdbcUsersRepository implements UsersRepository {
   @Override
   public Optional<User> get(String username, String password) {
     return jdbcTemplate.queryForObject(
-      "SELECT * FROM Users U WHERE U.username = ? and U.password = ? ;",
+      "SELECT * "
+      + "FROM Users U "
+      + "WHERE U.username = ? AND U.password = ? ;",
       new Object[] { username, password },
       ((rs, rowNum) -> {
         int userId = rs.getInt(1);
@@ -58,7 +65,9 @@ public class JdbcUsersRepository implements UsersRepository {
   @Override
   public Optional<User> get(int uid) {
     return jdbcTemplate.queryForObject(
-      "SELECT * FROM Users U WHERE U.uid = ? ;",
+      "SELECT * "
+      + "FROM Users U "
+      + "WHERE U.uid = ? ;",
       new Object[] { uid },
       ((rs, rowNum) -> {
         int userId = rs.getInt(1);
