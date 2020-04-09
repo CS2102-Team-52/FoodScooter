@@ -25,7 +25,6 @@ export class OrdersViewerComponent implements OnInit {
     const customerId = Number(this.activatedRoute.snapshot.paramMap.get('customerId'));
     this.orderService.fetchOrders(customerId).subscribe(
       (data: Order[]) => {
-        console.log(data);
         this.orders = data;
       }
     );
