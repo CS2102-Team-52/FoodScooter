@@ -4,13 +4,13 @@
         <button mat-raised-button (click)="viewSummary()" color="accent">View Summary</button>
     </mat-card>
 
-    <div class="mat-typography"> 
+    <div class="mat-typography">
       <h2>Accepted Orders</h2>
       <mat-list *ngFor="let o of acceptedOrderList">
         <mat-card>
           <mat-card-header>
             <mat-card-title>
-              {{o.oid}}
+              {{o.id}}
             </mat-card-title>
           </mat-card-header>
           <mat-card-content>
@@ -30,19 +30,19 @@
             </mat-list>
           </mat-card-content>
           <mat-card-actions>
-            <button mat-raised-button (click)="refreshDoneOrder(o.oid)" color="primary">Order delivered</button>
+            <button mat-raised-button (click)="refreshDoneOrder(o.id)" color="primary">Order delivered</button>
           </mat-card-actions>
         </mat-card>
       </mat-list>
     </div>
 
-    <div *ngIf="showOrder" class="mat-typography"> 
+    <div *ngIf="showOrder" class="mat-typography">
       <h2>Available Orders</h2>
       <mat-list *ngFor="let o of orderList">
         <mat-card>
           <mat-card-header>
             <mat-card-title>
-              {{o.oid}}
+              {{o.id}}
             </mat-card-title>
           </mat-card-header>
           <mat-card-content>
@@ -62,7 +62,7 @@
             </mat-list>
           </mat-card-content>
           <mat-card-actions>
-            <button mat-raised-button (click)="refreshAcceptOrder(o.oid)" color="primary">Accept Order</button>
+            <button mat-raised-button (click)="refreshAcceptOrder(o.id)" color="primary">Accept Order</button>
           </mat-card-actions>
         </mat-card>
       </mat-list>
@@ -91,7 +91,7 @@
         <mat-card>
           <mat-card-header>
             <mat-card-title>
-              {{s.oid}}
+              {{s.id}}
             </mat-card-title>
           </mat-card-header>
           <mat-card-content>
@@ -116,5 +116,5 @@
         </mat-card>
       </mat-list>
     </div>
-    
-</div>  
+
+</div>

@@ -2,10 +2,11 @@ package foodscooter.api.controllers;
 
 import foodscooter.api.dtos.orders.CustomerOrderDetails;
 import foodscooter.model.Order;
+import foodscooter.model.Feedback;
+import foodscooter.repositories.JdbcFeedbackRepository;
 import foodscooter.repositories.JdbcOrdersRepository;
 import foodscooter.repositories.JdbcRestaurantsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +21,16 @@ import java.util.List;
 public class CustomerController extends BaseController {
   private JdbcOrdersRepository orderRepository;
   private JdbcRestaurantsRepository restaurantsRepository;
+  private JdbcFeedbackRepository feedbackRepository;
 
   @Autowired
   public CustomerController(
     JdbcOrdersRepository orderRepository,
-    JdbcRestaurantsRepository restaurantsRepository) {
+    JdbcRestaurantsRepository restaurantsRepository,
+    JdbcFeedbackRepository feedbackRepository) {
     this.orderRepository = orderRepository;
+    this.restaurantsRepository = restaurantsRepository;
+    this.feedbackRepository = feedbackRepository;
   }
 
   @GetMapping("/customers/{customerId}/orders")
@@ -48,12 +53,19 @@ public class CustomerController extends BaseController {
 
     orderRepository.add(customerOrderDetails);
 
-    return ResponseEntity.status(HttpStatus.OK).build();
+    return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/orders/{orderId}")
   public ResponseEntity<?> deleteOrder(@PathVariable int orderId) {
     orderRepository.delete(orderId);
-    return ResponseEntity.status(HttpStatus.OK).build();
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/feedback")
+  public ResponseEntity<?> submitFeedback(@RequestBody Feedback feedback) {
+    System.out.println("RECEVIED");
+    feedbackRepository.add(feedback);
+    return ResponseEntity.ok().build();
   }
 }

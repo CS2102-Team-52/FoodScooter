@@ -1,19 +1,16 @@
 package foodscooter.api.controllers;
 
-import foodscooter.api.dtos.AccountDetails;
 import foodscooter.model.Order;
 import foodscooter.model.rider.FullTimeSchedule;
 import foodscooter.model.rider.PartTimeShift;
 import foodscooter.model.rider.RiderType;
 import foodscooter.model.rider.SalaryInfo;
 import foodscooter.model.users.Rider;
-import foodscooter.model.users.User;
 import foodscooter.repositories.JdbcRidersRepository;
 import foodscooter.repositories.JdbcUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,15 +21,12 @@ import java.util.List;
 @RestController
 public class RiderController extends BaseController {
   private JdbcRidersRepository riderRepository;
-  private JdbcUsersRepository userRepository;
 
   @Autowired
   public RiderController(
-    JdbcRidersRepository riderRepository,
-    JdbcUsersRepository userRepository
+    JdbcRidersRepository riderRepository
   ) {
     this.riderRepository = riderRepository;
-    this.userRepository = userRepository;
   }
 
   @GetMapping("/riders")
