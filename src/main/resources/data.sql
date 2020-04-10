@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS Restaurants CASCADE;
 DROP TABLE IF EXISTS RestaurantStaff CASCADE;
 DROP TABLE IF EXISTS FoodItems CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
-DROP TABLE IF EXISTS Feedback CASCADE;
+DROP TABLE IF EXISTS Review CASCADE;
 
 DROP TRIGGER IF EXISTS addSpecificUser ON Users;
 
@@ -20,12 +20,13 @@ CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
-    type VARCHAR(50) NOT NULL /* NEW */
+    type VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE DeliveryRiders (
     drid INTEGER PRIMARY KEY,
     salary MONEY,
+    rating INTEGER, /* NEW */
     FOREIGN KEY (drid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
@@ -86,8 +87,8 @@ CREATE TABLE Promotions (
 CREATE TABLE Restaurants (
     rid INTEGER PRIMARY KEY,
     name VARCHAR(100),
-    description VARCHAR(1000), /* NEW */
-    mininumPurchase MONEY,
+    description VARCHAR(1000),
+    minimumPurchase MONEY,
     pid INTEGER,
     FOREIGN KEY (pid) REFERENCES Promotions (pid)
 );
@@ -96,7 +97,7 @@ CREATE TABLE RestaurantStaff (
     rsid INTEGER PRIMARY KEY,
     employedBy INTEGER NOT NULL,
     FOREIGN KEY (rsid) REFERENCES Users (uid) ON DELETE CASCADE,
-    FOREIGN KEY (employedBy) REFERENCES Restaurants (rid)
+    FOREIGN KEY (employedBy) REFERENCES Restaurants (rid) ON DELETE CASCADE
 );
 
 CREATE TABLE FoodItems (
@@ -106,7 +107,7 @@ CREATE TABLE FoodItems (
     category VARCHAR(100),
     price MONEY,
     dailyLimit INTEGER,
-    PRIMARY KEY (fid, rid), -- make a composite key consisting of partial key and rid
+    PRIMARY KEY (fid, rid),
     FOREIGN KEY (rid) REFERENCES Restaurants (rid) ON DELETE CASCADE
 );
 
@@ -115,10 +116,11 @@ CREATE TABLE Orders (
     cid INTEGER,
     drid INTEGER,
     rid INTEGER,
-    totalCost MONEY, -- changed INTEGER to MONEY
+    foodCost MONEY,
     deliveryFee MONEY,
-    paymentType VARCHAR(100), -- changed INTEGER to VARCHAR
-    location VARCHAR(100),
+    rewardPointsUsed INTEGER,
+    paymentType VARCHAR(100),
+    deliveryLocation VARCHAR(100),
     orderTime TIMESTAMP,
     departureTime TIMESTAMP,
     restaurantArrivalTime TIMESTAMP,
@@ -130,13 +132,13 @@ CREATE TABLE Orders (
 );
 
 /* remove fid */
-CREATE TABLE Feedback (
-    fid INTEGER PRIMARY KEY,
-    rid INTEGER, -- new
+CREATE TABLE Review (
+    rvid INTEGER PRIMARY KEY,
+    rid INTEGER,
+    fid INTEGER,
     oid INTEGER,
-    rating INTEGER,
-    review VARCHAR(1000),
-    FOREIGN KEY (rid) REFERENCES Restaurants (rid),
+    content VARCHAR(1000),
+    FOREIGN KEY (rid, fid) REFERENCES FoodItems (rid, fid),
     FOREIGN KEY (oid) REFERENCES Orders (oid)
 );
 
