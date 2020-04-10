@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { Util } from "../../../../users/util";
-import { Feedback } from "../../../../store/feedback";
+import { Util } from "../../../users/util";
+import { Feedback } from "../order-feedback/feedback";
 
 /**
  * Provides services to:

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomerFeedbackService } from "../../../services/users/customer/feedback/customer-feedback.service";
-import { ActivatedRoute } from "@angular/router";
-import { Review } from "../../../store/review";
+import { CustomerFeedbackService } from '../../order-history/services/customer-feedback.service';
+import { ActivatedRoute } from '@angular/router';
+import { Review } from '../../review-history/review';
 
 @Component({
   selector: 'app-restaurant-reviews-viewer',
@@ -22,7 +22,6 @@ export class RestaurantReviewsViewerComponent implements OnInit {
 
   public fetchReviews() {
     const restaurantId = Number(this.activatedRoute.snapshot.paramMap.get('restaurantId'));
-    console.log("sent");
     this.customerFeedbackService.fetchReviews(restaurantId).subscribe(
       (data: Review[]) => {
         console.log(data);

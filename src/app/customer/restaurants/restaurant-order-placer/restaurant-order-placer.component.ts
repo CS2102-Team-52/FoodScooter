@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FoodItem } from "../../../../store/food-item";
-import { CustomerOrderDetails } from "../../../../services/users/customer/order/dto/customer-order-details";
-import { CustomerOrderService } from "../../../../services/users/customer/order/customer-order.service";
-import { ActivatedRoute } from "@angular/router";
-import { PaymentType } from "../../../../store/payment-type.enum";
+import { FoodItem } from '../../../store/food-item';
+import { CustomerOrderDetails } from './services/dto/customer-order-details';
+import { CustomerOrderService } from './services/customer-order.service';
+import { ActivatedRoute } from '@angular/router';
+import { PaymentType } from '../../../store/payment-type.enum';
 
 @Component({
   selector: 'app-restaurant-order-placer',
@@ -33,13 +33,14 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
   @Input()
   public remove(foodItem: FoodItem) {
-    this.foodItemsInOrder = this.foodItemsInOrder.filter(item => item.id != foodItem.id);
+    this.foodItemsInOrder = this.foodItemsInOrder.filter(item => item.id !== foodItem.id);
   }
 
   public sendOrder() {
-    const orderedFoodItems = this.constructOrder();
+    const order = this.constructOrder();
+    console.log(order);
     const customerId = Number(this.activatedRoute.snapshot.paramMap.get('customerId'));
-    this.orderService.placeOrder(customerId, orderedFoodItems).subscribe(_ => {});
+    this.orderService.placeOrder(customerId, order).subscribe(_ => {});
   }
 
   private constructOrder() {
@@ -50,11 +51,11 @@ export class RestaurantOrderPlacerComponent implements OnInit {
     const restaurantId = Number(this.activatedRoute.snapshot.paramMap.get('restaurantId'));
 
     const customerOrderDetails: CustomerOrderDetails = {
-      customerId: customerId,
-      restaurantId: restaurantId,
-      totalFoodCost: totalFoodCost,
+      customerId,
+      restaurantId,
+      totalFoodCost,
       paymentType: this.paymentType,
-      location: "Serangoon",
+      location: 'Serangoon',
       orderTime: new Date(),
       foodItems: Array.from(items.keys()),
       quantity: Array.from(items.values())
@@ -64,9 +65,9 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
   private consolidateFoodItems() {
     const items = new Map();
-    for (let foodItem of this.foodItemsInOrder) {
+    for (const foodItem of this.foodItemsInOrder) {
       if (items.has(foodItem.id)) {
-        let count = items.get(foodItem.id);
+        const count = items.get(foodItem.id);
         items.set(foodItem.id, count + 1);
       } else {
         items.set(foodItem.id, 1);
@@ -77,7 +78,7 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
   private computeTotalFoodCost() {
     let totalCost = 0;
-    for (let foodItem of this.foodItemsInOrder) {
+    for (const foodItem of this.foodItemsInOrder) {
       totalCost += foodItem.price;
     }
     return totalCost;

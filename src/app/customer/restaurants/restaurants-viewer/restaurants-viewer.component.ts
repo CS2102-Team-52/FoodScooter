@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Restaurant } from "../../../store/restaurant";
-import { RestaurantService } from "../../../services/common/restaurant/restaurant.service";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Restaurant } from '../../../store/restaurant';
+import { RestaurantService } from '../services/restaurant.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-restaurants-viewer',
@@ -25,7 +25,7 @@ export class RestaurantsViewerComponent implements OnInit {
     this.restaurantService.fetchRestaurants().subscribe(
       (data: Restaurant[]) => {
         this.restaurants = data;
-      })
+      });
   }
 
   public showMenu(restaurantId: number) {

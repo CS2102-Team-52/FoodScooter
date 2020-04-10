@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Order } from "../../../store/order";
-import { ActivatedRoute, Router } from "@angular/router";
-import { CustomerOrderService } from "../../../services/users/customer/order/customer-order.service";
+import { Order } from '../../../store/order';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CustomerOrderService } from '../../restaurants/restaurant-order-placer/services/customer-order.service';
 
 @Component({
   selector: 'app-orders-viewer',
@@ -25,6 +25,7 @@ export class OrdersViewerComponent implements OnInit {
     const customerId = Number(this.activatedRoute.snapshot.paramMap.get('customerId'));
     this.orderService.fetchOrders(customerId).subscribe(
       (data: Order[]) => {
+        console.log(data);
         this.orders = data;
       }
     );

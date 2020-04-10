@@ -3,9 +3,9 @@ import { Order } from '../../store/order';
 import { RiderOrderService } from '../../services/users/rider/order/rider-order.service';
 import { RiderService } from 'src/app/services/users/rider/rider.service';
 import { Rider } from './rider';
-import { LoginService } from 'src/app/services/login/login.service';
+import { LoginService } from 'src/app/login/services/login.service';
 import { RiderType } from "../../store/rider-type.enum";
-import { LoginResponse } from 'src/app/services/login/dto/login-response';
+import { LoginResponse } from 'src/app/login/services/dto/login-response';
 import { SalaryInfo } from 'src/app/store/salary-info';
 
 @Component({
@@ -34,12 +34,14 @@ export class RiderComponent implements OnInit {
     this.showOrder = false;
     this.showSummary = false;
     this.loginResponse = this.loginService.getLoginResponse();
+    console.log(this.loginResponse);
     this.getRiderType();
     this.getAcceptedOrders();
   }
 
   getRiderType() {
     this.riderService.fetchRiderInfo(this.loginResponse.userId).subscribe((data: any) => {
+      console.log("Hello")
       console.log(data);
       this.rider = data;
     })

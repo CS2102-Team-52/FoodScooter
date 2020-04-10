@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CustomerFeedbackService } from "../../../../services/users/customer/feedback/customer-feedback.service";
-import { Feedback } from "../../../../store/feedback";
-import { ActivatedRoute } from "@angular/router";
+import { CustomerFeedbackService } from '../services/customer-feedback.service';
+import { Feedback } from './feedback';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-order-feedback',
