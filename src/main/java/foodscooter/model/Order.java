@@ -10,7 +10,7 @@ public class Order {
 
   private float totalCost;
   private float deliveryFee;
-  private String paymentType;
+  private PaymentType paymentType;
 
   private String location;
 
@@ -31,7 +31,7 @@ public class Order {
     int restaurantId,
     float totalCost,
     float deliveryFee,
-    String paymentType,
+    PaymentType paymentType,
     String location,
     LocalDateTime orderTime,
     LocalDateTime departureTime,
@@ -101,11 +101,11 @@ public class Order {
     this.deliveryFee = deliveryFee;
   }
 
-  public String getPaymentType() {
+  public PaymentType getPaymentType() {
     return paymentType;
   }
 
-  public void setPaymentType(String paymentType) {
+  public void setPaymentType(PaymentType paymentType) {
     this.paymentType = paymentType;
   }
 

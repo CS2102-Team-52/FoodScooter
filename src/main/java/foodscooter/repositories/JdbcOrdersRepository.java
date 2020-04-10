@@ -2,6 +2,7 @@ package foodscooter.repositories;
 
 import foodscooter.api.dtos.orders.CustomerOrderDetails;
 import foodscooter.model.Order;
+import foodscooter.model.PaymentType;
 import foodscooter.repositories.specifications.OrdersRepository;
 import foodscooter.repositories.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class JdbcOrdersRepository implements OrdersRepository {
       customerOrderDetails.getCustomerId(),
       customerOrderDetails.getRestaurantId(),
       customerOrderDetails.getTotalFoodCost(),
-      customerOrderDetails.getPaymentType(),
+      customerOrderDetails.getPaymentType().toString(),
       customerOrderDetails.getLocation(),
       customerOrderDetails.getOrderTime(),
       orderId
@@ -87,7 +88,7 @@ public class JdbcOrdersRepository implements OrdersRepository {
           rs.getInt(4),
           rs.getFloat(5),
           rs.getFloat(6),
-          rs.getString(7),
+          PaymentType.map(rs.getString(7)),
           rs.getString(8),
           orderTime,
           departureTime,

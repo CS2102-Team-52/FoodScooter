@@ -1,5 +1,6 @@
 package foodscooter.repositories;
 
+import foodscooter.api.dtos.reviews.Review;
 import foodscooter.model.Feedback;
 import foodscooter.repositories.specifications.FeedbackRepository;
 import foodscooter.repositories.util.IdGenerator;
@@ -36,13 +37,14 @@ public class JdbcFeedbackRepository implements FeedbackRepository {
   }
 
   @Override
-  public List<String> fetchReviews(int restaurantId) {
+  public List<Review> fetchReviews(int restaurantId) {
     return jdbcTemplate.query(
-      "SELECT review "
-      + "FROM Feedback "
-      + "WHERE rid = ?;",
+      "SELECT O.cid, F.review "
+      + "FROM Orders O JOIN Feedback F ON O.oid = F.oid "
+      + "WHERE F.rid = ?;",
       new Object[] { restaurantId },
-      ((rs, rowNum) -> rs.getString(1))
-    );
+      ((rs, rowNum) -> new Review(
+        rs.getString(1),
+        rs.getString(2))));
   }
 }
