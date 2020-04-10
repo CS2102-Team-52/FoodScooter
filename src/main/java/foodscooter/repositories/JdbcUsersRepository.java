@@ -1,8 +1,9 @@
 package foodscooter.repositories;
 
-import foodscooter.model.UserType;
+import foodscooter.model.users.UserType;
 import foodscooter.model.users.User;
 import foodscooter.repositories.specifications.UsersRepository;
+import foodscooter.repositories.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,37 +14,24 @@ import java.util.Optional;
 @Repository
 public class JdbcUsersRepository implements UsersRepository {
   private JdbcTemplate jdbcTemplate;
+  private IdGenerator idGenerator;
 
   @Autowired
-  public JdbcUsersRepository(JdbcTemplate jdbcTemplate) {
+  public JdbcUsersRepository(
+    JdbcTemplate jdbcTemplate,
+    IdGenerator idGenerator) {
     this.jdbcTemplate = jdbcTemplate;
+    this.idGenerator = idGenerator;
   }
 
   @Override
   public int add(String username, String password, UserType userType) {
-    int userId = generateUserId();
+    int userId = idGenerator.generate("uid", "Users");
     jdbcTemplate.update(
-      "INSERT INTO Users VALUES (?, ?, ?, ?)",
+      "INSERT INTO Users "
+      + " VALUES (?, ?, ?, ?)",
       userId, username, password, userType.toString());
     return userId;
-  }
-
-  private int generateUserId() {
-    int lastId = getPreviousUserId();
-    if (lastId == 0) {
-      return 1;
-    } else {
-      return lastId + 1;
-    }
-  }
-
-  private int getPreviousUserId() {
-    Integer id = jdbcTemplate.queryForObject(
-      "SELECT MAX(uid) FROM Users",
-      ((rs, rowNum) -> rs.getInt(1))
-    );
-    assert id != null; //to suppress NullPointerException warning
-    return id;
   }
 
   @Override
@@ -58,7 +46,9 @@ public class JdbcUsersRepository implements UsersRepository {
   @Override
   public Optional<User> get(String username, String password) {
     return jdbcTemplate.queryForObject(
-      "SELECT * FROM Users U WHERE U.username = ? and U.password = ? ;",
+      "SELECT * "
+      + "FROM Users U "
+      + "WHERE U.username = ? AND U.password = ? ;",
       new Object[] { username, password },
       ((rs, rowNum) -> {
         int userId = rs.getInt(1);
@@ -75,7 +65,9 @@ public class JdbcUsersRepository implements UsersRepository {
   @Override
   public Optional<User> get(int uid) {
     return jdbcTemplate.queryForObject(
-      "SELECT * FROM Users U WHERE U.uid = ? ;",
+      "SELECT * "
+      + "FROM Users U "
+      + "WHERE U.uid = ? ;",
       new Object[] { uid },
       ((rs, rowNum) -> {
         int userId = rs.getInt(1);

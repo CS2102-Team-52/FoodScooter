@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Util } from "../../../../users/util";
-import { FeedbackService } from "../../../common/feedback/feedback.service";
-import { Review } from "../../../../store/review";
+import { Feedback } from "../../../../store/feedback";
 
 /**
  * Provides services to:
@@ -16,18 +15,15 @@ import { Review } from "../../../../store/review";
 export class CustomerFeedbackService {
 
   constructor(
-    private feedbackService: FeedbackService
+    private httpClient: HttpClient
   ) { }
 
-  public rateRider(riderId: number, rating: number) {
-    return this.feedbackService.rateRider(riderId, rating);
+  public submitFeedback(feedback: Feedback) {
+    console.log("sent");
+    return this.httpClient.post(`${Util.baseURL}/feedback`, feedback);
   }
 
-  public reviewFoodItem(review: Review) {
-    return this.feedbackService.reviewFoodItem(review);
-  }
-
-  public fetchReviews(restaurantId: number, foodItemId: number) {
-    return this.feedbackService.fetchReviews(restaurantId, foodItemId);
+  public fetchReviews(restaurantId: number) {
+    return this.httpClient.get(`${Util.baseURL}/restaurants/${restaurantId}/reviews`);
   }
 }

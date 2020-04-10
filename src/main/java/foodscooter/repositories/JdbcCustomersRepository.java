@@ -1,6 +1,5 @@
 package foodscooter.repositories;
 
-import foodscooter.model.users.Customer;
 import foodscooter.repositories.specifications.CustomersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,10 +12,5 @@ public class JdbcCustomersRepository implements CustomersRepository {
   @Autowired
   public JdbcCustomersRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
-  }
-
-  @Override
-  public void add() {
-
   }
 }

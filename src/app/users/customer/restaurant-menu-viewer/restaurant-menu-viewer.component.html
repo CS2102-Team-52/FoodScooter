@@ -1,0 +1,25 @@
+<div id="left">
+  <mat-list *ngFor="let foodItem of foodItems">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          {{foodItem.name}}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        {{foodItem.price}}
+        <mat-divider [vertical]="true"></mat-divider>
+        {{foodItem.category}}
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button (click)="add(foodItem)" color="primary">Add</button>
+        <button mat-raised-button (click)="remove(foodItem)" color="primary">Remove</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-list>
+</div>
+
+<div id="right">
+  <app-restaurant-order-placer>
+  </app-restaurant-order-placer>
+</div>

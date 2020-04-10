@@ -1,0 +1,12 @@
+<mat-list *ngFor="let review of reviews">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        By: {{review.reviewer}}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      {{review.content}}
+    </mat-card-content>
+  </mat-card>
+</mat-list>

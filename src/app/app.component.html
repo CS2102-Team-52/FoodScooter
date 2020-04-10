@@ -1,19 +1,16 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
     <span>FoodScooter</span>
-    <span class="example-fill-remaining-space"></span>
-    <span class="align-center"></span>
-    <span class="example-spacer"></span>
     <button mat-button>About</button>
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>notifications_off</mat-icon>
-        <span>Disable alerts</span>
-      </button>
-    </mat-menu>
+<!--    <button mat-icon-button [matMenuTriggerFor]="menu">-->
+<!--      <mat-icon>more_vert</mat-icon>-->
+<!--    </button>-->
+<!--    <mat-menu #menu="matMenu">-->
+<!--      <button mat-menu-item>-->
+<!--        <mat-icon>notifications_off</mat-icon>-->
+<!--        <span>Disable alerts</span>-->
+<!--      </button>-->
+<!--    </mat-menu>-->
     <button mat-button (click)="logOut()">Logout</button>
   </mat-toolbar-row>
 </mat-toolbar>
