@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RiderComponent } from '../users/rider/rider.component';
 import { LoginComponent } from '../login/login.component';
-import { CustomerComponent } from "../users/customer/customer.component";
-import { RestaurantsViewerComponent } from "../users/customer/restaurants-viewer/restaurants-viewer.component";
-import { RestaurantViewerComponent } from "../users/customer/restaurant-viewer/restaurant-viewer.component";
-import { OrdersViewerComponent } from "../users/customer/orders-viewer/orders-viewer.component";
-import { OrderFeedbackComponent } from "../users/customer/orders-viewer/order-feedback/order-feedback.component";
+import { CustomerComponent } from '../customer/customer.component';
+import { RestaurantsViewerComponent } from '../customer/restaurants/restaurants-viewer/restaurants-viewer.component';
+import { RestaurantViewerComponent } from '../customer/restaurants/restaurant-viewer/restaurant-viewer.component';
+import { OrdersViewerComponent } from '../customer/order-history/orders-viewer/orders-viewer.component';
+import { OrderFeedbackComponent } from '../customer/order-history/order-feedback/order-feedback.component';
+import { ReviewsViewerComponent } from '../customer/review-history/reviews-viewer/reviews-viewer.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -16,7 +17,8 @@ const routes: Routes = [
   {path: 'customers/:customerId/restaurants', component: RestaurantsViewerComponent},
   {path: 'customers/:customerId/restaurants/:restaurantId', component: RestaurantViewerComponent},
   {path: 'customers/:customerId/orders', component: OrdersViewerComponent},
-  {path: 'customers/:customerId/orders/:orderId/review', component: OrderFeedbackComponent}
+  {path: 'customers/:customerId/orders/:orderId/reviews', component: OrderFeedbackComponent},
+  {path: 'customers/:customerId/reviews', component: ReviewsViewerComponent}
 ];
 
 @NgModule({

@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS Restaurants CASCADE;
 DROP TABLE IF EXISTS RestaurantStaff CASCADE;
 DROP TABLE IF EXISTS FoodItems CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
-DROP TABLE IF EXISTS Review CASCADE;
+DROP TABLE IF EXISTS Reviews CASCADE;
 
 DROP TRIGGER IF EXISTS addSpecificUser ON Users;
 
@@ -131,14 +131,12 @@ CREATE TABLE Orders (
     FOREIGN KEY (rid) REFERENCES Restaurants (rid)
 );
 
-/* remove fid */
-CREATE TABLE Review (
+CREATE TABLE Reviews (
     rvid INTEGER PRIMARY KEY,
     rid INTEGER,
-    fid INTEGER,
     oid INTEGER,
     content VARCHAR(1000),
-    FOREIGN KEY (rid, fid) REFERENCES FoodItems (rid, fid),
+    FOREIGN KEY (rid) REFERENCES Restaurants (rid),
     FOREIGN KEY (oid) REFERENCES Orders (oid)
 );
 

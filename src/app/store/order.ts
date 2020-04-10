@@ -1,7 +1,7 @@
 export interface Order {
     id: number;
     restaurantId: number;
-    totalCost: number;
+    foodCost: number;
     deliveryFee: number;
     paymentType: string;
     location: string;

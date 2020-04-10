@@ -21,7 +21,7 @@ public class JdbcRestaurantsRepository implements RestaurantsRepository {
   @Override
   public List<Restaurant> getAll() {
     return jdbcTemplate.query(
-      "SELECT rid, name, description, mininumpurchase "
+      "SELECT rid, name, description, minimumpurchase "
       + "FROM Restaurants;",
       (rs, rowNum) -> new Restaurant(
         rs.getInt(1),

@@ -1,9 +1,9 @@
 package foodscooter.api.controllers;
 
-import foodscooter.model.reviews.Review;
+import foodscooter.model.reviews.FoodReview;
 import foodscooter.model.restaurants.FoodItem;
 import foodscooter.model.restaurants.Restaurant;
-import foodscooter.repositories.JdbcFeedbackRepository;
+import foodscooter.repositories.JdbcReviewsRepository;
 import foodscooter.repositories.JdbcRestaurantsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +15,12 @@ import java.util.List;
 @RestController
 public class RestaurantController extends BaseController {
   private JdbcRestaurantsRepository restaurantsRepository;
-  private JdbcFeedbackRepository feedbackRepository;
+  private JdbcReviewsRepository feedbackRepository;
 
   @Autowired
   public RestaurantController(
     JdbcRestaurantsRepository restaurantsRepository,
-    JdbcFeedbackRepository feedbackRepository) {
+    JdbcReviewsRepository feedbackRepository) {
     this.restaurantsRepository = restaurantsRepository;
     this.feedbackRepository = feedbackRepository;
   }
@@ -36,7 +36,7 @@ public class RestaurantController extends BaseController {
   }
 
   @GetMapping("/restaurants/{restaurantId}/reviews")
-  public List<Review> getReviews(@PathVariable int restaurantId) {
-    return feedbackRepository.fetchReviews(restaurantId);
+  public List<FoodReview> getReviews(@PathVariable int restaurantId) {
+    return feedbackRepository.getReviewsByRestaurant(restaurantId);
   }
 }

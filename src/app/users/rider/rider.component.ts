@@ -3,9 +3,9 @@ import { Order } from '../../store/order';
 import { RiderOrderService } from '../../services/users/rider/order/rider-order.service';
 import { RiderService } from 'src/app/services/users/rider/rider.service';
 import { Rider } from './rider';
-import { LoginService } from 'src/app/services/login/login.service';
+import { LoginService } from 'src/app/login/services/login.service';
 import { RiderType } from "../../store/rider-type.enum";
-import { LoginResponse } from 'src/app/services/login/dto/login-response';
+import { LoginResponse } from 'src/app/login/services/dto/login-response';
 import { SalaryInfo } from 'src/app/store/salary-info';
 
 @Component({
@@ -73,7 +73,7 @@ export class RiderComponent implements OnInit {
       const order1: Order = {
         id: 1,
         restaurantId: -1, //added for compatibility
-        totalCost: 1,
+        foodCost: 1,
         deliveryFee: 1,
         paymentType: "test",
         location: "te",
@@ -89,7 +89,7 @@ export class RiderComponent implements OnInit {
       const order2: Order = {
         id: 2,
         restaurantId: -1, //added for compatibility
-        totalCost: 2,
+        foodCost: 2,
         deliveryFee: 2,
         paymentType: "test",
         location: "te",
