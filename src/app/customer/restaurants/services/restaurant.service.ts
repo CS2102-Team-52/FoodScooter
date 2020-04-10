@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Util } from "../../../users/util";
+import { CustomerOrderDetails } from './dto/customer-order-details';
 
 /**
  * Provides services to:
@@ -19,5 +20,9 @@ export class RestaurantService {
 
   public fetchFoodItems(restaurantId: number) {
     return this.httpClient.get(`${Util.baseURL}/restaurants/${restaurantId}/menu`);
+  }
+
+  public placeOrder(customerId: number, order: CustomerOrderDetails) {
+    return this.httpClient.post(`${Util.baseURL}/orders`, order);
   }
 }

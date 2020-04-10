@@ -2,8 +2,10 @@ package foodscooter.api.controllers;
 
 import foodscooter.model.orders.CustomerOrderDetails;
 import foodscooter.model.orders.Order;
+import foodscooter.model.reviews.CustomerReview;
 import foodscooter.model.reviews.Feedback;
-import foodscooter.repositories.JdbcFeedbackRepository;
+import foodscooter.model.reviews.FoodReview;
+import foodscooter.repositories.JdbcReviewsRepository;
 import foodscooter.repositories.JdbcOrdersRepository;
 import foodscooter.repositories.JdbcRestaurantsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,29 +21,27 @@ import java.util.List;
 
 @RestController
 public class CustomerController extends BaseController {
-  private JdbcOrdersRepository orderRepository;
-  private JdbcRestaurantsRepository restaurantsRepository;
-  private JdbcFeedbackRepository feedbackRepository;
+  private final JdbcOrdersRepository orderRepository;
+  private final JdbcRestaurantsRepository restaurantsRepository;
+  private final JdbcReviewsRepository feedbackRepository;
 
   @Autowired
   public CustomerController(
     JdbcOrdersRepository orderRepository,
     JdbcRestaurantsRepository restaurantsRepository,
-    JdbcFeedbackRepository feedbackRepository) {
+    JdbcReviewsRepository feedbackRepository) {
     this.orderRepository = orderRepository;
     this.restaurantsRepository = restaurantsRepository;
     this.feedbackRepository = feedbackRepository;
   }
 
   @GetMapping("/customers/{customerId}/orders")
-  public List<Order> viewOrders(@PathVariable int customerId) {
+  public List<Order> getOrders(@PathVariable int customerId) {
     return orderRepository.getByCustomer(customerId);
   }
 
-  @PostMapping("/customers/{customerId}/orders")
-  public ResponseEntity<?> placeOrder(
-    @PathVariable int customerId,
-    @RequestBody CustomerOrderDetails customerOrderDetails) {
+  @PostMapping("/orders")
+  public ResponseEntity<?> postOrders(@RequestBody CustomerOrderDetails customerOrderDetails) {
     List<Integer> foodItems = customerOrderDetails.getFoodItems();
     List<Integer> quantity = customerOrderDetails.getQuantity();
 
@@ -52,7 +52,6 @@ public class CustomerController extends BaseController {
     }
 
     orderRepository.add(customerOrderDetails);
-
     return ResponseEntity.ok().build();
   }
 
@@ -63,8 +62,13 @@ public class CustomerController extends BaseController {
   }
 
   @PostMapping("/feedback")
-  public ResponseEntity<?> submitFeedback(@RequestBody Feedback feedback) {
+  public ResponseEntity<?> postFeedback(@RequestBody Feedback feedback) {
     feedbackRepository.add(feedback);
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("customers/{customerId}/reviews")
+  public List<CustomerReview> getReviews(@PathVariable int customerId) {
+    return feedbackRepository.getReviewsByCustomer(customerId);
   }
 }

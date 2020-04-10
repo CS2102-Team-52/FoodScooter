@@ -14,8 +14,8 @@ import java.util.List;
 
 @Repository
 public class JdbcOrdersRepository implements OrdersRepository {
-  private JdbcTemplate jdbcTemplate;
-  private IdGenerator idGenerator;
+  private final JdbcTemplate jdbcTemplate;
+  private final IdGenerator idGenerator;
 
   @Autowired
   public JdbcOrdersRepository(
@@ -37,9 +37,9 @@ public class JdbcOrdersRepository implements OrdersRepository {
       "UPDATE Orders "
       + "SET cid = ?,"
       + "rid = ?,"
-      + "totalCost = ?,"
+      + "foodCost = ?,"
       + "paymentType = ?,"
-      + "location = ?, "
+      + "deliverylocation = ?, "
       + "ordertime = ? "
       + "WHERE oid = ?;",
       customerOrderDetails.getCustomerId(),
@@ -65,20 +65,20 @@ public class JdbcOrdersRepository implements OrdersRepository {
         LocalDateTime restaurantArrivalTime = null;
         LocalDateTime restaurantDepartureTime = null;
         LocalDateTime deliveryTime = null;
-        if (rs.getTimestamp(9) != null) {
-          orderTime = rs.getTimestamp(9).toLocalDateTime();
-        }
         if (rs.getTimestamp(10) != null) {
-          departureTime = rs.getTimestamp(9).toLocalDateTime();
+          orderTime = rs.getTimestamp(10).toLocalDateTime();
         }
         if (rs.getTimestamp(11) != null) {
-          restaurantArrivalTime = rs.getTimestamp(9).toLocalDateTime();
+          departureTime = rs.getTimestamp(11).toLocalDateTime();
         }
         if (rs.getTimestamp(12) != null) {
-          restaurantDepartureTime = rs.getTimestamp(9).toLocalDateTime();
+          restaurantArrivalTime = rs.getTimestamp(12).toLocalDateTime();
         }
         if (rs.getTimestamp(13) != null) {
-          deliveryTime = rs.getTimestamp(9).toLocalDateTime();
+          restaurantDepartureTime = rs.getTimestamp(13).toLocalDateTime();
+        }
+        if (rs.getTimestamp(14) != null) {
+          deliveryTime = rs.getTimestamp(14).toLocalDateTime();
         }
 
         return new Order(
@@ -88,8 +88,9 @@ public class JdbcOrdersRepository implements OrdersRepository {
           rs.getInt(4),
           rs.getFloat(5),
           rs.getFloat(6),
-          PaymentType.map(rs.getString(7)),
-          rs.getString(8),
+          rs.getInt(7),
+          PaymentType.map(rs.getString(8)),
+          rs.getString(9),
           orderTime,
           departureTime,
           restaurantArrivalTime,

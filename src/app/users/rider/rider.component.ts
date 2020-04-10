@@ -34,14 +34,12 @@ export class RiderComponent implements OnInit {
     this.showOrder = false;
     this.showSummary = false;
     this.loginResponse = this.loginService.getLoginResponse();
-    console.log(this.loginResponse);
     this.getRiderType();
     this.getAcceptedOrders();
   }
 
   getRiderType() {
     this.riderService.fetchRiderInfo(this.loginResponse.userId).subscribe((data: any) => {
-      console.log("Hello")
       console.log(data);
       this.rider = data;
     })
@@ -75,7 +73,7 @@ export class RiderComponent implements OnInit {
       const order1: Order = {
         id: 1,
         restaurantId: -1, //added for compatibility
-        totalCost: 1,
+        foodCost: 1,
         deliveryFee: 1,
         paymentType: "test",
         location: "te",
@@ -91,7 +89,7 @@ export class RiderComponent implements OnInit {
       const order2: Order = {
         id: 2,
         restaurantId: -1, //added for compatibility
-        totalCost: 2,
+        foodCost: 2,
         deliveryFee: 2,
         paymentType: "test",
         location: "te",

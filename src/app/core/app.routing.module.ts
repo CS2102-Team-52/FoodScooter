@@ -7,6 +7,7 @@ import { RestaurantsViewerComponent } from '../customer/restaurants/restaurants-
 import { RestaurantViewerComponent } from '../customer/restaurants/restaurant-viewer/restaurant-viewer.component';
 import { OrdersViewerComponent } from '../customer/order-history/orders-viewer/orders-viewer.component';
 import { OrderFeedbackComponent } from '../customer/order-history/order-feedback/order-feedback.component';
+import { ReviewsViewerComponent } from '../customer/review-history/reviews-viewer/reviews-viewer.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'customers/:customerId/restaurants/:restaurantId', component: RestaurantViewerComponent},
   {path: 'customers/:customerId/orders', component: OrdersViewerComponent},
   {path: 'customers/:customerId/orders/:orderId/reviews', component: OrderFeedbackComponent},
+  {path: 'customers/:customerId/reviews', component: ReviewsViewerComponent}
 ];
 
 @NgModule({

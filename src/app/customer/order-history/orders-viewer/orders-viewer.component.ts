@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Order } from '../../../store/order';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustomerOrderService } from '../../restaurants/restaurant-order-placer/services/customer-order.service';
+import { OrderHistoryService } from '../services/order-history.service';
 
 @Component({
   selector: 'app-orders-viewer',
@@ -14,7 +14,7 @@ export class OrdersViewerComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private orderService: CustomerOrderService
+    private orderHistoryService: OrderHistoryService
   ) { }
 
   ngOnInit(): void {
@@ -23,7 +23,7 @@ export class OrdersViewerComponent implements OnInit {
 
   public fetchOrders() {
     const customerId = Number(this.activatedRoute.snapshot.paramMap.get('customerId'));
-    this.orderService.fetchOrders(customerId).subscribe(
+    this.orderHistoryService.fetchOrders(customerId).subscribe(
       (data: Order[]) => {
         console.log(data);
         this.orders = data;
@@ -36,7 +36,7 @@ export class OrdersViewerComponent implements OnInit {
   }
 
   public deleteOrder(orderId: number) {
-    this.orderService.deleteOrder(orderId).subscribe(
+    this.orderHistoryService.deleteOrder(orderId).subscribe(
       _ => this.orders = this.orders.filter(order => order.id !== orderId)
     );
   }

@@ -36,7 +36,6 @@ export class LoginService {
   }
 
   setLoginResponse(loginResponse: LoginResponse) {
-    console.log(loginResponse);
     this.loginResponse = loginResponse;
   }
 

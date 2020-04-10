@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomerService } from "./services/customer.service";
 import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
-  styleUrls: ['./customer.component.css'],
-  providers: [CustomerService]
+  styleUrls: ['./customer.component.css']
 })
 export class CustomerComponent implements OnInit {
   id: number;

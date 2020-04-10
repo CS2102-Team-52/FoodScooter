@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomerFeedbackService } from '../../order-history/services/customer-feedback.service';
+import { OrderHistoryService } from '../../order-history/services/order-history.service';
 import { ActivatedRoute } from '@angular/router';
-import { Review } from '../../review-history/review';
+import { FoodReview } from './food-review';
 
 @Component({
   selector: 'app-restaurant-reviews-viewer',
@@ -9,11 +9,11 @@ import { Review } from '../../review-history/review';
   styleUrls: ['./restaurant-reviews-viewer.component.css']
 })
 export class RestaurantReviewsViewerComponent implements OnInit {
-  reviews: Review[];
+  foodReviews: FoodReview[];
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private customerFeedbackService: CustomerFeedbackService
+    private customerFeedbackService: OrderHistoryService
   ) { }
 
   ngOnInit(): void {
@@ -23,9 +23,9 @@ export class RestaurantReviewsViewerComponent implements OnInit {
   public fetchReviews() {
     const restaurantId = Number(this.activatedRoute.snapshot.paramMap.get('restaurantId'));
     this.customerFeedbackService.fetchReviews(restaurantId).subscribe(
-      (data: Review[]) => {
+      (data: FoodReview[]) => {
         console.log(data);
-        this.reviews = data;
+        this.foodReviews = data;
       }
     );
   }

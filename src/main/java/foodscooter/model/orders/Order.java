@@ -8,11 +8,12 @@ public class Order {
   private int riderId;
   private int restaurantId;
 
-  private float totalCost;
+  private float foodCost;
   private float deliveryFee;
+  private int rewardPointsUsed;
   private PaymentType paymentType;
 
-  private String location;
+  private String deliveryLocation;
 
   private LocalDateTime orderTime;
   private LocalDateTime departureTime;
@@ -29,10 +30,11 @@ public class Order {
     int customerId,
     int riderId,
     int restaurantId,
-    float totalCost,
+    float foodCost,
     float deliveryFee,
+    int rewardPointsUsed,
     PaymentType paymentType,
-    String location,
+    String deliveryLocation,
     LocalDateTime orderTime,
     LocalDateTime departureTime,
     LocalDateTime restaurantArrivalTime,
@@ -42,10 +44,11 @@ public class Order {
     this.customerId = customerId;
     this.riderId = riderId;
     this.restaurantId = restaurantId;
-    this.totalCost = totalCost;
+    this.foodCost = foodCost;
     this.deliveryFee = deliveryFee;
+    this.rewardPointsUsed = rewardPointsUsed;
     this.paymentType = paymentType;
-    this.location = location;
+    this.deliveryLocation = deliveryLocation;
     this.orderTime = orderTime;
     this.departureTime = departureTime;
     this.restaurantArrivalTime = restaurantArrivalTime;
@@ -85,12 +88,12 @@ public class Order {
     this.restaurantId = restaurantId;
   }
 
-  public float getTotalCost() {
-    return totalCost;
+  public float getFoodCost() {
+    return foodCost;
   }
 
-  public void setTotalCost(float totalCost) {
-    this.totalCost = totalCost;
+  public void setFoodCost(float foodCost) {
+    this.foodCost = foodCost;
   }
 
   public float getDeliveryFee() {
@@ -101,6 +104,14 @@ public class Order {
     this.deliveryFee = deliveryFee;
   }
 
+  public int getRewardPointsUsed() {
+    return rewardPointsUsed;
+  }
+
+  public void setRewardPointsUsed(int rewardPointsUsed) {
+    this.rewardPointsUsed = rewardPointsUsed;
+  }
+
   public PaymentType getPaymentType() {
     return paymentType;
   }
@@ -109,12 +120,12 @@ public class Order {
     this.paymentType = paymentType;
   }
 
-  public String getLocation() {
-    return location;
+  public String getDeliveryLocation() {
+    return deliveryLocation;
   }
 
-  public void setLocation(String location) {
-    this.location = location;
+  public void setDeliveryLocation(String deliveryLocation) {
+    this.deliveryLocation = deliveryLocation;
   }
 
   public LocalDateTime getOrderTime() {

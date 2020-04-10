@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CustomerFeedbackService } from '../services/customer-feedback.service';
+import { OrderHistoryService } from '../services/order-history.service';
 import { Feedback } from './feedback';
 import { ActivatedRoute } from '@angular/router';
 
@@ -19,7 +19,7 @@ export class OrderFeedbackComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private customerFeedbackService: CustomerFeedbackService
+    private orderHistoryService: OrderHistoryService
   ) {
     this.ratingChoices = [1, 2, 3, 4, 5];
   }
@@ -35,8 +35,6 @@ export class OrderFeedbackComponent implements OnInit {
       rating: this.rating,
       review: this.review
     };
-    this.customerFeedbackService.submitFeedback(feedback).subscribe(
-      _ => {}
-    );
+    this.orderHistoryService.submitFeedback(feedback).subscribe(_ => {});
   }
 }

@@ -1,4 +1,4 @@
-import { PaymentType } from "../../../../../store/payment-type.enum";
+import { PaymentType } from "../../../../store/payment-type.enum";
 
 export interface CustomerOrderDetails {
   customerId: number,

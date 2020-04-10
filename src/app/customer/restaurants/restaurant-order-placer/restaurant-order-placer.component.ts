@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FoodItem } from '../../../store/food-item';
-import { CustomerOrderDetails } from './services/dto/customer-order-details';
-import { CustomerOrderService } from './services/customer-order.service';
+import { CustomerOrderDetails } from '../services/dto/customer-order-details';
 import { ActivatedRoute } from '@angular/router';
 import { PaymentType } from '../../../store/payment-type.enum';
+import { RestaurantService } from '../services/restaurant.service';
 
 @Component({
   selector: 'app-restaurant-order-placer',
@@ -17,7 +17,7 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private orderService: CustomerOrderService
+    private restaurantService: RestaurantService
   ) {
     this.paymentTypes = Object.keys(PaymentType);
     this.foodItemsInOrder = [];
@@ -40,7 +40,7 @@ export class RestaurantOrderPlacerComponent implements OnInit {
     const order = this.constructOrder();
     console.log(order);
     const customerId = Number(this.activatedRoute.snapshot.paramMap.get('customerId'));
-    this.orderService.placeOrder(customerId, order).subscribe(_ => {});
+    this.restaurantService.placeOrder(customerId, order).subscribe(_ => {});
   }
 
   private constructOrder() {

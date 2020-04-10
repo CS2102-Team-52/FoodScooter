@@ -12,14 +12,21 @@ import { Feedback } from "../order-feedback/feedback";
 @Injectable({
   providedIn: 'root'
 })
-export class CustomerFeedbackService {
+export class OrderHistoryService {
 
   constructor(
     private httpClient: HttpClient
   ) { }
 
+  public fetchOrders(customerId: number) {
+    return this.httpClient.get(`${Util.baseURL}/customers/${customerId}/orders`);
+  }
+
+  public deleteOrder(orderId: number) {
+    return this.httpClient.delete(`${Util.baseURL}/orders/${orderId}`);
+  }
+
   public submitFeedback(feedback: Feedback) {
-    console.log("sent");
     return this.httpClient.post(`${Util.baseURL}/feedback`, feedback);
   }
 
