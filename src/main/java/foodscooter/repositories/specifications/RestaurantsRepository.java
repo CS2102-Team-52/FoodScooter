@@ -1,7 +1,7 @@
 package foodscooter.repositories.specifications;
 
-import foodscooter.model.FoodItem;
-import foodscooter.model.Restaurant;
+import foodscooter.model.restaurants.FoodItem;
+import foodscooter.model.restaurants.Restaurant;
 
 import java.util.List;
 

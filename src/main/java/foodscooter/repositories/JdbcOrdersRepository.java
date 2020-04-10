@@ -1,8 +1,8 @@
 package foodscooter.repositories;
 
-import foodscooter.api.dtos.orders.CustomerOrderDetails;
-import foodscooter.model.Order;
-import foodscooter.model.PaymentType;
+import foodscooter.model.orders.CustomerOrderDetails;
+import foodscooter.model.orders.Order;
+import foodscooter.model.orders.PaymentType;
 import foodscooter.repositories.specifications.OrdersRepository;
 import foodscooter.repositories.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;

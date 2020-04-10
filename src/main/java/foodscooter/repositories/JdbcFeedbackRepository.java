@@ -1,7 +1,7 @@
 package foodscooter.repositories;
 
-import foodscooter.api.dtos.reviews.Review;
-import foodscooter.model.Feedback;
+import foodscooter.model.reviews.Review;
+import foodscooter.model.reviews.Feedback;
 import foodscooter.repositories.specifications.FeedbackRepository;
 import foodscooter.repositories.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;

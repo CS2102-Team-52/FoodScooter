@@ -1,7 +1,7 @@
 package foodscooter.repositories.specifications;
 
-import foodscooter.api.dtos.orders.CustomerOrderDetails;
-import foodscooter.model.Order;
+import foodscooter.model.orders.CustomerOrderDetails;
+import foodscooter.model.orders.Order;
 
 import java.util.List;
 

@@ -1,6 +1,7 @@
-package foodscooter.model.users;
+package foodscooter.model.users.customer;
 
-import foodscooter.model.UserType;
+import foodscooter.model.users.UserType;
+import foodscooter.model.users.User;
 
 import java.util.List;
 

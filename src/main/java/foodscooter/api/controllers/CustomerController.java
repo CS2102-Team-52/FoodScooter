@@ -1,8 +1,8 @@
 package foodscooter.api.controllers;
 
-import foodscooter.api.dtos.orders.CustomerOrderDetails;
-import foodscooter.model.Order;
-import foodscooter.model.Feedback;
+import foodscooter.model.orders.CustomerOrderDetails;
+import foodscooter.model.orders.Order;
+import foodscooter.model.reviews.Feedback;
 import foodscooter.repositories.JdbcFeedbackRepository;
 import foodscooter.repositories.JdbcOrdersRepository;
 import foodscooter.repositories.JdbcRestaurantsRepository;

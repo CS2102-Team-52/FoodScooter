@@ -1,4 +1,4 @@
-package foodscooter.model.rider;
+package foodscooter.model.users.rider;
 
 public class SalaryInfo {
   private int numOfOrder;

@@ -1,4 +1,4 @@
-package foodscooter.model;
+package foodscooter.model.orders;
 
 public enum PaymentType {
   CASH("Cash"),

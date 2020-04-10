@@ -1,6 +1,4 @@
-package foodscooter.api.dtos.orders;
-
-import foodscooter.model.PaymentType;
+package foodscooter.model.orders;
 
 import java.time.LocalDateTime;
 import java.util.List;

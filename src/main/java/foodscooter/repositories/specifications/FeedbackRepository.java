@@ -1,7 +1,7 @@
 package foodscooter.repositories.specifications;
 
-import foodscooter.api.dtos.reviews.Review;
-import foodscooter.model.Feedback;
+import foodscooter.model.reviews.Review;
+import foodscooter.model.reviews.Feedback;
 
 import java.util.List;
 

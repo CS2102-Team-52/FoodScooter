@@ -1,17 +1,13 @@
 package foodscooter.api.dtos.login;
 
-import foodscooter.model.UserType;
-import foodscooter.model.rider.RiderType;
+import foodscooter.model.users.UserType;
+import foodscooter.model.users.rider.RiderType;
 
 public class AccountDetails {
   private String username;
   private String password;
   private UserType userType;
   private RiderType riderType;
-
-  public AccountDetails() {
-
-  }
 
   public String getUsername() {
     return username;

@@ -1,17 +1,13 @@
 package foodscooter.api.dtos.login;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import foodscooter.model.UserType;
+import foodscooter.model.users.UserType;
 
 public class LoginResponse {
   @JsonProperty("isAuthenticated")
   private boolean isAuthenticated;
   private UserType userType;
   private int userId;
-
-  public LoginResponse() {
-
-  }
 
   public LoginResponse(boolean isAuthenticated, UserType userType, int userId) {
     this.isAuthenticated = isAuthenticated;

@@ -1,6 +1,6 @@
 package foodscooter.repositories;
 
-import foodscooter.model.UserType;
+import foodscooter.model.users.UserType;
 import foodscooter.model.users.User;
 import foodscooter.repositories.specifications.UsersRepository;
 import foodscooter.repositories.util.IdGenerator;

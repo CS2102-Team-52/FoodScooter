@@ -1,6 +1,6 @@
 package foodscooter.repositories.specifications;
 
-import foodscooter.model.UserType;
+import foodscooter.model.users.UserType;
 import foodscooter.model.users.User;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package foodscooter.model;
+package foodscooter.model.users;
 
 public enum UserType {
   DELIVERY_RIDER("Delivery Rider"),

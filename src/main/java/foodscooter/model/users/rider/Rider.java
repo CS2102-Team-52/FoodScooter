@@ -1,7 +1,7 @@
-package foodscooter.model.users;
+package foodscooter.model.users.rider;
 
-import foodscooter.model.UserType;
-import foodscooter.model.rider.RiderType;
+import foodscooter.model.users.UserType;
+import foodscooter.model.users.User;
 
 public class Rider extends User {
   private RiderType riderType;

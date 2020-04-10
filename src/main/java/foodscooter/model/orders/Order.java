@@ -1,4 +1,4 @@
-package foodscooter.model;
+package foodscooter.model.orders;
 
 import java.time.LocalDateTime;
 

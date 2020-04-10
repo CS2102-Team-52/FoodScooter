@@ -1,4 +1,4 @@
-package foodscooter.model;
+package foodscooter.model.restaurants;
 
 public class FoodItem {
   private int id;

@@ -1,4 +1,4 @@
-package foodscooter.model;
+package foodscooter.model.reviews;
 
 public class Feedback {
   private int id;

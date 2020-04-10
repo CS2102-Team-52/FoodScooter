@@ -1,4 +1,4 @@
-package foodscooter.api.dtos.reviews;
+package foodscooter.model.reviews;
 
 public class Review {
   private String reviewer;

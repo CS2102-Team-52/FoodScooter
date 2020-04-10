@@ -1,7 +1,7 @@
 package foodscooter.repositories;
 
-import foodscooter.model.FoodItem;
-import foodscooter.model.Restaurant;
+import foodscooter.model.restaurants.FoodItem;
+import foodscooter.model.restaurants.Restaurant;
 import foodscooter.repositories.specifications.RestaurantsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,19 +1,13 @@
 package foodscooter.api.controllers;
 
-import foodscooter.api.dtos.reviews.Review;
-import foodscooter.model.FoodItem;
-import foodscooter.model.Order;
-import foodscooter.model.Restaurant;
+import foodscooter.model.reviews.Review;
+import foodscooter.model.restaurants.FoodItem;
+import foodscooter.model.restaurants.Restaurant;
 import foodscooter.repositories.JdbcFeedbackRepository;
-import foodscooter.repositories.JdbcOrdersRepository;
 import foodscooter.repositories.JdbcRestaurantsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
