@@ -7,7 +7,7 @@ import java.util.List;
 public class CustomerOrderDetails {
   private int customerId;
   private int restaurantId;
-  private BigDecimal totalFoodCost;
+  private BigDecimal foodCost;
   private int rewardPointsUsed;
   private PaymentType paymentType;
   private String deliveryLocation;
@@ -32,12 +32,12 @@ public class CustomerOrderDetails {
     this.restaurantId = restaurantId;
   }
 
-  public BigDecimal getTotalFoodCost() {
-    return totalFoodCost;
+  public BigDecimal getFoodCost() {
+    return foodCost;
   }
 
-  public void setTotalFoodCost(BigDecimal totalFoodCost) {
-    this.totalFoodCost = totalFoodCost;
+  public void setFoodCost(BigDecimal foodCost) {
+    this.foodCost = foodCost;
   }
 
   public int getRewardPointsUsed() {

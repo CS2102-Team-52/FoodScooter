@@ -16,7 +16,6 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class RestaurantOrderPlacerComponent implements OnInit {
   foodItemsInOrder: FoodItem[];
-  rewardPointsUsed: number;
   rewardPoints: number;
   recentDeliveryLocations: string[];
   paymentTypes: string[];
@@ -89,8 +88,8 @@ export class RestaurantOrderPlacerComponent implements OnInit {
     const customerOrderDetails: CustomerOrderDetails = {
       customerId: this.customerId,
       restaurantId: this.restaurantId,
-      totalFoodCost: totalFoodCost,
-      rewardPointsUsed: this.rewardPointsUsed,
+      foodCost: totalFoodCost,
+      rewardPointsUsed: this.rewardPoints,
       paymentType: this.paymentType,
       deliveryLocation: this.myControl.value,
       orderTime: new Date(),

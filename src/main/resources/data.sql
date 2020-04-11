@@ -145,9 +145,11 @@ CREATE OR REPLACE FUNCTION addSpecificUser() RETURNS TRIGGER AS $$
     BEGIN
         CASE NEW.type
             WHEN 'Customer' THEN
-                RAISE NOTICE 'Customer';
                 INSERT INTO Customers
                 VALUES(NEW.uid);
+                UPDATE Customers
+                SET rewardpoints = 0
+                WHERE cid = NEW.uid;
             WHEN 'Delivery Rider' THEN
                 INSERT INTO DeliveryRiders
                 VALUES(NEW.uid);
@@ -166,15 +168,17 @@ CREATE TRIGGER addSpecificUserTrigger
 
 CREATE OR REPLACE FUNCTION updateRewardPoints() RETURNS TRIGGER AS $$
     BEGIN
+        RAISE NOTICE '%', NEW.foodcost;
+        RAISE NOTICE '%', NEW.rewardpointsused;
         UPDATE Customers
-        SET rewardpoints = NEW.foodCost - NEW.rewardPointsUsed
+        SET rewardpoints = rewardpoints + NEW.foodcost - NEW.rewardpointsused
         WHERE cid = NEW.cid;
         RETURN NEW;
     END;
 $$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER updateRewardPointsTrigger
-    AFTER INSERT
+    AFTER UPDATE
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateRewardPoints();
@@ -202,13 +206,3 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
 INSERT INTO Users
 VALUES (1, 'customer', 'customer', 'Customer'),
        (2, 'rider', 'rider', 'Delivery Rider');
-
--- INSERT INTO Orders
--- VALUES (1, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
---         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
---        (2, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
---         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
---        (3, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
---         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
---        (4, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
---         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06');

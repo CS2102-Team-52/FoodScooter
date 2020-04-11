@@ -45,7 +45,7 @@ public class JdbcOrdersRepository implements OrdersRepository {
       + "WHERE oid = ?;",
       customerOrderDetails.getCustomerId(),
       customerOrderDetails.getRestaurantId(),
-      customerOrderDetails.getTotalFoodCost(),
+      customerOrderDetails.getFoodCost(),
       customerOrderDetails.getRewardPointsUsed(),
       customerOrderDetails.getPaymentType().toString(),
       customerOrderDetails.getDeliveryLocation(),
