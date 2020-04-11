@@ -181,7 +181,7 @@ CREATE OR REPLACE FUNCTION checkAcceptedOrders() RETURNS TRIGGER AS $$
 			WHERE O.drid = NEW.drid AND O.deliveryTime IS NULL AND O.oid <> NEW.oid;
         IF aoid IS NOT NULL THEN 
 			RAISE exception '% has already accepted %', NEW.drid, aoid;
-		END IF
+		END IF;
 		RETURN NULL;
     END;
 $$ LANGUAGE PLPGSQL;
@@ -198,9 +198,9 @@ CREATE TRIGGER hashPasswordTrigger
     FOR EACH ROW 
 	EXECUTE FUNCTION hashPassword();
 
-CREATE TRIGGER checkAcceptedOrdersTrigger
+CREATE CONSTRAINT TRIGGER checkAcceptedOrdersTrigger
     AFTER UPDATE OF drid OR INSERT 
-	ON Orders
+	ON Orders 
 	DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW 
 	EXECUTE FUNCTION checkAcceptedOrders();
