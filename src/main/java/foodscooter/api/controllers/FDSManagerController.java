@@ -1,6 +1,7 @@
 package foodscooter.api.controllers;
 
 import foodscooter.model.summaries.CustomerSummary;
+import foodscooter.model.summaries.GeneralSummary;
 import foodscooter.model.summaries.LocationSummary;
 import foodscooter.model.summaries.RiderSummary;
 import foodscooter.repositories.JdbcSummaryRepository;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,14 +23,9 @@ public class FDSManagerController extends BaseController {
     this.summaryRepository = summaryRepository;
   }
 
-  // Example: .../summaryInfo/2020/05 to retrieve May 2020 summary
-  @GetMapping("/summaryInfo/{year}/{month}")
-  public List<Object> getSummaryInfoGeneral(@PathVariable int year, @PathVariable int month) {
-    List<Object> result = new ArrayList<Object>();
-    result.add(summaryRepository.getNewCustomers(year, month));
-    result.add(summaryRepository.getTotalOrders(year, month));
-    result.add(summaryRepository.getTotalCostAllOrders(year, month));
-    return result;
+  @GetMapping("/summaryInfo/general")
+  public List<GeneralSummary> getSummaryInfoGeneral() {
+    return summaryRepository.getGeneralSummary();
   }
 
   @GetMapping("/summaryInfo/customers")

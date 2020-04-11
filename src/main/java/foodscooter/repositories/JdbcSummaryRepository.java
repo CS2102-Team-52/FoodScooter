@@ -3,7 +3,10 @@ package foodscooter.repositories;
 import java.util.List;
 
 import foodscooter.model.summaries.CustomerSummary;
+import foodscooter.model.summaries.GeneralSummary;
 import foodscooter.model.summaries.LocationSummary;
+import foodscooter.model.summaries.PromotionSummary;
+import foodscooter.model.summaries.RestaurantSummary;
 import foodscooter.model.summaries.RiderSummary;
 import foodscooter.repositories.specifications.SummaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,28 +24,17 @@ public class JdbcSummaryRepository implements SummaryRepository {
 
   //TODO: add account creation date column to Users table
   @Override
-  public int getNewCustomers(int year, int month) {
-    return 0;
-  }
-
-  @Override
-  public int getTotalOrders(int year, int month) {
-    return jdbcTemplate.queryForObject(
-      "SELECT COUNT(oid) FROM Orders "
-        + "WHERE EXTRACT(year FROM orderTime) = ? "
-        + "AND EXTRACT(month FROM orderTime) = ?;",
-      new Object[]{ year, month },
-      Integer.class);
-  }
-
-  @Override
-  public String getTotalCostAllOrders(int year, int month) {
-    return jdbcTemplate.queryForObject(
-      "SELECT COUNT(oid) FROM Orders "
-        + "WHERE EXTRACT(year FROM orderTime) = ? "
-        + "AND EXTRACT(month FROM orderTime) = ?;",
-      new Object[]{ year, month },
-      String.class);
+  public List<GeneralSummary> getGeneralSummary() {
+    String sql = "SELECT date_trunc('month', orderTime) as month, COUNT(oid), SUM(totalCost) "
+      + "FROM Orders "
+      + "GROUP BY month;";
+    return jdbcTemplate.query(
+      sql,
+      (rs, rowNum) -> new GeneralSummary(
+        rs.getTimestamp(1).toLocalDateTime(),
+        rs.getInt(2),
+        rs.getString(3)
+      ));
   }
 
   @Override
@@ -98,4 +90,44 @@ public class JdbcSummaryRepository implements SummaryRepository {
         rs.getInt(8)
       ));
   }
+
+  @Override
+  public List<RestaurantSummary> getRestaurantSummary(int rid) {
+    String sql = "SELECT date_trunc('month', orderTime) as month, COUNT(oid) as numOrders, SUM(foodCost) as totalCost "
+      + "FROM Orders "
+      + "WHERE rid = ? "
+      + "GROUP BY month;";
+    return jdbcTemplate.query(
+      sql,
+      new Object[]{ rid },
+      (rs, rowNum) -> new RestaurantSummary(
+        rs.getTimestamp(1).toLocalDateTime(),
+        rs.getInt(2),
+        rs.getInt(3)
+      ));
+  }
+
+  @Override
+  public List<PromotionSummary> getPromotionSummary(int rid) {
+    String sql = "SELECT Promotions.pid, age(endDate, startDate) as duration, promotionType, discount, "
+      + "(SELECT COUNT(oid) as avgOrdersPerDay "
+      + "FROM Orders "
+      + "WHERE orderTime BETWEEN startDate AND endDate) "
+      + "FROM Restaurants "
+      + "LEFT JOIN Promotions "
+      + "ON Restaurants.pid = Promotions.pid "
+      + "WHERE rid = ?;";
+    return jdbcTemplate.query(
+      sql,
+      new Object[]{ rid },
+      (rs, rowNum) -> new PromotionSummary(
+        rs.getInt(1),
+        rs.getTimestamp(2).toLocalDateTime(),
+        rs.getString(3),
+        rs.getFloat(4),
+        rs.getFloat(5)
+      ));
+  }
+
+
 }
