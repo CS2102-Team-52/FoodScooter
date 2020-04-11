@@ -1,0 +1,16 @@
+<form class="example-form">
+  <mat-form-field class="example-full-width">
+    <mat-label>Username</mat-label>
+    <input matInput placeholder="Username" name="username" [(ngModel)]="customerProfile.username">
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-label>Password</mat-label>
+    <input matInput placeholder="Password" name="password" [(ngModel)]="customerProfile.password">
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-label>Credit Card Number</mat-label>
+    <input matInput placeholder="Credit Card Number" name="creditcardnumber" [(ngModel)]="customerProfile.creditCardNumber">
+  </mat-form-field>
+</form>
+
+<button mat-raised-button (click)="putDetails()" color="primary">Update</button>

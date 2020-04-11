@@ -3,23 +3,47 @@
     <mat-card-title>
       Your Order
     </mat-card-title>
-    <mat-card-content>
-      <mat-list *ngFor="let foodItem of foodItemsInOrder">
-        <mat-list-item>
-          {{foodItem.name}}
-        </mat-list-item>
-      </mat-list>
-      <mat-form-field>
-        <mat-label>Payment Type</mat-label>
-        <mat-select [(value)]="paymentType" required>
-          <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType">
-            {{paymentType | pretty}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button (click)="sendOrder()" color="primary">Send Order</button>
-    </mat-card-actions>
   </mat-card-header>
+
+  <mat-card-content>
+    <mat-list *ngFor="let foodItem of foodItemsInOrder">
+      <mat-list-item>
+        {{foodItem.name}}
+      </mat-list-item>
+    </mat-list>
+
+    <mat-form-field>
+      <mat-label>Payment Type</mat-label>
+      <mat-select [(value)]="paymentType" required>
+        <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType">
+          {{paymentType | pretty}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input type="text"
+             placeholder="Delivery Location"
+             aria-label="Number"
+             matInput
+             [formControl]="myControl"
+             [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </mat-card-content>
+
+  <mat-slider
+    thumbLabel
+    tickInterval="1000"
+    min="0"
+    [max]="rewardPoints">
+  </mat-slider>
+
+  <mat-card-actions>
+    <button mat-raised-button (click)="sendOrder()" color="primary">Send Order</button>
+  </mat-card-actions>
 </mat-card>

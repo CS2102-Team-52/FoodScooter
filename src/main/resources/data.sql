@@ -14,7 +14,8 @@ DROP TABLE IF EXISTS FoodItems CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
 
-DROP TRIGGER IF EXISTS addSpecificUser ON Users;
+DROP TRIGGER IF EXISTS addSpecificUserTrigger ON Users;
+DROP TRIGGER IF EXISTS updateCustomerRewardPointsTrigger ON Orders;
 
 CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
@@ -25,8 +26,8 @@ CREATE TABLE Users (
 
 CREATE TABLE DeliveryRiders (
     drid INTEGER PRIMARY KEY,
-    salary MONEY,
-    rating INTEGER, /* NEW */
+    salary INTEGER,
+    rating NUMERIC(2,1),
     FOREIGN KEY (drid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
@@ -66,7 +67,7 @@ CREATE TABLE Customers (
     cid INTEGER PRIMARY KEY,
     creditCardNumber VARCHAR(16),
     rewardPoints INTEGER,
-    recentPlaces VARCHAR(100) ARRAY,
+    recentDeliveryLocations VARCHAR(100) ARRAY,
     FOREIGN KEY (cid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
@@ -80,7 +81,7 @@ CREATE TABLE Promotions (
     startDate TIMESTAMP,
     endDate TIMESTAMP,
     promotionType VARCHAR(100),
-    discount NUMERIC
+    discount INTEGER
 );
 
 /* pid = id of promotion offered by restaurant */
@@ -88,7 +89,7 @@ CREATE TABLE Restaurants (
     rid INTEGER PRIMARY KEY,
     name VARCHAR(100),
     description VARCHAR(1000),
-    minimumPurchase MONEY,
+    minimumPurchase NUMERIC(6, 2),
     pid INTEGER,
     FOREIGN KEY (pid) REFERENCES Promotions (pid)
 );
@@ -105,8 +106,8 @@ CREATE TABLE FoodItems (
     rid INTEGER,
     name VARCHAR(100),
     category VARCHAR(100),
-    price MONEY,
-    dailyLimit INTEGER,
+    price NUMERIC(6, 2),
+    availability INTEGER,
     PRIMARY KEY (fid, rid),
     FOREIGN KEY (rid) REFERENCES Restaurants (rid) ON DELETE CASCADE
 );
@@ -116,8 +117,8 @@ CREATE TABLE Orders (
     cid INTEGER,
     drid INTEGER,
     rid INTEGER,
-    foodCost MONEY,
-    deliveryFee MONEY,
+    foodCost NUMERIC(6, 2),
+    deliveryFee NUMERIC(6, 2),
     rewardPointsUsed INTEGER,
     paymentType VARCHAR(100),
     deliveryLocation VARCHAR(100),
@@ -146,6 +147,9 @@ CREATE OR REPLACE FUNCTION addSpecificUser() RETURNS TRIGGER AS $$
             WHEN 'Customer' THEN
                 INSERT INTO Customers
                 VALUES(NEW.uid);
+                UPDATE Customers
+                SET rewardpoints = 0
+                WHERE cid = NEW.uid;
             WHEN 'Delivery Rider' THEN
                 INSERT INTO DeliveryRiders
                 VALUES(NEW.uid);
@@ -162,6 +166,20 @@ CREATE TRIGGER addSpecificUserTrigger
     FOR EACH ROW
     EXECUTE FUNCTION addSpecificUser();
 
+CREATE OR REPLACE FUNCTION updateCustomerRewardPoints() RETURNS TRIGGER AS $$
+    BEGIN
+        UPDATE Customers
+        SET rewardpoints = rewardpoints + NEW.foodcost - NEW.rewardpointsused
+        WHERE cid = NEW.cid;
+        RETURN NEW;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER updateCustomerRewardPointsTrigger
+    AFTER UPDATE
+    ON Orders
+    FOR EACH ROW
+    EXECUTE FUNCTION updateCustomerRewardPoints();
 
 INSERT INTO Restaurants
 VALUES (1, 'Ikea', 'A Swedish furniture company that is also known for their meatballs.', 10),
@@ -186,13 +204,3 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
 INSERT INTO Users
 VALUES (1, 'customer', 'customer', 'Customer'),
        (2, 'rider', 'rider', 'Delivery Rider');
-
--- INSERT INTO Orders
--- VALUES (1, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
---         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
---        (2, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
---         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
---        (3, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
---         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06'),
---        (4, 1, 2, 2, 100, 10, 'Credit Card', 'Seoul Good',
---         '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06', '2020-04-01 04:05:06');

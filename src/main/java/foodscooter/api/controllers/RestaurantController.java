@@ -14,8 +14,8 @@ import java.util.List;
 
 @RestController
 public class RestaurantController extends BaseController {
-  private JdbcRestaurantsRepository restaurantsRepository;
-  private JdbcReviewsRepository feedbackRepository;
+  private final JdbcRestaurantsRepository restaurantsRepository;
+  private final JdbcReviewsRepository feedbackRepository;
 
   @Autowired
   public RestaurantController(
