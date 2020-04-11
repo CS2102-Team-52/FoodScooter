@@ -8,6 +8,8 @@ import foodscooter.model.users.rider.SalaryInfo;
 import foodscooter.model.users.rider.Rider;
 import foodscooter.repositories.JdbcRidersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -150,9 +152,13 @@ public class RiderController extends BaseController {
   }
 
   @PutMapping("/rider/{drid}/acceptOrder")
-  public List<Order> acceptOrder(@PathVariable int drid, @RequestBody int oid) {
-    riderRepository.acceptOrder(drid, oid);
-    return riderRepository.getAcceptedOrders(drid);
+  public ResponseEntity<?> acceptOrder(@PathVariable int drid, @RequestBody int oid) {
+    try {
+      riderRepository.acceptOrder(drid, oid);
+    } catch (DataAccessException e) {
+      return ResponseEntity.status(409).body(e.getMessage());
+    }
+    return ResponseEntity.ok(riderRepository.getAcceptedOrders(drid));
   }
 
   @PutMapping("/rider/{drid}/doneOrder")

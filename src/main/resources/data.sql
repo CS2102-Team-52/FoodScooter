@@ -16,6 +16,9 @@ DROP TABLE IF EXISTS Reviews CASCADE;
 
 DROP TRIGGER IF EXISTS addSpecificUserTrigger ON Users;
 DROP TRIGGER IF EXISTS hashPasswordTrigger ON Users;
+DROP TRIGGER IF EXISTS checkAcceptedOrdersTrigger ON Orders CASCADE;
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
@@ -157,15 +160,24 @@ CREATE OR REPLACE FUNCTION addSpecificUser() RETURNS TRIGGER AS $$
     END;
 $$ LANGUAGE PLPGSQL;
 
-/*
-Need to run this command in psql as superuser: CREATE EXTENSION pgcrypto;
-To use the digest function.
-*/
-
 CREATE OR REPLACE FUNCTION hashPassword() RETURNS TRIGGER AS $$
     BEGIN
         NEW.password = digest(NEW.password, 'sha1');
 		RETURN NEW;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION checkAcceptedOrders() RETURNS TRIGGER AS $$
+	DECLARE
+		aoid INTEGER;
+    BEGIN
+		SELECT O.oid INTO aoid
+			FROM Orders O
+			WHERE O.drid = NEW.drid AND O.deliveryTime IS NULL AND O.oid <> NEW.oid;
+        IF aoid IS NOT NULL THEN 
+			RAISE exception '% has already accepted %', NEW.drid, aoid;
+		END IF
+		RETURN NULL;
     END;
 $$ LANGUAGE PLPGSQL;
 
@@ -175,12 +187,18 @@ CREATE TRIGGER addSpecificUserTrigger
     FOR EACH ROW
     EXECUTE FUNCTION addSpecificUser();
 	
-	
 CREATE TRIGGER hashPasswordTrigger
     BEFORE UPDATE OR INSERT 
 	ON Users
     FOR EACH ROW 
 	EXECUTE FUNCTION hashPassword();
+
+CREATE TRIGGER checkAcceptedOrdersTrigger
+    AFTER UPDATE OF drid OR INSERT 
+	ON Orders
+	DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW 
+	EXECUTE FUNCTION checkAcceptedOrders();
 
 
 INSERT INTO Restaurants
