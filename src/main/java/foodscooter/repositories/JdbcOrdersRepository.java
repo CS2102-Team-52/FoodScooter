@@ -38,15 +38,17 @@ public class JdbcOrdersRepository implements OrdersRepository {
       + "SET cid = ?,"
       + "rid = ?,"
       + "foodCost = ?,"
+      + "rewardpointsused = ?,"
       + "paymentType = ?,"
       + "deliverylocation = ?, "
       + "ordertime = ? "
       + "WHERE oid = ?;",
       customerOrderDetails.getCustomerId(),
       customerOrderDetails.getRestaurantId(),
-      customerOrderDetails.getTotalFoodCost(),
+      customerOrderDetails.getFoodCost(),
+      customerOrderDetails.getRewardPointsUsed(),
       customerOrderDetails.getPaymentType().toString(),
-      customerOrderDetails.getLocation(),
+      customerOrderDetails.getDeliveryLocation(),
       customerOrderDetails.getOrderTime(),
       orderId
     );
@@ -86,8 +88,8 @@ public class JdbcOrdersRepository implements OrdersRepository {
           rs.getInt(2),
           rs.getInt(3),
           rs.getInt(4),
-          rs.getFloat(5),
-          rs.getFloat(6),
+          rs.getBigDecimal(5),
+          rs.getBigDecimal(6),
           rs.getInt(7),
           PaymentType.map(rs.getString(8)),
           rs.getString(9),
