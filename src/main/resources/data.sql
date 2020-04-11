@@ -14,7 +14,8 @@ DROP TABLE IF EXISTS FoodItems CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
 
-DROP TRIGGER IF EXISTS addSpecificUser ON Users;
+DROP TRIGGER IF EXISTS addSpecificUserTrigger ON Users;
+DROP TRIGGER IF EXISTS hashPasswordTrigger ON Users;
 
 CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
@@ -156,11 +157,30 @@ CREATE OR REPLACE FUNCTION addSpecificUser() RETURNS TRIGGER AS $$
     END;
 $$ LANGUAGE PLPGSQL;
 
+/*
+Need to run this command in psql as superuser: CREATE EXTENSION pgcrypto;
+To use the digest function.
+*/
+
+CREATE OR REPLACE FUNCTION hashPassword() RETURNS TRIGGER AS $$
+    BEGIN
+        NEW.password = digest(NEW.password, 'sha1');
+		RETURN NEW;
+    END;
+$$ LANGUAGE PLPGSQL;
+
 CREATE TRIGGER addSpecificUserTrigger
     AFTER INSERT
     ON Users
     FOR EACH ROW
     EXECUTE FUNCTION addSpecificUser();
+	
+	
+CREATE TRIGGER hashPasswordTrigger
+    BEFORE UPDATE OR INSERT 
+	ON Users
+    FOR EACH ROW 
+	EXECUTE FUNCTION hashPassword();
 
 
 INSERT INTO Restaurants
