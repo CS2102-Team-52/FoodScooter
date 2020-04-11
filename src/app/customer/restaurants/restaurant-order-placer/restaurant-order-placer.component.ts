@@ -4,6 +4,10 @@ import { CustomerOrderDetails } from '../services/dto/customer-order-details';
 import { ActivatedRoute } from '@angular/router';
 import { PaymentType } from '../../../store/payment-type.enum';
 import { RestaurantService } from '../services/restaurant.service';
+import { CustomerOrderOptions } from '../services/dto/customer-order-options';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-restaurant-order-placer',
@@ -12,11 +16,14 @@ import { RestaurantService } from '../services/restaurant.service';
 })
 export class RestaurantOrderPlacerComponent implements OnInit {
   foodItemsInOrder: FoodItem[];
+  rewardPointsUsed: number;
   rewardPoints: number;
-  deliveryLocation: string;
   recentDeliveryLocations: string[];
   paymentTypes: string[];
   paymentType: PaymentType;
+
+  myControl: FormControl;
+  filteredOptions: Observable<string[]>;
 
   private readonly customerId: number;
   private readonly restaurantId: number;
@@ -28,13 +35,26 @@ export class RestaurantOrderPlacerComponent implements OnInit {
     this.paymentTypes = Object.keys(PaymentType);
     this.foodItemsInOrder = [];
 
+    this.myControl = new FormControl();
+    this.recentDeliveryLocations = [];
+
     this.customerId = Number(this.activatedRoute.snapshot.paramMap.get('customerId'));
     this.restaurantId = Number(this.activatedRoute.snapshot.paramMap.get('restaurantId'));
   }
 
   ngOnInit(): void {
-    this.getRewardPoints();
-    this.getRecentDeliveryLocations();
+    this.getOrderOptions();
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this.filter(value))
+      );
+  }
+
+  private filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.recentDeliveryLocations.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   @Input()
@@ -47,26 +67,19 @@ export class RestaurantOrderPlacerComponent implements OnInit {
     this.foodItemsInOrder = this.foodItemsInOrder.filter(item => item.id !== foodItem.id);
   }
 
-  public getRewardPoints() {
-    this.restaurantService.getRewardPoints(this.customerId).subscribe(
-      (data: number) => this.rewardPoints = data
-    );
-  }
-
-  public getRecentDeliveryLocations() {
-    this.restaurantService.getRecentDeliveryLocations(this.customerId).subscribe(
-      (data: string[]) => this.recentDeliveryLocations = data
+  public getOrderOptions() {
+    this.restaurantService.getCustomerOrderOptions(this.customerId).subscribe(
+      (data: CustomerOrderOptions) => {
+        console.log(data);
+        this.rewardPoints = data.rewardPoints;
+        this.recentDeliveryLocations = data.recentDeliveryLocations;
+      }
     );
   }
 
   public sendOrder() {
     const order = this.constructOrder();
-    console.log(order);
     this.restaurantService.placeOrder(this.customerId, order).subscribe(_ => {});
-  }
-
-  public displayWith(value: number) {
-    return value;
   }
 
   private constructOrder() {
@@ -77,12 +90,14 @@ export class RestaurantOrderPlacerComponent implements OnInit {
       customerId: this.customerId,
       restaurantId: this.restaurantId,
       totalFoodCost: totalFoodCost,
+      rewardPointsUsed: this.rewardPointsUsed,
       paymentType: this.paymentType,
-      location: 'Serangoon',
+      deliveryLocation: this.myControl.value,
       orderTime: new Date(),
       foodItems: Array.from(items.keys()),
       quantity: Array.from(items.values())
     };
+    console.log(customerOrderDetails);
     return customerOrderDetails;
   }
 

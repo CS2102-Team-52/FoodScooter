@@ -1,7 +1,7 @@
 package foodscooter.repositories;
 
-import foodscooter.model.users.UserType;
 import foodscooter.model.users.User;
+import foodscooter.model.users.UserType;
 import foodscooter.repositories.specifications.UsersRepository;
 import foodscooter.repositories.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;

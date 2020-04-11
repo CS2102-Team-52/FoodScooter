@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Util } from '../../../users/util';
 import { ActivatedRoute } from '@angular/router';
 import { CustomerProfile } from '../customer-profile';
-import { Customer } from '../../customer';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +15,10 @@ export class ProfileService {
   ) { }
 
   public getDetails(customerId: number) {
-    return this.httpClient.get(`${Util.baseURL}/customers/${customerId}`);
+    return this.httpClient.get(`${Util.baseURL}/customers/${customerId}/profile`);
   }
 
   public putDetails(customerId: number, customerProfile: CustomerProfile) {
-    return this.httpClient.put(`${Util.baseURL}/customers/${customerId}`, customerProfile)
+    return this.httpClient.put(`${Util.baseURL}/customers/${customerId}/profile`, customerProfile)
   }
 }

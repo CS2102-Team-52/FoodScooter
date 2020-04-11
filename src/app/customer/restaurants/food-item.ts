@@ -3,5 +3,5 @@ export interface FoodItem {
   name: string;
   category: string;
   price: number;
-  dailyLimit: number;
+  availability: number;
 }

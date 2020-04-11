@@ -4,8 +4,9 @@ export interface CustomerOrderDetails {
   customerId: number,
   restaurantId: number,
   totalFoodCost: number,
+  rewardPointsUsed: number,
   paymentType: PaymentType,
-  location: string,
+  deliveryLocation: string,
   orderTime: Date,
   foodItems: string[],
   quantity: number[]

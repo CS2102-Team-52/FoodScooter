@@ -1,14 +1,16 @@
 package foodscooter.model.orders;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class CustomerOrderDetails {
   private int customerId;
   private int restaurantId;
-  private int totalFoodCost;
+  private BigDecimal totalFoodCost;
+  private int rewardPointsUsed;
   private PaymentType paymentType;
-  private String location;
+  private String deliveryLocation;
   private LocalDateTime orderTime;
 
   private List<Integer> foodItems;
@@ -30,12 +32,20 @@ public class CustomerOrderDetails {
     this.restaurantId = restaurantId;
   }
 
-  public int getTotalFoodCost() {
+  public BigDecimal getTotalFoodCost() {
     return totalFoodCost;
   }
 
-  public void setTotalFoodCost(int totalFoodCost) {
+  public void setTotalFoodCost(BigDecimal totalFoodCost) {
     this.totalFoodCost = totalFoodCost;
+  }
+
+  public int getRewardPointsUsed() {
+    return rewardPointsUsed;
+  }
+
+  public void setRewardPointsUsed(int rewardPointsUsed) {
+    this.rewardPointsUsed = rewardPointsUsed;
   }
 
   public PaymentType getPaymentType() {
@@ -46,12 +56,12 @@ public class CustomerOrderDetails {
     this.paymentType = paymentType;
   }
 
-  public String getLocation() {
-    return location;
+  public String getDeliveryLocation() {
+    return deliveryLocation;
   }
 
-  public void setLocation(String location) {
-    this.location = location;
+  public void setDeliveryLocation(String deliveryLocation) {
+    this.deliveryLocation = deliveryLocation;
   }
 
   public LocalDateTime getOrderTime() {

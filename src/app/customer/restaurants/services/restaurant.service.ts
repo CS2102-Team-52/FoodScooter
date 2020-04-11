@@ -16,12 +16,8 @@ export class RestaurantService {
     private httpClient: HttpClient
   ) { }
 
-  public getRewardPoints(customerId: number) {
-    return this.httpClient.get(`${Util.baseURL}/customers/${customerId}/reward-points`);
-  }
-
-  public getRecentDeliveryLocations(customerId: number) {
-    return this.httpClient.get(`${Util.baseURL}/customers/${customerId}/recent-delivery-locations`);
+  public getCustomerOrderOptions(customerId: number) {
+    return this.httpClient.get(`${Util.baseURL}/customers/${customerId}/order-options`);
   }
 
   public fetchRestaurants() {

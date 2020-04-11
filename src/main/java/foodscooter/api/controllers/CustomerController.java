@@ -1,9 +1,11 @@
 package foodscooter.api.controllers;
 
 import foodscooter.model.orders.CustomerOrderDetails;
+import foodscooter.model.orders.CustomerOrderOptions;
 import foodscooter.model.orders.Order;
 import foodscooter.model.reviews.CustomerReview;
 import foodscooter.model.reviews.Feedback;
+import foodscooter.model.users.customer.Customer;
 import foodscooter.model.users.customer.CustomerProfile;
 import foodscooter.repositories.JdbcCustomersRepository;
 import foodscooter.repositories.JdbcReviewsRepository;
@@ -40,17 +42,22 @@ public class CustomerController extends BaseController {
     this.feedbackRepository = feedbackRepository;
   }
 
-  @GetMapping("/customers/{customerId}")
+  @GetMapping("/customers/{customerId}/profile")
   public CustomerProfile getProfile(@PathVariable int customerId) {
     return customersRepository.getProfile(customerId);
   }
 
-  @PutMapping("/customers/{customerId}")
+  @PutMapping("/customers/{customerId}/profile")
   public ResponseEntity<?> putProfile(
     @PathVariable int customerId,
     @RequestBody CustomerProfile customerProfile) {
     customersRepository.putProfile(customerId, customerProfile);
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/customers/{customerId}/order-options")
+  public CustomerOrderOptions getOrderOptions(@PathVariable int customerId) {
+    return customersRepository.getOrderOptions(customerId);
   }
 
   @GetMapping("/customers/{customerId}/orders")
