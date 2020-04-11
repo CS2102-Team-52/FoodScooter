@@ -1,7 +1,7 @@
 package foodscooter.repositories;
 
-import foodscooter.model.users.UserType;
 import foodscooter.model.users.User;
+import foodscooter.model.users.UserType;
 import foodscooter.repositories.specifications.UsersRepository;
 import foodscooter.repositories.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,8 @@ import java.util.Optional;
 
 @Repository
 public class JdbcUsersRepository implements UsersRepository {
-  private JdbcTemplate jdbcTemplate;
-  private IdGenerator idGenerator;
+  private final JdbcTemplate jdbcTemplate;
+  private final IdGenerator idGenerator;
 
   @Autowired
   public JdbcUsersRepository(

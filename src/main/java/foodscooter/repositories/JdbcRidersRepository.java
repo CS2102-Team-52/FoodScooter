@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 public class JdbcRidersRepository implements RidersRepository {
-  public JdbcTemplate jdbcTemplate;
+  private final JdbcTemplate jdbcTemplate;
 
   @Autowired
   public JdbcRidersRepository(JdbcTemplate jdbcTemplate) {

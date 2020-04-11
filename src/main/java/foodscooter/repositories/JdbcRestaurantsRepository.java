@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public class JdbcRestaurantsRepository implements RestaurantsRepository {
-  private JdbcTemplate jdbcTemplate;
+  private final JdbcTemplate jdbcTemplate;
 
   @Autowired
   public JdbcRestaurantsRepository(JdbcTemplate jdbcTemplate) {
@@ -34,7 +34,7 @@ public class JdbcRestaurantsRepository implements RestaurantsRepository {
   @Override
   public List<FoodItem> getMenu(int restaurantId) {
     return jdbcTemplate.query(
-      "SELECT F.fid, F.name, F.category, F.price, F.dailylimit "
+      "SELECT F.fid, F.name, F.category, F.price, F.availability "
         + "FROM Restaurants R, FoodItems F "
         + "WHERE R.rid = ? AND F.rid = R.rid;",
       new Object[] { restaurantId },
@@ -51,7 +51,7 @@ public class JdbcRestaurantsRepository implements RestaurantsRepository {
   public void updateAvailability(int restaurantId, int foodItemId, int delta) {
     jdbcTemplate.update(
       "UPDATE FoodItems "
-      + "SET dailylimit = dailylimit + ?"
+      + "SET availability = availability + ?"
       + "WHERE rid = ? AND fid = ?",
       delta, restaurantId, foodItemId
     );

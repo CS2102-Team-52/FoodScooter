@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 public class LoginController extends BaseController {
-  private JdbcUsersRepository usersRepository;
+  private final JdbcUsersRepository usersRepository;
 
   @Autowired
   public LoginController(

@@ -1,5 +1,6 @@
 package foodscooter.model.orders;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Order {
@@ -8,8 +9,8 @@ public class Order {
   private int riderId;
   private int restaurantId;
 
-  private float foodCost;
-  private float deliveryFee;
+  private BigDecimal foodCost;
+  private BigDecimal deliveryFee;
   private int rewardPointsUsed;
   private PaymentType paymentType;
 
@@ -30,8 +31,8 @@ public class Order {
     int customerId,
     int riderId,
     int restaurantId,
-    float foodCost,
-    float deliveryFee,
+    BigDecimal foodCost,
+    BigDecimal deliveryFee,
     int rewardPointsUsed,
     PaymentType paymentType,
     String deliveryLocation,
@@ -88,19 +89,19 @@ public class Order {
     this.restaurantId = restaurantId;
   }
 
-  public float getFoodCost() {
+  public BigDecimal getFoodCost() {
     return foodCost;
   }
 
-  public void setFoodCost(float foodCost) {
+  public void setFoodCost(BigDecimal foodCost) {
     this.foodCost = foodCost;
   }
 
-  public float getDeliveryFee() {
+  public BigDecimal getDeliveryFee() {
     return deliveryFee;
   }
 
-  public void setDeliveryFee(float deliveryFee) {
+  public void setDeliveryFee(BigDecimal deliveryFee) {
     this.deliveryFee = deliveryFee;
   }
 
