@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 public class RiderController extends BaseController {
-  private JdbcRidersRepository riderRepository;
+  private final JdbcRidersRepository riderRepository;
 
   @Autowired
   public RiderController(

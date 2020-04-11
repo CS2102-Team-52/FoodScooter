@@ -13,8 +13,8 @@ import java.util.Optional;
 
 @Repository
 public class JdbcUsersRepository implements UsersRepository {
-  private JdbcTemplate jdbcTemplate;
-  private IdGenerator idGenerator;
+  private final JdbcTemplate jdbcTemplate;
+  private final IdGenerator idGenerator;
 
   @Autowired
   public JdbcUsersRepository(

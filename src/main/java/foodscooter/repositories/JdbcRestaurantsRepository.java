@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public class JdbcRestaurantsRepository implements RestaurantsRepository {
-  private JdbcTemplate jdbcTemplate;
+  private final JdbcTemplate jdbcTemplate;
 
   @Autowired
   public JdbcRestaurantsRepository(JdbcTemplate jdbcTemplate) {
