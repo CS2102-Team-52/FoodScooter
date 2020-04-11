@@ -14,7 +14,8 @@ DROP TABLE IF EXISTS FoodItems CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
 
-DROP TRIGGER IF EXISTS addSpecificUser ON Users;
+DROP TRIGGER IF EXISTS addSpecificUserTrigger ON Users;
+DROP TRIGGER IF EXISTS updateRewardPointsTrigger ON Orders;
 
 CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
@@ -25,8 +26,8 @@ CREATE TABLE Users (
 
 CREATE TABLE DeliveryRiders (
     drid INTEGER PRIMARY KEY,
-    salary MONEY,
-    rating INTEGER, /* NEW */
+    salary INTEGER,
+    rating INTEGER,
     FOREIGN KEY (drid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
@@ -66,7 +67,7 @@ CREATE TABLE Customers (
     cid INTEGER PRIMARY KEY,
     creditCardNumber VARCHAR(16),
     rewardPoints INTEGER,
-    recentPlaces VARCHAR(100) ARRAY,
+    recentDeliveryLocations VARCHAR(100) ARRAY,
     FOREIGN KEY (cid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
@@ -80,7 +81,7 @@ CREATE TABLE Promotions (
     startDate TIMESTAMP,
     endDate TIMESTAMP,
     promotionType VARCHAR(100),
-    discount NUMERIC
+    discount INTEGER
 );
 
 /* pid = id of promotion offered by restaurant */
@@ -88,7 +89,7 @@ CREATE TABLE Restaurants (
     rid INTEGER PRIMARY KEY,
     name VARCHAR(100),
     description VARCHAR(1000),
-    minimumPurchase MONEY,
+    minimumPurchase NUMERIC(6, 2),
     pid INTEGER,
     FOREIGN KEY (pid) REFERENCES Promotions (pid)
 );
@@ -105,8 +106,8 @@ CREATE TABLE FoodItems (
     rid INTEGER,
     name VARCHAR(100),
     category VARCHAR(100),
-    price MONEY,
-    dailyLimit INTEGER,
+    price NUMERIC(6, 2),
+    availability INTEGER,
     PRIMARY KEY (fid, rid),
     FOREIGN KEY (rid) REFERENCES Restaurants (rid) ON DELETE CASCADE
 );
@@ -116,8 +117,8 @@ CREATE TABLE Orders (
     cid INTEGER,
     drid INTEGER,
     rid INTEGER,
-    foodCost MONEY,
-    deliveryFee MONEY,
+    foodCost NUMERIC(6, 2),
+    deliveryFee NUMERIC(6, 2),
     rewardPointsUsed INTEGER,
     paymentType VARCHAR(100),
     deliveryLocation VARCHAR(100),
@@ -144,6 +145,7 @@ CREATE OR REPLACE FUNCTION addSpecificUser() RETURNS TRIGGER AS $$
     BEGIN
         CASE NEW.type
             WHEN 'Customer' THEN
+                RAISE NOTICE 'Customer';
                 INSERT INTO Customers
                 VALUES(NEW.uid);
             WHEN 'Delivery Rider' THEN
@@ -162,6 +164,20 @@ CREATE TRIGGER addSpecificUserTrigger
     FOR EACH ROW
     EXECUTE FUNCTION addSpecificUser();
 
+CREATE OR REPLACE FUNCTION updateRewardPoints() RETURNS TRIGGER AS $$
+    BEGIN
+        UPDATE Customers
+        SET rewardpoints = NEW.foodCost - NEW.rewardPointsUsed
+        WHERE cid = NEW.cid;
+        RETURN NEW;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER updateRewardPointsTrigger
+    AFTER INSERT
+    ON Orders
+    FOR EACH ROW
+    EXECUTE FUNCTION updateRewardPoints();
 
 INSERT INTO Restaurants
 VALUES (1, 'Ikea', 'A Swedish furniture company that is also known for their meatballs.', 10),
