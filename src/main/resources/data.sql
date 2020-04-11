@@ -244,7 +244,7 @@ CREATE OR REPLACE FUNCTION updateCustomerRecentDeliveryLocations() RETURNS TRIGG
 $$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER updateCustomerRecentDeliveryLocationsTrigger
-    AFTER INSERT
+    AFTER UPDATE
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRecentDeliveryLocations();

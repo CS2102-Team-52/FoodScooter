@@ -12,5 +12,13 @@
     <input matInput placeholder="Credit Card Number" name="creditcardnumber" [(ngModel)]="customerProfile.creditCardNumber">
   </mat-form-field>
 </form>
+<mat-list>
+  <mat-list-item>
+    Reward Points: {{customerProfile.rewardPoints}}
+  </mat-list-item>
+  <mat-list-item>
+    Recent Delivery Locations: {{customerProfile.recentDeliveryLocations | flatten}}
+  </mat-list-item>
+</mat-list>
 
 <button mat-raised-button (click)="putDetails()" color="primary">Update</button>

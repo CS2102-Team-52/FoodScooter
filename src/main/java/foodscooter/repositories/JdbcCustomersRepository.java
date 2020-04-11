@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class JdbcCustomersRepository implements CustomersRepository {
@@ -22,44 +21,47 @@ public class JdbcCustomersRepository implements CustomersRepository {
 
   @Override
   public CustomerProfile getProfile(int customerId) {
+    List<String> recentDeliveryLocations = jdbcTemplate.query(
+      "SELECT deliverylocation "
+      + "FROM CustomerRecentDeliveryLocations "
+      + "WHERE cid = ?;",
+      new Object[]{ customerId },
+      (rs, rowNum) -> rs.getString(1)
+    );
+
     return jdbcTemplate.queryForObject(
-      "SELECT U.username, U.password, C.creditcardnumber, C.rewardpoints, C.recentdeliverylocations "
+      "SELECT U.username, U.password, C.creditcardnumber, C.rewardpoints "
       + "FROM Customers C JOIN Users U ON C.cid = U.uid "
       + "WHERE cid = ?;",
       new Object[] { customerId },
-      (((rs, rowNum) -> {
-        List<String> recentDeliveryLocations = new ArrayList<>();
-        Array recentDeliveryLocationsValue = rs.getArray(5);
-        if (recentDeliveryLocationsValue != null) {
-          recentDeliveryLocations = (List<String>) recentDeliveryLocationsValue.getArray();
-        }
-        return new CustomerProfile(
+      (((rs, rowNum) -> new CustomerProfile(
           rs.getString(1),
           rs.getString(2),
           rs.getString(3),
           rs.getInt(4),
-          recentDeliveryLocations);
-      }))
+          recentDeliveryLocations)
+      ))
     );
   }
 
   @Override
   public CustomerOrderOptions getOrderOptions(int customerId) {
-    return jdbcTemplate.queryForObject(
-      "SELECT rewardpoints, recentDeliveryLocations "
+    Optional<Integer> rewardPoints = jdbcTemplate.queryForObject(
+      "SELECT rewardpoints "
       + "FROM Customers "
       + "WHERE cid = ?;",
       new Object[] { customerId },
-      (rs, rowNum) -> {
-        List<String> recentDeliveryLocations = new ArrayList<>();
-        Array recentDeliveryLocationsValue = rs.getArray(2);
-        if (recentDeliveryLocationsValue != null) {
-          recentDeliveryLocations = (List<String>) recentDeliveryLocationsValue.getArray();
-        }
-        return new CustomerOrderOptions(
-          rs.getInt(1),
-          recentDeliveryLocations);
-      });
+      (rs, rowNum) -> Optional.of(rs.getInt(1)));
+
+    List<String> recentDeliveryLocations = jdbcTemplate.query(
+      "SELECT deliverylocation "
+      + "FROM CustomerRecentDeliveryLocations "
+      + "WHERE cid = ?;",
+      new Object[] { customerId },
+      (rs, rowNum) -> rs.getString(1)
+    );
+
+    return new CustomerOrderOptions(rewardPoints.get(), recentDeliveryLocations);
   }
 
   @Override
