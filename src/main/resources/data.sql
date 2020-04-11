@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
 
 DROP TRIGGER IF EXISTS addSpecificUserTrigger ON Users;
-DROP TRIGGER IF EXISTS updateRewardPointsTrigger ON Orders;
+DROP TRIGGER IF EXISTS updateCustomerRewardPointsTrigger ON Orders;
 
 CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
@@ -27,7 +27,7 @@ CREATE TABLE Users (
 CREATE TABLE DeliveryRiders (
     drid INTEGER PRIMARY KEY,
     salary INTEGER,
-    rating INTEGER,
+    rating NUMERIC(2,1),
     FOREIGN KEY (drid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
@@ -166,10 +166,8 @@ CREATE TRIGGER addSpecificUserTrigger
     FOR EACH ROW
     EXECUTE FUNCTION addSpecificUser();
 
-CREATE OR REPLACE FUNCTION updateRewardPoints() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION updateCustomerRewardPoints() RETURNS TRIGGER AS $$
     BEGIN
-        RAISE NOTICE '%', NEW.foodcost;
-        RAISE NOTICE '%', NEW.rewardpointsused;
         UPDATE Customers
         SET rewardpoints = rewardpoints + NEW.foodcost - NEW.rewardpointsused
         WHERE cid = NEW.cid;
@@ -177,11 +175,11 @@ CREATE OR REPLACE FUNCTION updateRewardPoints() RETURNS TRIGGER AS $$
     END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE TRIGGER updateRewardPointsTrigger
+CREATE TRIGGER updateCustomerRewardPointsTrigger
     AFTER UPDATE
     ON Orders
     FOR EACH ROW
-    EXECUTE FUNCTION updateRewardPoints();
+    EXECUTE FUNCTION updateCustomerRewardPoints();
 
 INSERT INTO Restaurants
 VALUES (1, 'Ikea', 'A Swedish furniture company that is also known for their meatballs.', 10),
