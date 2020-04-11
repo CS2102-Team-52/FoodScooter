@@ -1,11 +1,10 @@
-import { Time } from '@angular/common';
-
 export interface Order {
-    oid: number;
-    totalCost: number;
+    id: number;
+    restaurantId: number;
+    foodCost: number;
     deliveryFee: number;
     paymentType: string;
     location: string;
-    orderTime: Time;
-    deliveryTime: Time;
+    orderTime: Date;
+    deliveryTime: Date;
 }

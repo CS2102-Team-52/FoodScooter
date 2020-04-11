@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoginService } from "../services/login/login.service";
-import { UserType } from "../store/user-type.enum";
-import { RiderType } from "../store/rider-type.enum";
-import { LoginResponse } from "../services/login/dto/login-response";
+import { LoginService } from './services/login.service';
+import { UserType } from '../store/user-type.enum';
+import { RiderType } from '../store/rider-type.enum';
+import { LoginResponse } from './services/dto/login-response';
 
 @Component({
   selector: 'app-login',
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
   login() {
     this.loginService.login(this.username, this.password).subscribe(
       (data: LoginResponse) => {
-        this.navigateToUserPage(data)
+        this.navigateToUserPage(data);
       }
     );
   }
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
         type = 'staff';
         break;
       case UserType.FOOD_SCOOTER_MANAGER:
-        type = 'managers'
+        type = 'managers';
     }
     this.loginService.setLoginResponse(response);
     this.path = `${type}/${response.userId}`;

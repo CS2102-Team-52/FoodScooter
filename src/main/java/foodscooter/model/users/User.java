@@ -1,7 +1,5 @@
 package foodscooter.model.users;
 
-import foodscooter.model.UserType;
-
 public class User {
   private int id;
   private UserType userType;
