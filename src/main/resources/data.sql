@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS PTRiders CASCADE;
 DROP TABLE IF EXISTS PTSchedules CASCADE;
 DROP TABLE IF EXISTS PTShifts CASCADE;
 DROP TABLE IF EXISTS Customers CASCADE;
+DROP TABLE IF EXISTS CustomerRecentDeliveryLocations CASCADE;
 DROP TABLE IF EXISTS FDSManagers CASCADE;
 DROP TABLE IF EXISTS Promotions CASCADE;
 DROP TABLE IF EXISTS Restaurants CASCADE;
@@ -16,6 +17,7 @@ DROP TABLE IF EXISTS Reviews CASCADE;
 
 DROP TRIGGER IF EXISTS addSpecificUserTrigger ON Users;
 DROP TRIGGER IF EXISTS updateCustomerRewardPointsTrigger ON Orders;
+DROP TRIGGER IF EXISTS updateCustomerRecentDeliveryLocationsTrigger ON Orders;
 
 CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
@@ -67,8 +69,15 @@ CREATE TABLE Customers (
     cid INTEGER PRIMARY KEY,
     creditCardNumber VARCHAR(16),
     rewardPoints INTEGER,
-    recentDeliveryLocations VARCHAR(100) ARRAY,
     FOREIGN KEY (cid) REFERENCES Users (uid) ON DELETE CASCADE
+);
+
+CREATE TABLE CustomerRecentDeliveryLocations (
+    cid INTEGER,
+    deliveryLocation VARCHAR(100),
+    orderTime TIMESTAMP,
+    PRIMARY KEY (cid, deliveryLocation),
+    FOREIGN KEY (cid) REFERENCES Customers (cid) ON DELETE CASCADE
 );
 
 CREATE TABLE FDSManagers (
@@ -180,6 +189,65 @@ CREATE TRIGGER updateCustomerRewardPointsTrigger
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRewardPoints();
+
+CREATE OR REPLACE FUNCTION updateCustomerRecentDeliveryLocations() RETURNS TRIGGER AS $$
+    BEGIN
+        CASE
+            WHEN
+                (SELECT COUNT(*) FROM CustomerRecentDeliveryLocations WHERE cid = NEW.cid) < 5
+                    THEN
+                        CASE NEW.deliverylocation IN (
+                            SELECT deliverylocation
+                            FROM CustomerRecentDeliveryLocations CRDL
+                            WHERE CRDL.cid = NEW.cid
+                            )
+                            WHEN TRUE THEN
+                                UPDATE CustomerRecentDeliveryLocations
+                                SET ordertime = NEW.ordertime
+                                WHERE cid = NEW.cid
+                                AND deliverylocation = NEW.deliverylocation;
+                            WHEN FALSE THEN
+                                INSERT INTO CustomerRecentDeliveryLocations
+                                VALUES (NEW.cid, NEW.deliverylocation, NEW.ordertime);
+                            ELSE
+
+                        END CASE;
+            WHEN
+                (SELECT COUNT(*) FROM CustomerRecentDeliveryLocations WHERE cid = NEW.cid) = 5
+                    THEN
+                        CASE NEW.deliveryLocation IN (
+                            SELECT deliverylocation
+                            FROM CustomerRecentDeliveryLocations CRDL
+                            WHERE CRDL.cid = NEW.cid
+                            )
+                            WHEN TRUE THEN
+                                UPDATE CustomerRecentDeliveryLocations
+                                SET ordertime = NEW.ordertime
+                                WHERE cid = NEW.cid
+                                AND deliverylocation = NEW.deliverylocation;
+                            WHEN FALSE THEN
+                                DELETE FROM CustomerRecentDeliveryLocations
+                                WHERE ordertime = (
+                                    SELECT ordertime
+                                    FROM CustomerRecentDeliveryLocations
+                                    WHERE cid = NEW.cid
+                                    ORDER BY ordertime
+                                    LIMIT 1);
+                                INSERT INTO CustomerRecentDeliveryLocations
+                                VALUES (NEW.cid, NEW.deliverylocation, NEW.ordertime);
+                            ELSE
+
+                        END CASE;
+        END CASE;
+        RETURN NEW;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER updateCustomerRecentDeliveryLocationsTrigger
+    AFTER INSERT
+    ON Orders
+    FOR EACH ROW
+    EXECUTE FUNCTION updateCustomerRecentDeliveryLocations();
 
 INSERT INTO Restaurants
 VALUES (1, 'Ikea', 'A Swedish furniture company that is also known for their meatballs.', 10),
