@@ -12,7 +12,9 @@ import { CustomerOrderDetails } from './dto/customer-order-details';
 })
 export class RestaurantService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
   public fetchRestaurants() {
     return this.httpClient.get(`${Util.baseURL}/restaurants`)
