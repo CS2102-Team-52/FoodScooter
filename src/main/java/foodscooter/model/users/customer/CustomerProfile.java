@@ -7,19 +7,19 @@ public class CustomerProfile {
   private String password;
   private String creditCardNumber;
   private int rewardPoints;
-  private List<String> recentPlaces;
+  private List<String> recentDeliveryLocations;
 
   public CustomerProfile(
     String username,
     String password,
     String creditCardNumber,
     int rewardPoints,
-    List<String> recentPlaces) {
+    List<String> recentDeliveryLocations) {
     this.username = username;
     this.password = password;
     this.creditCardNumber = creditCardNumber;
     this.rewardPoints = rewardPoints;
-    this.recentPlaces = recentPlaces;
+    this.recentDeliveryLocations = recentDeliveryLocations;
   }
 
   public String getUsername() {
@@ -54,11 +54,11 @@ public class CustomerProfile {
     this.rewardPoints = rewardPoints;
   }
 
-  public List<String> getRecentPlaces() {
-    return recentPlaces;
+  public List<String> getRecentDeliveryLocations() {
+    return recentDeliveryLocations;
   }
 
-  public void setRecentPlaces(List<String> recentPlaces) {
-    this.recentPlaces = recentPlaces;
+  public void setRecentDeliveryLocations(List<String> recentDeliveryLocations) {
+    this.recentDeliveryLocations = recentDeliveryLocations;
   }
 }

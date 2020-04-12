@@ -5,5 +5,5 @@ export interface CustomerProfile extends UserProfile {
   password: string,
   creditCardNumber: string,
   rewardPoints: number,
-  recentPlaces: string[];
+  recentDeliveryLocations: string[];
 }

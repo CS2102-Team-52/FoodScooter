@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS PTRiders CASCADE;
 DROP TABLE IF EXISTS PTSchedules CASCADE;
 DROP TABLE IF EXISTS PTShifts CASCADE;
 DROP TABLE IF EXISTS Customers CASCADE;
+DROP TABLE IF EXISTS CustomerRecentDeliveryLocations CASCADE;
 DROP TABLE IF EXISTS FDSManagers CASCADE;
 DROP TABLE IF EXISTS Promotions CASCADE;
 DROP TABLE IF EXISTS Restaurants CASCADE;
@@ -17,11 +18,11 @@ DROP TABLE IF EXISTS Reviews CASCADE;
 DROP TRIGGER IF EXISTS addSpecificUserTrigger ON Users;
 DROP TRIGGER IF EXISTS hashPasswordTrigger ON Users;
 DROP TRIGGER IF EXISTS updateCustomerRewardPointsTrigger ON Orders;
+DROP TRIGGER IF EXISTS updateCustomerRecentDeliveryLocationsTrigger ON Orders;
 DROP TRIGGER IF EXISTS checkAcceptedOrdersTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS checkPartTimeRiderShiftTrigger ON PTShifts CASCADE;
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
-
 
 CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
@@ -73,8 +74,15 @@ CREATE TABLE Customers (
     cid INTEGER PRIMARY KEY,
     creditCardNumber VARCHAR(16),
     rewardPoints INTEGER,
-    recentDeliveryLocations VARCHAR(100) ARRAY,
     FOREIGN KEY (cid) REFERENCES Users (uid) ON DELETE CASCADE
+);
+
+CREATE TABLE CustomerRecentDeliveryLocations (
+    cid INTEGER,
+    deliveryLocation VARCHAR(100),
+    orderTime TIMESTAMP,
+    PRIMARY KEY (cid, deliveryLocation),
+    FOREIGN KEY (cid) REFERENCES Customers (cid) ON DELETE CASCADE
 );
 
 CREATE TABLE FDSManagers (
@@ -171,20 +179,20 @@ CREATE TRIGGER addSpecificUserTrigger
     ON Users
     FOR EACH ROW
     EXECUTE FUNCTION addSpecificUser();
-	
+
 CREATE OR REPLACE FUNCTION hashPassword() RETURNS TRIGGER AS $$
     BEGIN
         NEW.password = digest(NEW.password, 'sha1');
 		RETURN NEW;
     END;
 $$ LANGUAGE PLPGSQL;
-	
+
 CREATE TRIGGER hashPasswordTrigger
-    BEFORE UPDATE OR INSERT 
+    BEFORE UPDATE OR INSERT
 	ON Users
-    FOR EACH ROW 
+    FOR EACH ROW
 	EXECUTE FUNCTION hashPassword();
-	
+
 CREATE OR REPLACE FUNCTION checkAcceptedOrders() RETURNS TRIGGER AS $$
 	DECLARE
 		aoid INTEGER;
@@ -192,7 +200,7 @@ CREATE OR REPLACE FUNCTION checkAcceptedOrders() RETURNS TRIGGER AS $$
 		SELECT O.oid INTO aoid
 			FROM Orders O
 			WHERE O.drid = NEW.drid AND O.deliveryTime IS NULL AND O.oid <> NEW.oid;
-        IF aoid IS NOT NULL THEN 
+        IF aoid IS NOT NULL THEN
 			RAISE exception '% has already accepted %', NEW.drid, aoid;
 		END IF;
 		RETURN NULL;
@@ -200,10 +208,10 @@ CREATE OR REPLACE FUNCTION checkAcceptedOrders() RETURNS TRIGGER AS $$
 $$ LANGUAGE PLPGSQL;
 
 CREATE CONSTRAINT TRIGGER checkAcceptedOrdersTrigger
-    AFTER UPDATE OF drid OR INSERT 
-	ON Orders 
+    AFTER UPDATE OF drid OR INSERT
+	ON Orders
 	DEFERRABLE INITIALLY DEFERRED
-    FOR EACH ROW 
+    FOR EACH ROW
 	EXECUTE FUNCTION checkAcceptedOrders();
 
 CREATE OR REPLACE FUNCTION updateCustomerRewardPoints() RETURNS TRIGGER AS $$
@@ -220,7 +228,7 @@ CREATE TRIGGER updateCustomerRewardPointsTrigger
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRewardPoints();
-	
+
 CREATE OR REPLACE FUNCTION checkPartTimeRiderShift() RETURNS TRIGGER AS $$
 	DECLARE
 		shift INTEGER;
@@ -229,19 +237,78 @@ CREATE OR REPLACE FUNCTION checkPartTimeRiderShift() RETURNS TRIGGER AS $$
 			FROM PTShifts P
 			WHERE P.drid = NEW.drid AND P.dow = NEW.dow AND P.ptsid <> NEW.ptsid AND NOT
 			((NEW.startHour - P.endHour >= 1) OR (P.startHour - NEW.endHour >= 1));
-        IF shift IS NOT NULL THEN 
-			RAISE exception 'Need atleast 1 hour break interval';
+        IF shift IS NOT NULL THEN
+			RAISE exception 'Need at least 1 hour break interval';
 		END IF;
 		RETURN NULL;
     END;
 $$ LANGUAGE PLPGSQL;
 
 CREATE CONSTRAINT TRIGGER checkPartTimeRiderShiftTrigger
-    AFTER UPDATE OR INSERT 
+    AFTER UPDATE OR INSERT
 	ON PTShifts
 	DEFERRABLE INITIALLY DEFERRED
-    FOR EACH ROW 
+    FOR EACH ROW
 	EXECUTE FUNCTION checkPartTimeRiderShift();
+
+CREATE OR REPLACE FUNCTION updateCustomerRecentDeliveryLocations() RETURNS TRIGGER AS $$
+    BEGIN
+        CASE
+            WHEN
+                (SELECT COUNT(*) FROM CustomerRecentDeliveryLocations WHERE cid = NEW.cid) < 5
+                    THEN
+                        CASE NEW.deliverylocation IN (
+                            SELECT deliverylocation
+                            FROM CustomerRecentDeliveryLocations CRDL
+                            WHERE CRDL.cid = NEW.cid
+                            )
+                            WHEN TRUE THEN
+                                UPDATE CustomerRecentDeliveryLocations
+                                SET ordertime = NEW.ordertime
+                                WHERE cid = NEW.cid
+                                AND deliverylocation = NEW.deliverylocation;
+                            WHEN FALSE THEN
+                                INSERT INTO CustomerRecentDeliveryLocations
+                                VALUES (NEW.cid, NEW.deliverylocation, NEW.ordertime);
+                            ELSE
+
+                        END CASE;
+            WHEN
+                (SELECT COUNT(*) FROM CustomerRecentDeliveryLocations WHERE cid = NEW.cid) = 5
+                    THEN
+                        CASE NEW.deliveryLocation IN (
+                            SELECT deliverylocation
+                            FROM CustomerRecentDeliveryLocations CRDL
+                            WHERE CRDL.cid = NEW.cid
+                            )
+                            WHEN TRUE THEN
+                                UPDATE CustomerRecentDeliveryLocations
+                                SET ordertime = NEW.ordertime
+                                WHERE cid = NEW.cid
+                                AND deliverylocation = NEW.deliverylocation;
+                            WHEN FALSE THEN
+                                DELETE FROM CustomerRecentDeliveryLocations
+                                WHERE ordertime = (
+                                    SELECT ordertime
+                                    FROM CustomerRecentDeliveryLocations
+                                    WHERE cid = NEW.cid
+                                    ORDER BY ordertime
+                                    LIMIT 1);
+                                INSERT INTO CustomerRecentDeliveryLocations
+                                VALUES (NEW.cid, NEW.deliverylocation, NEW.ordertime);
+                            ELSE
+
+                        END CASE;
+        END CASE;
+        RETURN NEW;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER updateCustomerRecentDeliveryLocationsTrigger
+    AFTER UPDATE
+    ON Orders
+    FOR EACH ROW
+    EXECUTE FUNCTION updateCustomerRecentDeliveryLocations();
 
 INSERT INTO Restaurants
 VALUES (1, 'Ikea', 'A Swedish furniture company that is also known for their meatballs.', 10),
