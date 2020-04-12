@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Util } from '../../../../users/util';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +33,20 @@ export class RiderOrderService {
   }
 
   public fetchAcceptedOrders(drid: number) {
-    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/acceptedOrders/`);
+    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/acceptedOrders/`).pipe(catchError(this.handleError));
+  }
+
+  handleError(error: HttpErrorResponse) {
+    let errorMessage = 'Unknown error!';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side errors
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // Server-side errors
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    window.alert(errorMessage);
+    return throwError(errorMessage);
   }
 
 }

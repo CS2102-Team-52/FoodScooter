@@ -16,15 +16,7 @@ export class CustomerProfileComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private profileService: ProfileService
-  ) {
-    this.customerProfile = {
-      username: '',
-      password: '',
-      creditCardNumber: '',
-      rewardPoints: 0,
-      recentPlaces: []
-    };
-  }
+  ) { }
 
   ngOnInit(): void {
     this.customerId = Number(this.activatedRoute.snapshot.paramMap.get(`customerId`));
@@ -32,7 +24,6 @@ export class CustomerProfileComponent implements OnInit {
   }
 
   public getDetails() {
-    console.log(this.customerId);
     this.profileService.getDetails(this.customerId).subscribe(
       (data: CustomerProfile) => {
         console.log(data);
