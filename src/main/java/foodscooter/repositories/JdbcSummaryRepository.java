@@ -25,7 +25,7 @@ public class JdbcSummaryRepository implements SummaryRepository {
   //TODO: add account creation date column to Users table
   @Override
   public List<GeneralSummary> getGeneralSummary() {
-    String sql = "SELECT date_trunc('month', orderTime) as month, COUNT(oid), SUM(totalCost) "
+    String sql = "SELECT date_trunc('month', orderTime) as month, COUNT(oid), SUM(foodCost + deliveryFee) as totalCost "
       + "FROM Orders "
       + "GROUP BY month;";
     return jdbcTemplate.query(
@@ -39,7 +39,7 @@ public class JdbcSummaryRepository implements SummaryRepository {
 
   @Override
   public List<CustomerSummary> getCustomerSummary() {
-    String sql = "SELECT date_trunc('month', orderTime) as month, cid, COUNT(oid), SUM(totalCost) "
+    String sql = "SELECT date_trunc('month', orderTime) as month, cid, COUNT(oid), SUM(foodCost + deliveryFee) as totalCost "
       + "FROM Orders "
       + "GROUP BY month, cid;";
     return jdbcTemplate.query(
@@ -54,9 +54,9 @@ public class JdbcSummaryRepository implements SummaryRepository {
 
   @Override
   public List<LocationSummary> getLocationSummary() {
-    String sql = "SELECT date_trunc('hour', orderTime) as hours, location, COUNT(oid) "
+    String sql = "SELECT date_trunc('hour', orderTime) as hours, deliveryLocation, COUNT(oid) "
       + "FROM Orders "
-      + "GROUP BY hours, location;";
+      + "GROUP BY hours, deliveryLocation;";
     return jdbcTemplate.query(
       sql,
       (rs, rowNum) -> new LocationSummary(
@@ -109,13 +109,13 @@ public class JdbcSummaryRepository implements SummaryRepository {
 
   @Override
   public List<PromotionSummary> getPromotionSummary(int rid) {
-    String sql = "SELECT Promotions.pid, age(endDate, startDate) as duration, promotionType, discount, "
-      + "(SELECT COUNT(oid) as avgOrdersPerDay "
-      + "FROM Orders "
-      + "WHERE orderTime BETWEEN startDate AND endDate) "
-      + "FROM Restaurants "
-      + "LEFT JOIN Promotions "
-      + "ON Restaurants.pid = Promotions.pid "
+    String sql = "SELECT Promotions.pid, age(endDate, startDate) as duration, promotionType, discount, \n"
+      + "(SELECT COUNT(oid) as avgOrdersPerDay \n"
+      + "FROM Orders\n"
+      + "WHERE orderTime BETWEEN startDate AND endDate)\n"
+      + "FROM Restaurants\n"
+      + "LEFT JOIN Promotions\n"
+      + "ON Restaurants.pid = Promotions.pid\n"
       + "WHERE rid = ?;";
     return jdbcTemplate.query(
       sql,
@@ -128,6 +128,4 @@ public class JdbcSummaryRepository implements SummaryRepository {
         rs.getFloat(5)
       ));
   }
-
-
 }
