@@ -1,0 +1,25 @@
+<div>
+  <mat-card>
+    <button mat-raised-button (click)="viewGeneralSummary()" color="primary">View Summary</button>
+  </mat-card>
+
+  <div *ngIf="showGeneralSummary" class="mat-typography">
+    <h2>General Summary</h2>
+    <mat-card>
+      <mat-card-content>
+        <mat-list *ngFor="let o of generalSummaryList">
+          <mat-list-item>
+            {{o.month}}
+          </mat-list-item>
+          <mat-list-item>
+            {{o.numOrders}}
+          </mat-list-item>
+          <mat-list-item>
+            {{o.totalCost}}
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</div>
