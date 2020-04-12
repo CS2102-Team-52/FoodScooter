@@ -52,25 +52,7 @@ public class RiderController extends BaseController {
 
   @GetMapping("/rider/{drid}/partTimeOrders")
   public List<Order> getPartTimeRiderOrders(@PathVariable int drid) {
-    List<PartTimeShift> partTimeShiftList = riderRepository.getPartTimeShift(drid);
-    StringBuilder builder = new StringBuilder();
-    boolean notFirst = false;
-    List<Object> objectList = new ArrayList<>();
-    for (PartTimeShift pts : partTimeShiftList) {
-      if (notFirst) {
-        builder.append("UNION ");
-      }
-      builder.append("SELECT * FROM Orders WHERE drid IS NULL AND EXTRACT(ISODOW FROM orderTime) = ? " +
-        "AND EXTRACT(HOUR FROM orderTime) >= ? AND EXTRACT(HOUR FROM orderTime) <= ? ");
-      objectList.add(pts.getDow());
-      objectList.add(pts.getStartTime());
-      objectList.add(pts.getEndTime());
-      notFirst = true;
-    }
-    builder.append(";");
-    Object[] objectArr = new Object[objectList.size()];
-    objectList.toArray(objectArr);
-    return riderRepository.getPartTimeOrders(builder.toString(), objectArr);
+    return riderRepository.getPartTimeOrders(drid);
   }
 
   @GetMapping("/rider/{drid}/fullTimeOrders")
