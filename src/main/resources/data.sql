@@ -18,6 +18,7 @@ DROP TRIGGER IF EXISTS addSpecificUserTrigger ON Users;
 DROP TRIGGER IF EXISTS hashPasswordTrigger ON Users;
 DROP TRIGGER IF EXISTS updateCustomerRewardPointsTrigger ON Orders;
 DROP TRIGGER IF EXISTS checkAcceptedOrdersTrigger ON Orders CASCADE;
+DROP TRIGGER IF EXISTS checkPartTimeRiderShiftTrigger ON PTShifts CASCADE;
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
@@ -165,13 +166,25 @@ CREATE OR REPLACE FUNCTION addSpecificUser() RETURNS TRIGGER AS $$
     END;
 $$ LANGUAGE PLPGSQL;
 
+CREATE TRIGGER addSpecificUserTrigger
+    AFTER INSERT
+    ON Users
+    FOR EACH ROW
+    EXECUTE FUNCTION addSpecificUser();
+	
 CREATE OR REPLACE FUNCTION hashPassword() RETURNS TRIGGER AS $$
     BEGIN
         NEW.password = digest(NEW.password, 'sha1');
 		RETURN NEW;
     END;
 $$ LANGUAGE PLPGSQL;
-
+	
+CREATE TRIGGER hashPasswordTrigger
+    BEFORE UPDATE OR INSERT 
+	ON Users
+    FOR EACH ROW 
+	EXECUTE FUNCTION hashPassword();
+	
 CREATE OR REPLACE FUNCTION checkAcceptedOrders() RETURNS TRIGGER AS $$
 	DECLARE
 		aoid INTEGER;
@@ -185,18 +198,6 @@ CREATE OR REPLACE FUNCTION checkAcceptedOrders() RETURNS TRIGGER AS $$
 		RETURN NULL;
     END;
 $$ LANGUAGE PLPGSQL;
-
-CREATE TRIGGER addSpecificUserTrigger
-    AFTER INSERT
-    ON Users
-    FOR EACH ROW
-    EXECUTE FUNCTION addSpecificUser();
-	
-CREATE TRIGGER hashPasswordTrigger
-    BEFORE UPDATE OR INSERT 
-	ON Users
-    FOR EACH ROW 
-	EXECUTE FUNCTION hashPassword();
 
 CREATE CONSTRAINT TRIGGER checkAcceptedOrdersTrigger
     AFTER UPDATE OF drid OR INSERT 
@@ -219,6 +220,28 @@ CREATE TRIGGER updateCustomerRewardPointsTrigger
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRewardPoints();
+	
+CREATE OR REPLACE FUNCTION checkPartTimeRiderShift() RETURNS TRIGGER AS $$
+	DECLARE
+		shift INTEGER;
+    BEGIN
+		SELECT P.ptsid INTO shift
+			FROM PTShifts P
+			WHERE P.drid = NEW.drid AND P.dow = NEW.dow AND P.ptsid <> NEW.ptsid AND NOT
+			((NEW.startHour - P.endHour >= 1) OR (P.startHour - NEW.endHour >= 1));
+        IF shift IS NOT NULL THEN 
+			RAISE exception 'Need atleast 1 hour break interval';
+		END IF;
+		RETURN NULL;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE CONSTRAINT TRIGGER checkPartTimeRiderShiftTrigger
+    AFTER UPDATE OR INSERT 
+	ON PTShifts
+	DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW 
+	EXECUTE FUNCTION checkPartTimeRiderShift();
 
 INSERT INTO Restaurants
 VALUES (1, 'Ikea', 'A Swedish furniture company that is also known for their meatballs.', 10),
