@@ -126,8 +126,22 @@ public class JdbcRidersRepository implements RidersRepository {
   }
 
   @Override
+  public List<Order> getPartTimeOrders(int drid) {
+    return jdbcTemplate.query("WITH riderPTShift AS (SELECT * FROM PTShifts WHERE drid = ?) " +
+        "SELECT * FROM Orders O, riderPTShift R WHERE O.drid IS NULL " +
+        "AND EXTRACT(ISODOW FROM O.orderTime) = EXTRACT(ISODOW from current_timestamp) " +
+        "AND EXTRACT(ISODOW FROM O.orderTime) = R.dow AND EXTRACT(HOUR FROM O.orderTime) >= R.startHour " +
+        "AND EXTRACT(ISODOW FROM O.orderTime) <= R.endHour;", new Object[] { drid },
+      ((rs, rowNum) -> new Order()));
+  }
+
+    /*
+  @Override
   public List<Order> getPartTimeOrders(String sqlQuery, Object[] objectArr) {
     return jdbcTemplate.query(sqlQuery, objectArr,
       ((rs, rowNum) -> new Order()));
   }
+
+   */
+
 }

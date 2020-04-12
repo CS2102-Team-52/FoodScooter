@@ -8,6 +8,8 @@ import foodscooter.model.users.rider.SalaryInfo;
 import foodscooter.model.users.rider.Rider;
 import foodscooter.repositories.JdbcRidersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -50,25 +52,7 @@ public class RiderController extends BaseController {
 
   @GetMapping("/rider/{drid}/partTimeOrders")
   public List<Order> getPartTimeRiderOrders(@PathVariable int drid) {
-    List<PartTimeShift> partTimeShiftList = riderRepository.getPartTimeShift(drid);
-    StringBuilder builder = new StringBuilder();
-    boolean notFirst = false;
-    List<Object> objectList = new ArrayList<>();
-    for (PartTimeShift pts : partTimeShiftList) {
-      if (notFirst) {
-        builder.append("UNION ");
-      }
-      builder.append("SELECT * FROM Orders WHERE drid IS NULL AND EXTRACT(ISODOW FROM orderTime) = ? " +
-        "AND EXTRACT(HOUR FROM orderTime) >= ? AND EXTRACT(HOUR FROM orderTime) <= ? ");
-      objectList.add(pts.getDow());
-      objectList.add(pts.getStartTime());
-      objectList.add(pts.getEndTime());
-      notFirst = true;
-    }
-    builder.append(";");
-    Object[] objectArr = new Object[objectList.size()];
-    objectList.toArray(objectArr);
-    return riderRepository.getPartTimeOrders(builder.toString(), objectArr);
+    return riderRepository.getPartTimeOrders(drid);
   }
 
   @GetMapping("/rider/{drid}/fullTimeOrders")
@@ -150,9 +134,13 @@ public class RiderController extends BaseController {
   }
 
   @PutMapping("/rider/{drid}/acceptOrder")
-  public List<Order> acceptOrder(@PathVariable int drid, @RequestBody int oid) {
-    riderRepository.acceptOrder(drid, oid);
-    return riderRepository.getAcceptedOrders(drid);
+  public ResponseEntity<?> acceptOrder(@PathVariable int drid, @RequestBody int oid) {
+    try {
+      riderRepository.acceptOrder(drid, oid);
+    } catch (DataAccessException e) {
+      return ResponseEntity.status(409).body(e.getMessage());
+    }
+    return ResponseEntity.ok(riderRepository.getAcceptedOrders(drid));
   }
 
   @PutMapping("/rider/{drid}/doneOrder")
