@@ -16,8 +16,13 @@ DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
 
 DROP TRIGGER IF EXISTS addSpecificUserTrigger ON Users;
+DROP TRIGGER IF EXISTS hashPasswordTrigger ON Users;
 DROP TRIGGER IF EXISTS updateCustomerRewardPointsTrigger ON Orders;
 DROP TRIGGER IF EXISTS updateCustomerRecentDeliveryLocationsTrigger ON Orders;
+DROP TRIGGER IF EXISTS checkAcceptedOrdersTrigger ON Orders CASCADE;
+DROP TRIGGER IF EXISTS checkPartTimeRiderShiftTrigger ON PTShifts CASCADE;
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
@@ -175,6 +180,40 @@ CREATE TRIGGER addSpecificUserTrigger
     FOR EACH ROW
     EXECUTE FUNCTION addSpecificUser();
 
+CREATE OR REPLACE FUNCTION hashPassword() RETURNS TRIGGER AS $$
+    BEGIN
+        NEW.password = digest(NEW.password, 'sha1');
+		RETURN NEW;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER hashPasswordTrigger
+    BEFORE UPDATE OR INSERT
+	ON Users
+    FOR EACH ROW
+	EXECUTE FUNCTION hashPassword();
+
+CREATE OR REPLACE FUNCTION checkAcceptedOrders() RETURNS TRIGGER AS $$
+	DECLARE
+		aoid INTEGER;
+    BEGIN
+		SELECT O.oid INTO aoid
+			FROM Orders O
+			WHERE O.drid = NEW.drid AND O.deliveryTime IS NULL AND O.oid <> NEW.oid;
+        IF aoid IS NOT NULL THEN
+			RAISE exception '% has already accepted %', NEW.drid, aoid;
+		END IF;
+		RETURN NULL;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE CONSTRAINT TRIGGER checkAcceptedOrdersTrigger
+    AFTER UPDATE OF drid OR INSERT
+	ON Orders
+	DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW
+	EXECUTE FUNCTION checkAcceptedOrders();
+
 CREATE OR REPLACE FUNCTION updateCustomerRewardPoints() RETURNS TRIGGER AS $$
     BEGIN
         UPDATE Customers
@@ -189,6 +228,28 @@ CREATE TRIGGER updateCustomerRewardPointsTrigger
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRewardPoints();
+
+CREATE OR REPLACE FUNCTION checkPartTimeRiderShift() RETURNS TRIGGER AS $$
+	DECLARE
+		shift INTEGER;
+    BEGIN
+		SELECT P.ptsid INTO shift
+			FROM PTShifts P
+			WHERE P.drid = NEW.drid AND P.dow = NEW.dow AND P.ptsid <> NEW.ptsid AND NOT
+			((NEW.startHour - P.endHour >= 1) OR (P.startHour - NEW.endHour >= 1));
+        IF shift IS NOT NULL THEN
+			RAISE exception 'Need at least 1 hour break interval';
+		END IF;
+		RETURN NULL;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE CONSTRAINT TRIGGER checkPartTimeRiderShiftTrigger
+    AFTER UPDATE OR INSERT
+	ON PTShifts
+	DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW
+	EXECUTE FUNCTION checkPartTimeRiderShift();
 
 CREATE OR REPLACE FUNCTION updateCustomerRecentDeliveryLocations() RETURNS TRIGGER AS $$
     BEGIN

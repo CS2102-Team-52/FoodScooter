@@ -15,7 +15,7 @@ public interface RidersRepository {
   FullTimeSchedule getFullTimeSchedule(int drid);
   List<PartTimeShift> getPartTimeShift(int drid);
   List<Order> getFullTimeOrders(String dayOption, String shift1, String shift2);
-  List<Order> getPartTimeOrders(String sqlQuery, Object[] objectArr);
+  List<Order> getPartTimeOrders(int drid);
   List<Order> getOrderSummary(int drid);
   List<Order> getAcceptedOrders(int drid);
   void acceptOrder(int drid, int oid);
