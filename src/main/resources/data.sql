@@ -167,6 +167,9 @@ CREATE OR REPLACE FUNCTION addSpecificUser() RETURNS TRIGGER AS $$
             WHEN 'Delivery Rider' THEN
                 INSERT INTO DeliveryRiders
                 VALUES(NEW.uid);
+            WHEN 'Food Scooter Manager' THEN
+                INSERT INTO FDSManagers
+                VALUES(NEW.uid);
             ELSE
 
         END CASE;

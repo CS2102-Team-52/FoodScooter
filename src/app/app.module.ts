@@ -12,12 +12,13 @@ import { CustomerModule } from './customer/customer.module';
 import { LoginModule } from './login/login.module';
 import { PipesModule } from './pipes/pipes.module';
 import { RouterModule } from '@angular/router';
-
+import { FDSManagerComponent } from './users/fdsmanager/fdsmanager.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RiderComponent
+    RiderComponent,
+    FDSManagerComponent
   ],
   imports: [
     BrowserModule,
