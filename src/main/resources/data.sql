@@ -54,12 +54,9 @@ CREATE TABLE FTShift (
 	endTwoHour INTEGER
 );
 
-/* psid = id of assigned schedule */
 CREATE TABLE PTRiders (
     drid INTEGER PRIMARY KEY,
-    psid INTEGER,
     FOREIGN KEY (drid) REFERENCES DeliveryRiders (drid) ON DELETE CASCADE
---     FOREIGN KEY (psid) REFERENCES PTSchedules
 );
 
 CREATE TABLE PTShifts (

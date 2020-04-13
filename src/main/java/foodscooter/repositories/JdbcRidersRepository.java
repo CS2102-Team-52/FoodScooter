@@ -1,6 +1,7 @@
 package foodscooter.repositories;
 
 import foodscooter.model.orders.Order;
+import foodscooter.model.orders.PaymentType;
 import foodscooter.model.users.rider.FullTimeSchedule;
 import foodscooter.model.users.rider.PartTimeShift;
 import foodscooter.model.users.rider.RiderType;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -57,7 +59,44 @@ public class JdbcRidersRepository implements RidersRepository {
         "((EXTRACT(HOUR FROM OD.orderTime) >= SI.startOneHour AND EXTRACT(ISODOW FROM OD.orderTime) <= SI.endOneHour) OR " +
         "(EXTRACT(HOUR FROM OD.orderTime) >= SI.startTwoHour AND EXTRACT(ISODOW FROM OD.orderTime) <= SI.endTwoHour));",
       new Object[] { drid },
-      ((rs, rowNum) -> new Order()));
+      ((rs, rowNum) -> {
+        LocalDateTime orderTime = null;
+        LocalDateTime departureTime = null;
+        LocalDateTime restaurantArrivalTime = null;
+        LocalDateTime restaurantDepartureTime = null;
+        LocalDateTime deliveryTime = null;
+        if (rs.getTimestamp(10) != null) {
+          orderTime = rs.getTimestamp(10).toLocalDateTime();
+        }
+        if (rs.getTimestamp(11) != null) {
+          departureTime = rs.getTimestamp(11).toLocalDateTime();
+        }
+        if (rs.getTimestamp(12) != null) {
+          restaurantArrivalTime = rs.getTimestamp(12).toLocalDateTime();
+        }
+        if (rs.getTimestamp(13) != null) {
+          restaurantDepartureTime = rs.getTimestamp(13).toLocalDateTime();
+        }
+        if (rs.getTimestamp(14) != null) {
+          deliveryTime = rs.getTimestamp(14).toLocalDateTime();
+        }
+
+        return new Order(
+          rs.getInt(1),
+          rs.getInt(2),
+          rs.getInt(3),
+          rs.getInt(4),
+          rs.getBigDecimal(5),
+          rs.getBigDecimal(6),
+          rs.getInt(7),
+          PaymentType.map(rs.getString(8)),
+          rs.getString(9),
+          orderTime,
+          departureTime,
+          restaurantArrivalTime,
+          restaurantDepartureTime,
+          deliveryTime);
+      }));
   }
 
   @Override
@@ -65,7 +104,44 @@ public class JdbcRidersRepository implements RidersRepository {
     return jdbcTemplate.query(
       "SELECT * FROM Orders WHERE drid = ?;",
       new Object[] { drid },
-      ((rs, rowNum) -> new Order()));
+      ((rs, rowNum) -> {
+        LocalDateTime orderTime = null;
+        LocalDateTime departureTime = null;
+        LocalDateTime restaurantArrivalTime = null;
+        LocalDateTime restaurantDepartureTime = null;
+        LocalDateTime deliveryTime = null;
+        if (rs.getTimestamp(10) != null) {
+          orderTime = rs.getTimestamp(10).toLocalDateTime();
+        }
+        if (rs.getTimestamp(11) != null) {
+          departureTime = rs.getTimestamp(11).toLocalDateTime();
+        }
+        if (rs.getTimestamp(12) != null) {
+          restaurantArrivalTime = rs.getTimestamp(12).toLocalDateTime();
+        }
+        if (rs.getTimestamp(13) != null) {
+          restaurantDepartureTime = rs.getTimestamp(13).toLocalDateTime();
+        }
+        if (rs.getTimestamp(14) != null) {
+          deliveryTime = rs.getTimestamp(14).toLocalDateTime();
+        }
+
+        return new Order(
+          rs.getInt(1),
+          rs.getInt(2),
+          rs.getInt(3),
+          rs.getInt(4),
+          rs.getBigDecimal(5),
+          rs.getBigDecimal(6),
+          rs.getInt(7),
+          PaymentType.map(rs.getString(8)),
+          rs.getString(9),
+          orderTime,
+          departureTime,
+          restaurantArrivalTime,
+          restaurantDepartureTime,
+          deliveryTime);
+      }));
   }
 
   @Override
@@ -73,7 +149,44 @@ public class JdbcRidersRepository implements RidersRepository {
     return jdbcTemplate.query(
       "SELECT * FROM Orders WHERE drid = ? AND deliveryTime IS NOT NULL;",
       new Object[] { drid },
-      ((rs, rowNum) -> new Order()));
+      ((rs, rowNum) -> {
+        LocalDateTime orderTime = null;
+        LocalDateTime departureTime = null;
+        LocalDateTime restaurantArrivalTime = null;
+        LocalDateTime restaurantDepartureTime = null;
+        LocalDateTime deliveryTime = null;
+        if (rs.getTimestamp(10) != null) {
+          orderTime = rs.getTimestamp(10).toLocalDateTime();
+        }
+        if (rs.getTimestamp(11) != null) {
+          departureTime = rs.getTimestamp(11).toLocalDateTime();
+        }
+        if (rs.getTimestamp(12) != null) {
+          restaurantArrivalTime = rs.getTimestamp(12).toLocalDateTime();
+        }
+        if (rs.getTimestamp(13) != null) {
+          restaurantDepartureTime = rs.getTimestamp(13).toLocalDateTime();
+        }
+        if (rs.getTimestamp(14) != null) {
+          deliveryTime = rs.getTimestamp(14).toLocalDateTime();
+        }
+
+        return new Order(
+          rs.getInt(1),
+          rs.getInt(2),
+          rs.getInt(3),
+          rs.getInt(4),
+          rs.getBigDecimal(5),
+          rs.getBigDecimal(6),
+          rs.getInt(7),
+          PaymentType.map(rs.getString(8)),
+          rs.getString(9),
+          orderTime,
+          departureTime,
+          restaurantArrivalTime,
+          restaurantDepartureTime,
+          deliveryTime);
+      }));
   }
 
   @Override
@@ -99,8 +212,8 @@ public class JdbcRidersRepository implements RidersRepository {
   @Override
   public SalaryInfo getSummaryCurrentMonth(int drid, int baseSalary) {
     return jdbcTemplate.queryForObject(
-      "SELECT COUNT(oid), SUM(deliveryFee) FROM Orders WHERE drid = ? AND MONTH(orderTime) = MONTH(CURRENT_DATE()) " +
-        "AND YEAR(orderTime) = YEAR(CURRENT_DATE());",
+      "SELECT COUNT(oid), SUM(deliveryFee) FROM Orders WHERE drid = ? AND EXTRACT(MONTH FROM orderTime) = EXTRACT(MONTH FROM current_timestamp) " +
+        "AND EXTRACT(YEAR FROM orderTime) = EXTRACT(YEAR FROM current_timestamp);",
       new Object[] { drid },
       ((rs, rowNum) -> new SalaryInfo(rs.getInt(1), rs.getInt(2) + baseSalary)));
   }
@@ -108,8 +221,8 @@ public class JdbcRidersRepository implements RidersRepository {
   @Override
   public SalaryInfo getSummaryCurrentWeek(int drid, int baseSalary) {
     return jdbcTemplate.queryForObject(
-      "SELECT COUNT(oid), SUM(deliveryFee) FROM Orders WHERE drid = ? AND MONTH(orderTime) = MONTH(CURRENT_DATE()) " +
-        "AND YEAR(orderTime) = YEAR(CURRENT_DATE()) AND EXTRACT (WEEK FROM orderTime) = EXTRACT (WEEK FROM CURRENT_DATE());",
+      "SELECT COUNT(oid), SUM(deliveryFee) FROM Orders WHERE drid = ? AND EXTRACT(MONTH FROM orderTime) = EXTRACT(MONTH FROM current_timestamp) " +
+        "AND EXTRACT(YEAR FROM orderTime) = EXTRACT(YEAR FROM current_timestamp) AND EXTRACT (WEEK FROM orderTime) = EXTRACT (WEEK FROM current_timestamp);",
       new Object[] { drid },
       ((rs, rowNum) -> new SalaryInfo(rs.getInt(1), rs.getInt(2) + baseSalary)));
   }
@@ -121,7 +234,44 @@ public class JdbcRidersRepository implements RidersRepository {
         "AND EXTRACT(ISODOW FROM O.orderTime) = EXTRACT(ISODOW from current_timestamp) " +
         "AND EXTRACT(ISODOW FROM O.orderTime) = R.dow AND EXTRACT(HOUR FROM O.orderTime) >= R.startHour " +
         "AND EXTRACT(ISODOW FROM O.orderTime) <= R.endHour;", new Object[] { drid },
-      ((rs, rowNum) -> new Order()));
+      ((rs, rowNum) -> {
+        LocalDateTime orderTime = null;
+        LocalDateTime departureTime = null;
+        LocalDateTime restaurantArrivalTime = null;
+        LocalDateTime restaurantDepartureTime = null;
+        LocalDateTime deliveryTime = null;
+        if (rs.getTimestamp(10) != null) {
+          orderTime = rs.getTimestamp(10).toLocalDateTime();
+        }
+        if (rs.getTimestamp(11) != null) {
+          departureTime = rs.getTimestamp(11).toLocalDateTime();
+        }
+        if (rs.getTimestamp(12) != null) {
+          restaurantArrivalTime = rs.getTimestamp(12).toLocalDateTime();
+        }
+        if (rs.getTimestamp(13) != null) {
+          restaurantDepartureTime = rs.getTimestamp(13).toLocalDateTime();
+        }
+        if (rs.getTimestamp(14) != null) {
+          deliveryTime = rs.getTimestamp(14).toLocalDateTime();
+        }
+
+        return new Order(
+          rs.getInt(1),
+          rs.getInt(2),
+          rs.getInt(3),
+          rs.getInt(4),
+          rs.getBigDecimal(5),
+          rs.getBigDecimal(6),
+          rs.getInt(7),
+          PaymentType.map(rs.getString(8)),
+          rs.getString(9),
+          orderTime,
+          departureTime,
+          restaurantArrivalTime,
+          restaurantDepartureTime,
+          deliveryTime);
+      }));
   }
 
 }
