@@ -9,6 +9,7 @@ import { OrdersViewerComponent } from '../customer/order-history/orders-viewer/o
 import { OrderFeedbackComponent } from '../customer/order-history/order-feedback/order-feedback.component';
 import { ReviewsViewerComponent } from '../customer/review-history/reviews-viewer/reviews-viewer.component';
 import { CustomerProfileComponent } from '../customer/profile/customer-profile/customer-profile.component';
+import { FDSManagerComponent } from "../users/fdsmanager/fdsmanager.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -20,7 +21,8 @@ const routes: Routes = [
   {path: 'customers/:customerId/restaurants/:restaurantId', component: RestaurantViewerComponent},
   {path: 'customers/:customerId/orders', component: OrdersViewerComponent},
   {path: 'customers/:customerId/orders/:orderId/reviews', component: OrderFeedbackComponent},
-  {path: 'customers/:customerId/reviews', component: ReviewsViewerComponent}
+  {path: 'customers/:customerId/reviews', component: ReviewsViewerComponent},
+  {path: 'managers/:id', component: FDSManagerComponent}
 ];
 
 @NgModule({
