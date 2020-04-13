@@ -47,18 +47,16 @@ public class JdbcRidersRepository implements RidersRepository {
   }
 
   @Override
-  public FullTimeSchedule getFullTimeSchedule(int drid) {
-    return jdbcTemplate.queryForObject(
-      "SELECT dayOption, shiftOption FROM FTRiders WHERE drid = ?;",
-      new Object[] { drid },
-      ((rs, rowNum) -> new FullTimeSchedule(rs.getInt(1), rs.getInt(2))));
-  }
-
-  @Override
-  public List<Order> getFullTimeOrders(String dayOption, String shift1, String shift2) {
+  public List<Order> getFullTimeOrders(int drid) {
     return jdbcTemplate.query(
-      "SELECT * FROM Orders WHERE drid IS NULL AND EXTRACT(ISODOW FROM orderTime) IN " +
-        dayOption + " AND ((orderTime::TIME " + shift1 + ") OR (orderTime::TIME " + shift2 + "));",
+      "WITH dayWeek AS (SELECT CAST(EXTRACT(ISODOW from current_timestamp) AS INTEGER) AS dow), " +
+        "orderDay AS (SELECT * FROM Orders O WHERE O.drid IS NULL AND EXTRACT(ISODOW FROM O.orderTime) = EXTRACT(ISODOW from current_timestamp)), " +
+        "arrayIndex AS (SELECT array_position(R.dayOption, DW.dow) AS shiftIndex FROM FTRiders R, dayWeek DW WHERE R.drid = ?), " +
+        "shiftInfo AS (SELECT S.fsid, S.startOneHour, S.endOneHour, S.startTwoHour, S.endTwoHour from FTShift S, FTRiders R, arrayIndex AI WHERE AI.shiftIndex IS NOT NULL AND S.fsid = R.shiftOption[AI.shiftIndex]) " +
+        "SELECT * FROM orderDay OD, shiftInfo SI WHERE SI.fsid IS NOT NULL AND " +
+        "((EXTRACT(HOUR FROM OD.orderTime) >= SI.startOneHour AND EXTRACT(ISODOW FROM OD.orderTime) <= SI.endOneHour) OR " +
+        "(EXTRACT(HOUR FROM OD.orderTime) >= SI.startTwoHour AND EXTRACT(ISODOW FROM OD.orderTime) <= SI.endTwoHour));",
+      new Object[] { drid },
       ((rs, rowNum) -> new Order()));
   }
 
@@ -117,15 +115,6 @@ public class JdbcRidersRepository implements RidersRepository {
   }
 
   @Override
-  public List<PartTimeShift> getPartTimeShift(int drid) {
-    return jdbcTemplate.query(
-      "SELECT * FROM PTShifts WHERE drid = ?;",
-      new Object[] { drid },
-      ((rs, rowNum) -> new PartTimeShift(rs.getInt(1), rs.getInt(3),
-        rs.getInt(4), rs.getInt(5))));
-  }
-
-  @Override
   public List<Order> getPartTimeOrders(int drid) {
     return jdbcTemplate.query("WITH riderPTShift AS (SELECT * FROM PTShifts WHERE drid = ?) " +
         "SELECT * FROM Orders O, riderPTShift R WHERE O.drid IS NULL " +
@@ -134,14 +123,5 @@ public class JdbcRidersRepository implements RidersRepository {
         "AND EXTRACT(ISODOW FROM O.orderTime) <= R.endHour;", new Object[] { drid },
       ((rs, rowNum) -> new Order()));
   }
-
-    /*
-  @Override
-  public List<Order> getPartTimeOrders(String sqlQuery, Object[] objectArr) {
-    return jdbcTemplate.query(sqlQuery, objectArr,
-      ((rs, rowNum) -> new Order()));
-  }
-
-   */
 
 }

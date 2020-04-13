@@ -57,55 +57,7 @@ public class RiderController extends BaseController {
 
   @GetMapping("/rider/{drid}/fullTimeOrders")
   public List<Order> getFullTimeRiderOrders(@PathVariable int drid) {
-    FullTimeSchedule schedule = riderRepository.getFullTimeSchedule(drid);
-    String dayStr = "";
-    String shift1Str = "";
-    String shift2Str = "";
-    switch (schedule.getDayOption()) {
-      case 1:
-        dayStr = "(1, 2, 3, 4, 5)";
-        break;
-      case 2:
-        dayStr = "(2, 3, 4, 5, 6)";
-        break;
-      case 3:
-        dayStr = "(3, 4, 5, 6, 7)";
-        break;
-      case 4:
-        dayStr = "(1, 4, 5, 6, 7)";
-        break;
-      case 5:
-        dayStr = "(1, 2, 5, 6, 7)";
-        break;
-      case 6:
-        dayStr = "(1, 2, 3, 6, 7)";
-        break;
-      case 7:
-        dayStr = "(1, 2, 3, 4, 7)";
-        break;
-      default:
-        dayStr = ""; // error
-    }
-    switch (schedule.getShiftOption()) {
-      case 1:
-        shift1Str = "BETWEEN TIME '10:00:00' AND '14:00:00'";
-        shift2Str = "BETWEEN TIME '15:00:00' AND '19:00:00'";
-        break;
-      case 2:
-        shift1Str = "BETWEEN TIME '11:00:00' AND '15:00:00'";
-        shift2Str = "BETWEEN TIME '16:00:00' AND '20:00:00'";
-        break;
-      case 3:
-        shift1Str = "BETWEEN TIME '12:00:00' AND '16:00:00'";
-        shift2Str = "BETWEEN TIME '17:00:00' AND '21:00:00'";
-        break;
-      case 4:
-        shift1Str = "BETWEEN TIME '13:00:00' AND '17:00:00'";
-        shift2Str = "BETWEEN TIME '18:00:00' AND '20:00:00'";
-        break;
-      default:
-    }
-    return riderRepository.getFullTimeOrders(dayStr, shift1Str, shift2Str);
+    return riderRepository.getFullTimeOrders(drid);
   }
 
   @GetMapping("/rider/{drid}/SalaryInfo")

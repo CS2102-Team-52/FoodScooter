@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS Users CASCADE;
 DROP TABLE IF EXISTS DeliveryRiders CASCADE;
 DROP TABLE IF EXISTS FTRiders CASCADE;
 DROP TABLE IF EXISTS FTSchedules CASCADE;
+DROP TABLE IF EXISTS FTShift CASCADE;
 DROP TABLE IF EXISTS PTRiders CASCADE;
 DROP TABLE IF EXISTS PTSchedules CASCADE;
 DROP TABLE IF EXISTS PTShifts CASCADE;
@@ -39,18 +40,19 @@ CREATE TABLE DeliveryRiders (
 );
 
 CREATE TABLE FTRiders (
-    drid INTEGER PRIMARY KEY,
-    dayOption INTEGER check(dayOption in (1,2,3,4,5,6,7)),
-	shiftOption INTEGER check(shiftOption in (1,2,3,4)),
+    drid INTEGER PRIMARY KEY, 
+    dayOption INTEGER ARRAY[5], 
+	shiftOption INTEGER ARRAY[5], 
     FOREIGN KEY (drid) REFERENCES DeliveryRiders (drid) ON DELETE CASCADE
 );
 
-/*
-CREATE TABLE PTSchedules (
-    psid INTEGER PRIMARY KEY,
-    totalHours INTEGER
+CREATE TABLE FTShift (
+    fsid INTEGER PRIMARY KEY,
+	startOneHour INTEGER,
+	endOneHour INTEGER,
+	startTwoHour INTEGER,
+	endTwoHour INTEGER
 );
-*/
 
 /* psid = id of assigned schedule */
 CREATE TABLE PTRiders (
@@ -309,6 +311,12 @@ CREATE TRIGGER updateCustomerRecentDeliveryLocationsTrigger
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRecentDeliveryLocations();
+	
+INSERT INTO FTShift
+VALUES (1, 10, 14, 15, 19),
+       (2, 11, 15, 16, 20),
+       (3, 12, 16, 17, 21),
+	   (4, 13, 17, 18, 22);
 
 INSERT INTO Restaurants
 VALUES (1, 'Ikea', 'A Swedish furniture company that is also known for their meatballs.', 10),

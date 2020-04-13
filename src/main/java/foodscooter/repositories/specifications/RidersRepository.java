@@ -12,9 +12,7 @@ public interface RidersRepository {
   List<Rider> getAll();
   boolean checkFullTime(int drid);
   boolean checkPartTime(int drid);
-  FullTimeSchedule getFullTimeSchedule(int drid);
-  List<PartTimeShift> getPartTimeShift(int drid);
-  List<Order> getFullTimeOrders(String dayOption, String shift1, String shift2);
+  List<Order> getFullTimeOrders(int drid);
   List<Order> getPartTimeOrders(int drid);
   List<Order> getOrderSummary(int drid);
   List<Order> getAcceptedOrders(int drid);
