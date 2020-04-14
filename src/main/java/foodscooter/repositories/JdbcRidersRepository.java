@@ -259,7 +259,7 @@ public class JdbcRidersRepository implements RidersRepository {
     );
 
     jdbcTemplate.update(
-      "UPDATE FTRiders R SET dayOption = ? AND shiftOption = ? WHERE drid = ? ",
+      "UPDATE FTRiders R SET dayOption = ?, shiftOption = ? WHERE drid = ? ",
       new Object[]{ dayOptionSqlArray, shiftOptionSqlArray, drid});
   }
 

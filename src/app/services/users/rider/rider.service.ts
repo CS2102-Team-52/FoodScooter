@@ -35,11 +35,11 @@ export class RiderService {
   }
 
   updateFullTimeSchedule(drid: number, fullTimeSchedule: RiderFullTimeSchedule) {
-    return this.httpClient.post(`${Util.baseURL}/rider/${drid}/fullTimeSchedule/`, fullTimeSchedule);
+    return this.httpClient.put(`${Util.baseURL}/rider/${drid}/fullTimeSchedule/`, fullTimeSchedule);
   }
 
   updatePartTimeSchedule(drid: number, partTimeSchedule: RiderFullTimeSchedule) {
-    return this.httpClient.post(`${Util.baseURL}/rider/${drid}/partTimeSchedule/`, partTimeSchedule);
+    return this.httpClient.put(`${Util.baseURL}/rider/${drid}/partTimeSchedule/`, partTimeSchedule);
   }
 
   setRider(rider: Rider) {

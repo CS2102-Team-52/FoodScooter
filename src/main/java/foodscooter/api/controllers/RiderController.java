@@ -103,4 +103,10 @@ public class RiderController extends BaseController {
   public RiderFullTimeSchedule getFullTimeSchedule(@PathVariable int drid) {
     return riderRepository.getRiderFullTimeSchedule(drid);
   }
+
+  @PutMapping("/rider/{drid}/fullTimeSchedule")
+  public RiderFullTimeSchedule updateFullTimeSchedule(@PathVariable int drid, @RequestBody RiderFullTimeSchedule riderFullTimeSchedule) {
+    riderRepository.updateRiderFullTimeSchedule(drid, riderFullTimeSchedule);
+    return  riderRepository.getRiderFullTimeSchedule(drid);
+  }
 }
