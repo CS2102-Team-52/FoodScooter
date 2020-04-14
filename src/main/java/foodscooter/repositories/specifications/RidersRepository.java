@@ -22,4 +22,6 @@ public interface RidersRepository {
   SalaryInfo getSummaryCurrentWeek(int drid, int baseSalary);
   RiderFullTimeSchedule getRiderFullTimeSchedule(int drid);
   void updateRiderFullTimeSchedule(int drid, RiderFullTimeSchedule riderFullTimeSchedule);
+  void updateRider(int drid, int salary);
+  void addFullTimeRider(int drid);
 }

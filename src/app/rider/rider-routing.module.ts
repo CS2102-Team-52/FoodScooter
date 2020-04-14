@@ -6,11 +6,13 @@ import { RiderSummaryComponent } from './rider-summary/rider-summary.component';
 import { RiderProfileComponent } from './rider-profile/rider-profile.component';
 
 const routes: Routes = [
-  {path: '', component: RiderComponent, children: [
-      {path: 'order', component: RiderOrderComponent},
-      {path: 'summary', component: RiderSummaryComponent},
-      {path: 'profile', component: RiderProfileComponent}
-  ]}
+  {
+    path: '', component: RiderComponent, children: [
+      { path: 'order', component: RiderOrderComponent },
+      { path: 'summary', component: RiderSummaryComponent },
+      { path: 'profile', component: RiderProfileComponent }
+    ]
+  }
 ];
 
 @NgModule({

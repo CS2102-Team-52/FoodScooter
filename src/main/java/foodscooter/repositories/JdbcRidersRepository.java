@@ -16,7 +16,6 @@ import java.sql.Array;
 import java.sql.Connection;
 import java.sql.JDBCType;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -261,6 +260,20 @@ public class JdbcRidersRepository implements RidersRepository {
     jdbcTemplate.update(
       "UPDATE FTRiders R SET dayOption = ?, shiftOption = ? WHERE drid = ? ",
       new Object[]{ dayOptionSqlArray, shiftOptionSqlArray, drid});
+  }
+
+  @Override
+  public void updateRider(int drid, int salary) {
+    jdbcTemplate.update(
+      "UPDATE DeliveryRiders SET salary = ? WHERE drid = ? ",
+      new Object[]{ salary, drid});
+  }
+
+  @Override
+  public void addFullTimeRider(int drid) {
+    jdbcTemplate.update(
+      "INSERT INTO FTRiders VALUES(?)",
+      new Object[]{ drid});
   }
 
   @Override
