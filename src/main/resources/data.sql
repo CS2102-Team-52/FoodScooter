@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS Users CASCADE;
 DROP TABLE IF EXISTS DeliveryRiders CASCADE;
 DROP TABLE IF EXISTS FTRiders CASCADE;
-DROP TABLE IF EXISTS FTSchedules CASCADE;
 DROP TABLE IF EXISTS FTShift CASCADE;
 DROP TABLE IF EXISTS PTRiders CASCADE;
 DROP TABLE IF EXISTS PTSchedules CASCADE;
@@ -28,7 +27,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(100) NOT NULL,
+    password TEXT NOT NULL,
     type VARCHAR(50) NOT NULL
 );
 
@@ -41,8 +40,8 @@ CREATE TABLE DeliveryRiders (
 
 CREATE TABLE FTRiders (
     drid INTEGER PRIMARY KEY, 
-    dayOption INTEGER ARRAY[5], 
-	shiftOption INTEGER ARRAY[5], 
+    dayOption INTEGER ARRAY[5] DEFAULT '{1,2,3,4,5}', 
+	shiftOption INTEGER ARRAY[5] DEFAULT '{1,2,3,4,1}', 
     FOREIGN KEY (drid) REFERENCES DeliveryRiders (drid) ON DELETE CASCADE
 );
 
@@ -184,7 +183,7 @@ CREATE TRIGGER addSpecificUserTrigger
 
 CREATE OR REPLACE FUNCTION hashPassword() RETURNS TRIGGER AS $$
     BEGIN
-        NEW.password = digest(NEW.password, 'sha1');
+        NEW.password = crypt(NEW.password, gen_salt('bf'));
 		RETURN NEW;
     END;
 $$ LANGUAGE PLPGSQL;
@@ -341,3 +340,9 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
 INSERT INTO Users
 VALUES (1, 'customer', 'customer', 'Customer'),
        (2, 'rider', 'rider', 'Delivery Rider');
+
+UPDATE DeliveryRiders SET salary = 2000;
+
+INSERT INTO FTRiders
+VALUES (2);
+

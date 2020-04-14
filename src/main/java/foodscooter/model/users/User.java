@@ -2,8 +2,6 @@ package foodscooter.model.users;
 
 public class User {
   private int id;
-  private String username;
-  private String password;
   private UserType userType;
 
   public User(int id, UserType userType) {

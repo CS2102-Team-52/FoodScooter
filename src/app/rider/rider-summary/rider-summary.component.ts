@@ -13,7 +13,10 @@ import { RiderOrderService } from 'src/app/services/users/rider/order/rider-orde
 export class RiderSummaryComponent implements OnInit {
 
   summaryList: Order[];
-  salaryInfo: SalaryInfo;
+  salaryInfo: SalaryInfo = {
+    numOfOrder: 0,
+    riderSalary: 0
+  };
   rider: Rider;
 
   constructor(
@@ -29,10 +32,10 @@ export class RiderSummaryComponent implements OnInit {
   getSummary(): void {
     this.riderOrderService.fetchRiderSummary(this.rider.id).subscribe((data: any[]) => {
       this.summaryList = data;
-    })
+    });
     this.riderService.fetchSalaryInfo(this.rider.id).subscribe((data: any) => {
       console.log(data);
       this.salaryInfo = data;
-    })
+    });
   }
 }

@@ -2,17 +2,21 @@ package foodscooter.repositories;
 
 import foodscooter.model.orders.Order;
 import foodscooter.model.orders.PaymentType;
-import foodscooter.model.users.rider.FullTimeSchedule;
-import foodscooter.model.users.rider.PartTimeShift;
+import foodscooter.model.users.rider.RiderFullTimeSchedule;
 import foodscooter.model.users.rider.RiderType;
 import foodscooter.model.users.rider.SalaryInfo;
 import foodscooter.model.users.rider.Rider;
 import foodscooter.repositories.specifications.RidersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Array;
+import java.sql.Connection;
+import java.sql.JDBCType;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -34,17 +38,27 @@ public class JdbcRidersRepository implements RidersRepository {
 
   @Override
   public boolean checkFullTime(int drid) {
-    Integer fullTime = jdbcTemplate.queryForObject(
-      "SELECT 1 FROM FTRiders R WHERE R.drid = ?;",
-      new Object[] { drid }, ((rs, rowNum) -> new Integer(rs.getInt(1))));
+    Integer fullTime = null;
+    try {
+      fullTime = jdbcTemplate.queryForObject(
+        "SELECT 1 FROM FTRiders R WHERE R.drid = ?;",
+        new Object[]{drid}, ((rs, rowNum) -> new Integer(rs.getInt(1))));
+    } catch (EmptyResultDataAccessException e) {
+      return false;
+    }
     return fullTime != null;
   }
 
   @Override
   public boolean checkPartTime(int drid) {
-    Integer partTime = jdbcTemplate.queryForObject(
-      "SELECT 1 FROM PTRiders R WHERE R.drid = ?;",
-      new Object[] { drid }, ((rs, rowNum) -> new Integer(rs.getInt(1))));
+    Integer partTime = null;
+    try {
+      partTime = jdbcTemplate.queryForObject(
+        "SELECT * FROM PTRiders R WHERE R.drid = ?;",
+        new Object[]{drid}, ((rs, rowNum) -> new Integer(rs.getInt(1))));
+    } catch (EmptyResultDataAccessException e) {
+      return false;
+    }
     return partTime != null;
   }
 
@@ -225,6 +239,28 @@ public class JdbcRidersRepository implements RidersRepository {
         "AND EXTRACT(YEAR FROM orderTime) = EXTRACT(YEAR FROM current_timestamp) AND EXTRACT (WEEK FROM orderTime) = EXTRACT (WEEK FROM current_timestamp);",
       new Object[] { drid },
       ((rs, rowNum) -> new SalaryInfo(rs.getInt(1), rs.getInt(2) + baseSalary)));
+  }
+
+  @Override
+  public RiderFullTimeSchedule getRiderFullTimeSchedule(int drid) {
+    return  jdbcTemplate.queryForObject("SELECT * FROM FTRiders R WHERE R.drid = ? ;", new Object[] { drid },
+      ((rs, rowNum) -> (new RiderFullTimeSchedule((Integer[]) rs.getArray(2).getArray(),
+        (Integer[]) rs.getArray(3).getArray()))));
+  }
+
+  @Override
+  public void updateRiderFullTimeSchedule(int drid, RiderFullTimeSchedule riderFullTimeSchedule) {
+    Array dayOptionSqlArray = jdbcTemplate.execute(
+      (Connection c) -> c.createArrayOf(JDBCType.INTEGER.getName(), riderFullTimeSchedule.getDayOption())
+    );
+
+    Array shiftOptionSqlArray = jdbcTemplate.execute(
+      (Connection c) -> c.createArrayOf(JDBCType.INTEGER.getName(), riderFullTimeSchedule.getShiftOption())
+    );
+
+    jdbcTemplate.update(
+      "UPDATE FTRiders R SET dayOption = ? AND shiftOption = ? WHERE drid = ? ",
+      new Object[]{ dayOptionSqlArray, shiftOptionSqlArray, drid});
   }
 
   @Override

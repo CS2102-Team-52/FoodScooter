@@ -10,7 +10,6 @@ import { Rider } from './rider';
 })
 export class RiderComponent implements OnInit {
   id: number;
-  rider: Rider;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -25,11 +24,10 @@ export class RiderComponent implements OnInit {
 
   getRiderInfo() {
     this.riderService.fetchRiderInfo(this.id).subscribe((data: any) => {
-      console.log(data);
-      this.rider = data;
-    })
-    this.riderService.setRider(this.rider);
+      this.riderService.setRider(data);
+      console.log(this.riderService.getRider());
+    });
+    
   }
 
-  
 }

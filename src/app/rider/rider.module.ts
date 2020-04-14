@@ -6,23 +6,29 @@ import { RiderOrderComponent } from './rider-order/rider-order.component';
 import { RiderSummaryComponent } from './rider-summary/rider-summary.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { RiderRoutingModule } from './rider-routing.module';
+import { RiderProfileComponent } from './rider-profile/rider-profile.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     RiderComponent,
     RiderOrderComponent,
-    RiderSummaryComponent
+    RiderSummaryComponent,
+    RiderProfileComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
     PipesModule,
-    RiderRoutingModule
+    RiderRoutingModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [
     RiderComponent,
     RiderOrderComponent,
-    RiderSummaryComponent
+    RiderSummaryComponent,
+    RiderProfileComponent
   ]
 })
 export class RiderModule { }

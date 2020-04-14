@@ -1,8 +1,7 @@
 package foodscooter.repositories.specifications;
 
 import foodscooter.model.orders.Order;
-import foodscooter.model.users.rider.FullTimeSchedule;
-import foodscooter.model.users.rider.PartTimeShift;
+import foodscooter.model.users.rider.RiderFullTimeSchedule;
 import foodscooter.model.users.rider.SalaryInfo;
 import foodscooter.model.users.rider.Rider;
 
@@ -21,4 +20,6 @@ public interface RidersRepository {
   int getBaseSalary(int drid);
   SalaryInfo getSummaryCurrentMonth(int drid, int baseSalary);
   SalaryInfo getSummaryCurrentWeek(int drid, int baseSalary);
+  RiderFullTimeSchedule getRiderFullTimeSchedule(int drid);
+  void updateRiderFullTimeSchedule(int drid, RiderFullTimeSchedule riderFullTimeSchedule);
 }

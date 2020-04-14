@@ -1,8 +1,7 @@
 package foodscooter.api.controllers;
 
 import foodscooter.model.orders.Order;
-import foodscooter.model.users.rider.FullTimeSchedule;
-import foodscooter.model.users.rider.PartTimeShift;
+import foodscooter.model.users.rider.RiderFullTimeSchedule;
 import foodscooter.model.users.rider.RiderType;
 import foodscooter.model.users.rider.SalaryInfo;
 import foodscooter.model.users.rider.Rider;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,16 +35,16 @@ public class RiderController extends BaseController {
 
   //TODO
   @GetMapping("/rider/{drid}/riderInfo")
-  public Rider getRiderInfo(@PathVariable int drid) {
+  public ResponseEntity<?> getRiderInfo(@PathVariable int drid) {
     boolean isFullTime = riderRepository.checkFullTime(drid);
     boolean isPartTime = riderRepository.checkPartTime(drid);
     if (!(isFullTime ^ isPartTime)) {
       // return error
-      return null;
+      return ResponseEntity.status(409).build();
     } else if (isFullTime) {
-      return new Rider(drid, RiderType.FULL_TIME);
+      return ResponseEntity.ok(new Rider(drid, RiderType.FULL_TIME));
     } else {
-      return new Rider(drid, RiderType.PART_TIME);
+      return ResponseEntity.ok(new Rider(drid, RiderType.PART_TIME));
     }
   }
 
@@ -60,7 +58,7 @@ public class RiderController extends BaseController {
     return riderRepository.getFullTimeOrders(drid);
   }
 
-  @GetMapping("/rider/{drid}/SalaryInfo")
+  @GetMapping("/rider/{drid}/salaryInfo")
   public SalaryInfo getRiderSalary(@PathVariable int drid) {
     int baseSalary = riderRepository.getBaseSalary(drid);
     boolean isFullTime = riderRepository.checkFullTime(drid);
@@ -99,5 +97,10 @@ public class RiderController extends BaseController {
   public List<Order> doneOrder(@PathVariable int drid, @RequestBody int oid) {
     riderRepository.doneOrder(drid, oid);
     return riderRepository.getOrderSummary(drid);
+  }
+
+  @GetMapping("/rider/{drid}/fullTimeSchedule")
+  public RiderFullTimeSchedule getFullTimeSchedule(@PathVariable int drid) {
+    return riderRepository.getRiderFullTimeSchedule(drid);
   }
 }
