@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RiderComponent } from '../users/rider/rider.component';
+import { RiderComponent } from '../rider/rider.component';
 import { LoginComponent } from '../login/login.component';
 import { CustomerComponent } from '../customer/customer.component';
 import { RestaurantsViewerComponent } from '../customer/restaurants/restaurants-viewer/restaurants-viewer.component';
@@ -10,11 +10,13 @@ import { OrderFeedbackComponent } from '../customer/order-history/order-feedback
 import { ReviewsViewerComponent } from '../customer/review-history/reviews-viewer/reviews-viewer.component';
 import { CustomerProfileComponent } from '../customer/profile/customer-profile/customer-profile.component';
 import { FDSManagerComponent } from "../users/fdsmanager/fdsmanager.component";
+import { RiderOrderComponent } from '../rider/rider-order/rider-order.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'riders/:id', component: RiderComponent},
+  {path: 'riders/:id',
+  loadChildren: () => import('../rider/rider.module').then(m => m.RiderModule)},
   {path: 'customers/:customerId', component: CustomerComponent},
   {path: 'customers/:customerId/profile', component: CustomerProfileComponent},
   {path: 'customers/:customerId/restaurants', component: RestaurantsViewerComponent},

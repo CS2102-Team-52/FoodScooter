@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { Util } from 'src/app/users/util';
-import { User } from 'src/app/users/user';
-import { Rider } from "../../../users/rider/rider";
+import { Rider } from "../../../rider/rider";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RiderService {
+
+  private rider: Rider;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -16,7 +17,6 @@ export class RiderService {
     return this.httpClient.post(`${Util.baseURL}/riders`, rider);
   }
 
-  
   fetchAllRiders(): Observable<any> {
     return this.httpClient.get(`${Util.baseURL}/riders`);
   }
@@ -27,5 +27,13 @@ export class RiderService {
 
   fetchSalaryInfo(drid: number) {
     return this.httpClient.get(`${Util.baseURL}/rider/${drid}/salaryInfo/`);
+  }
+
+  setRider(rider: Rider) {
+    this.rider = rider;
+  }
+
+  getRider() {
+    return this.rider;
   }
 }
