@@ -48,7 +48,7 @@ public class JdbcUsersRepository implements UsersRepository {
     return jdbcTemplate.queryForObject(
       "SELECT * "
       + "FROM Users U "
-      + "WHERE U.username = ? AND U.password = digest(?, 'sha1') ;",
+      + "WHERE U.username = ? AND U.password = crypt(?, U.password) ;",
       new Object[] { username, password },
       ((rs, rowNum) -> {
         int userId = rs.getInt(1);

@@ -1,0 +1,63 @@
+<div class="mat-typography">
+    <mat-label>Accepted Orders</mat-label>
+    <mat-list *ngFor="let o of acceptedOrderList">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>
+                    Order Number: {{o.id}}
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item>
+                        Order Time: {{o.orderTime}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Delivery Fee: {{o.deliveryFee}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Payment Type: {{o.paymentType | pretty}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Location: {{o.location}}
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="refreshAcceptedOrders(o.id)" color="primary">Order delivered</button>
+            </mat-card-actions>
+        </mat-card>
+    </mat-list>
+</div>
+
+<div class="mat-typography">
+    <mat-label>Available Orders</mat-label>
+    <mat-list *ngFor="let o of orderList">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>
+                    Order Number: {{o.id}}
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item>
+                        Order Time: {{o.orderTime}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Delivery Fee: {{o.deliveryFee}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Payment Type: {{o.paymentType | pretty}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Location: {{o.location}}
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="refreshOrders(o.id)" color="primary">Accept Order</button>
+            </mat-card-actions>
+        </mat-card>
+    </mat-list>
+</div>

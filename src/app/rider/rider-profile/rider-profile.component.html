@@ -1,0 +1,59 @@
+<form [formGroup]="fullTimeForm" class="mat-typography" *ngIf="isFullTime" (ngSubmit)="onSubmitFullTime()">
+    <mat-label>Full Time</mat-label>
+    <br>
+    <mat-form-field>
+        <mat-label>Day Options [Current: {{riderFullTimeSchedule.dayOption[0]}}]</mat-label>
+        <mat-select formControlName="dayOption" required>
+            <mat-option *ngFor="let dayChoice of dayChoices" [value]="dayChoice.value">
+                {{dayChoice.value}}: {{dayChoice.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Day 1 [Current: {{riderFullTimeSchedule.shiftOption[0]}}]</mat-label>
+        <mat-select formControlName="shift1" required>
+            <mat-option *ngFor="let shiftChoice of shiftChoices" [value]="shiftChoice.value">
+                {{shiftChoice.value}}: {{shiftChoice.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    &nbsp;
+    <mat-form-field>
+        <mat-label>Day 2 [Current: {{riderFullTimeSchedule.shiftOption[1]}}]</mat-label>
+        <mat-select formControlName="shift2" required>
+            <mat-option *ngFor="let shiftChoice of shiftChoices" [value]="shiftChoice.value">
+                {{shiftChoice.value}}: {{shiftChoice.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    &nbsp;
+    <mat-form-field>
+        <mat-label>Day 3 [Current: {{riderFullTimeSchedule.shiftOption[2]}}]</mat-label>
+        <mat-select formControlName="shift3" required>
+            <mat-option *ngFor="let shiftChoice of shiftChoices" [value]="shiftChoice.value">
+                {{shiftChoice.value}}: {{shiftChoice.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    &nbsp;
+    <mat-form-field>
+        <mat-label>Day 4 [Current: {{riderFullTimeSchedule.shiftOption[3]}}]</mat-label>
+        <mat-select formControlName="shift4" required>
+            <mat-option *ngFor="let shiftChoice of shiftChoices" [value]="shiftChoice.value">
+                {{shiftChoice.value}}: {{shiftChoice.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    &nbsp;
+    <mat-form-field>
+        <mat-label>Day 5 [Current: {{riderFullTimeSchedule.shiftOption[4]}}]</mat-label>
+        <mat-select formControlName="shift5" required>
+            <mat-option *ngFor="let shiftChoice of shiftChoices" [value]="shiftChoice.value">
+                {{shiftChoice.value}}: {{shiftChoice.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="primary" [disabled]="!fullTimeForm.valid">Update</button>
+</form>

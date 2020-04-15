@@ -4,6 +4,9 @@ import foodscooter.api.dtos.login.AccountDetails;
 import foodscooter.api.dtos.login.Credentials;
 import foodscooter.api.dtos.login.LoginResponse;
 import foodscooter.model.users.User;
+import foodscooter.model.users.UserType;
+import foodscooter.model.users.rider.RiderType;
+import foodscooter.repositories.JdbcRidersRepository;
 import foodscooter.repositories.JdbcUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,11 +18,13 @@ import java.util.Optional;
 @RestController
 public class LoginController extends BaseController {
   private final JdbcUsersRepository usersRepository;
+  private final JdbcRidersRepository ridersRepository;
 
   @Autowired
   public LoginController(
-    JdbcUsersRepository usersRepository) {
+    JdbcUsersRepository usersRepository, JdbcRidersRepository ridersRepository) {
     this.usersRepository = usersRepository;
+    this.ridersRepository = ridersRepository;
   }
 
   @PostMapping("/login/existing")
@@ -36,6 +41,15 @@ public class LoginController extends BaseController {
       accountDetails.getUsername(),
       accountDetails.getPassword(),
       accountDetails.getUserType());
-    return new LoginResponse(true, accountDetails.getUserType(), userId);
+    LoginResponse loginResponse = new LoginResponse(true, accountDetails.getUserType(), userId);
+    if (accountDetails.getUserType().equals(UserType.DELIVERY_RIDER)) {
+      if (accountDetails.getRiderType().equals(RiderType.FULL_TIME)) {
+        ridersRepository.updateRider(loginResponse.getUserId(), 2500);
+        ridersRepository.addFullTimeRider(loginResponse.getUserId());
+      } else {
+        ridersRepository.updateRider(loginResponse.getUserId(), 500);
+      }
+    }
+    return loginResponse;
   }
 }

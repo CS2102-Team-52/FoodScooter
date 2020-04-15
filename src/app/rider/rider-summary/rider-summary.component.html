@@ -1,0 +1,50 @@
+<div class="mat-typography">
+    <mat-label>Salary Summary</mat-label>
+    <br>
+    <mat-label>Note: Full-time will have summary of the current month and Part-time will have summary of the current
+        week.</mat-label>
+    <mat-card>
+        <mat-card-content>
+            <mat-list>
+                <mat-list-item>
+                    Number of Orders: {{salaryInfo.numOfOrder}}
+                </mat-list-item>
+                <mat-list-item>
+                    Rider Salary: {{salaryInfo.riderSalary}}
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div class="mat-typography">
+    <mat-label>Order Summary</mat-label>
+    <mat-list *ngFor="let s of summaryList">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>
+                    Order Number: {{s.id}}
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item>
+                        Order Time: {{s.orderTime}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Delivery Fee: {{s.deliveryFee}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Payment Type: {{s.paymentType | pretty}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Location: {{s.location}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Delivery Time: {{s.deliveryTime}}
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </mat-list>
+</div>

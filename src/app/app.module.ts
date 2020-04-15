@@ -7,17 +7,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './core/app.routing.module';
 import { MaterialModule } from './core/material.module';
-import { RiderComponent } from './users/rider/rider.component';
 import { CustomerModule } from './customer/customer.module';
 import { LoginModule } from './login/login.module';
 import { PipesModule } from './pipes/pipes.module';
 import { RouterModule } from '@angular/router';
 import { FDSManagerComponent } from './users/fdsmanager/fdsmanager.component';
+import { RiderModule } from './rider/rider.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RiderComponent,
     FDSManagerComponent
   ],
   imports: [
@@ -30,7 +29,8 @@ import { FDSManagerComponent } from './users/fdsmanager/fdsmanager.component';
     RouterModule,
     PipesModule,
     LoginModule,
-    CustomerModule
+    CustomerModule,
+    RiderModule
   ],
   providers: [],
   bootstrap: [AppComponent]
