@@ -3,10 +3,12 @@ package foodscooter.repositories;
 import foodscooter.model.orders.Order;
 import foodscooter.model.orders.PaymentType;
 import foodscooter.model.users.rider.RiderFullTimeSchedule;
+import foodscooter.model.users.rider.RiderPartTimeShift;
 import foodscooter.model.users.rider.RiderType;
 import foodscooter.model.users.rider.SalaryInfo;
 import foodscooter.model.users.rider.Rider;
 import foodscooter.repositories.specifications.RidersRepository;
+import foodscooter.repositories.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,10 +23,12 @@ import java.util.List;
 @Repository
 public class JdbcRidersRepository implements RidersRepository {
   private final JdbcTemplate jdbcTemplate;
+  private final IdGenerator idGenerator;
 
   @Autowired
-  public JdbcRidersRepository(JdbcTemplate jdbcTemplate) {
+  public JdbcRidersRepository(JdbcTemplate jdbcTemplate, IdGenerator idGenerator) {
     this.jdbcTemplate = jdbcTemplate;
+    this.idGenerator = idGenerator;
   }
 
   //TODO
@@ -274,6 +278,28 @@ public class JdbcRidersRepository implements RidersRepository {
     jdbcTemplate.update(
       "INSERT INTO FTRiders VALUES(?)",
       new Object[]{ drid});
+  }
+
+  @Override
+  public void addPartTimeShift(int drid, RiderPartTimeShift riderPartTimeShift) {
+    int ptsId = idGenerator.generate( "ptsid", "PTShifts");
+    jdbcTemplate.update(
+      "INSERT INTO PTShifts "
+        + " VALUES (?, ?, ?, ?, ?)",
+      ptsId, drid, riderPartTimeShift.getDow(),
+      riderPartTimeShift.getStartHour(), riderPartTimeShift.getEndHour());
+  }
+
+  @Override
+  public void deletePartTimeShift(int drid, int ptsid) {
+    jdbcTemplate.update("DELETE FROM PTShifts WHERE ptsid = ? AND drid = ?", ptsid, drid);
+  }
+
+  @Override
+  public List<RiderPartTimeShift> getRiderPartTimeShift(int drid) {
+    return jdbcTemplate.query("SELECT * FROM PTShifts WHERE drid = ?", new Object[]{ drid },
+      ((rs, rowNum) -> new RiderPartTimeShift(rs.getInt(1), rs.getInt(2),
+        rs.getInt(3), rs.getInt(4), rs.getInt(5))));
   }
 
   @Override

@@ -4,6 +4,8 @@ import { RiderService } from 'src/app/services/users/rider/rider.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RiderFullTimeSchedule } from '../../store/rider-full-time-schedule';
 import { RiderType } from 'src/app/store/rider-type.enum';
+import { RiderPartTimeShift } from 'src/app/store/rider-part-time-shift';
+import { PartTimeShiftValidator } from './partTimeShift.validator';
 
 @Component({
   selector: 'app-rider-profile',
@@ -13,12 +15,16 @@ import { RiderType } from 'src/app/store/rider-type.enum';
 export class RiderProfileComponent implements OnInit {
 
   fullTimeForm: FormGroup;
+  partTimeForm: FormGroup;
   rider: Rider;
   isFullTime: boolean;
   riderFullTimeSchedule: RiderFullTimeSchedule = {
+    // set default values
     dayOption: [1,2,3,4,5],
     shiftOption: [1,1,1,1,1]
   };
+
+  riderPartTimeShiftList: RiderPartTimeShift[];
 
   dayChoices: any[] = [
     {value: 1, viewValue: 'Monday - Friday'},
@@ -36,9 +42,49 @@ export class RiderProfileComponent implements OnInit {
     {value: 3, viewValue: '1200 - 1600 & 1700 - 2100'},
     {value: 4, viewValue: '1300 - 1700 & 1800 - 2200'}
   ];
+
+  dowChoices: any[] = [
+    {value: 1, viewValue: 'Monday'},
+    {value: 2, viewValue: 'Tuesday'},
+    {value: 3, viewValue: 'Wednesday'},
+    {value: 4, viewValue: 'Thursday'},
+    {value: 5, viewValue: 'Friday'},
+    {value: 6, viewValue: 'Saturday'},
+    {value: 7, viewValue: 'Sunday'}
+  ];
+
+  startHourChoices: any[] = [
+    {value: 10, viewValue: '1000'},
+    {value: 11, viewValue: '1100'},
+    {value: 12, viewValue: '1200'},
+    {value: 13, viewValue: '1300'},
+    {value: 14, viewValue: '1400'},
+    {value: 15, viewValue: '1500'},
+    {value: 16, viewValue: '1600'},
+    {value: 17, viewValue: '1700'},
+    {value: 18, viewValue: '1800'},
+    {value: 19, viewValue: '1900'},
+    {value: 20, viewValue: '2000'},
+    {value: 21, viewValue: '2100'}
+  ];
+
+  endHourChoices: any[] = [
+    {value: 11, viewValue: '1100'},
+    {value: 12, viewValue: '1200'},
+    {value: 13, viewValue: '1300'},
+    {value: 14, viewValue: '1400'},
+    {value: 15, viewValue: '1500'},
+    {value: 16, viewValue: '1600'},
+    {value: 17, viewValue: '1700'},
+    {value: 18, viewValue: '1800'},
+    {value: 19, viewValue: '1900'},
+    {value: 20, viewValue: '2000'},
+    {value: 21, viewValue: '2100'},
+    {value: 22, viewValue: '2200'},
+  ];
   
-  constructor(private riderService: RiderService, private fb: FormBuilder) { 
-    this.fullTimeForm = fb.group({  
+  constructor(private riderService: RiderService, private ftFb: FormBuilder, private ptFb: FormBuilder) { 
+    this.fullTimeForm = ftFb.group({  
       'dayOption' : [null, Validators.required],  
       'shift1' : [null, Validators.required], 
       'shift2' : [null, Validators.required],  
@@ -46,6 +92,12 @@ export class RiderProfileComponent implements OnInit {
       'shift4' : [null, Validators.required],  
       'shift5' : [null, Validators.required]
     });  
+
+    this.partTimeForm = ptFb.group({   
+      'dow' : [null, Validators.required], 
+      'startHour' : [null, Validators.required],  
+      'endHour' : [null, Validators.required]
+    }, { validators: PartTimeShiftValidator });  
   }
 
   ngOnInit(): void {
@@ -68,11 +120,9 @@ export class RiderProfileComponent implements OnInit {
         this.riderFullTimeSchedule = data;
       })
     } else {
-      /*
-      this.riderService.fetchPartTimeSchedule(this.rider.id).subscribe((data: any) => {
-        this.riderFullTimeSchedule = data;
+      this.riderService.fetchPartTimeShift(this.rider.id).subscribe((data: any[]) => {
+        this.riderPartTimeShiftList = data;
       })
-      */
     }
   }
 
@@ -120,6 +170,22 @@ export class RiderProfileComponent implements OnInit {
   }
 
   onSubmitPartTime() {
+    let partTimeShift: RiderPartTimeShift;
+    partTimeShift = {
+      ptsid: 0,
+      drid: this.rider.id,
+      dow: this.partTimeForm.controls.dow.value,
+      startHour: this.partTimeForm.controls.startHour.value,
+      endHour: this.partTimeForm.controls.endHour.value
+    };
+    this.riderService.addPartTimeShift(this.rider.id, partTimeShift).subscribe((data: any[]) => {
+      this.riderPartTimeShiftList = data;
+    });
+  }
 
+  deletePartTimeShift(ptsid: number) {
+    this.riderService.deletePartTimeShift(this.rider.id, ptsid).subscribe((data: any[]) => {
+      this.riderPartTimeShiftList = data;
+    });
   }
 }

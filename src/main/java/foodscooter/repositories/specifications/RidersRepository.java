@@ -2,6 +2,7 @@ package foodscooter.repositories.specifications;
 
 import foodscooter.model.orders.Order;
 import foodscooter.model.users.rider.RiderFullTimeSchedule;
+import foodscooter.model.users.rider.RiderPartTimeShift;
 import foodscooter.model.users.rider.SalaryInfo;
 import foodscooter.model.users.rider.Rider;
 
@@ -24,4 +25,7 @@ public interface RidersRepository {
   void updateRiderFullTimeSchedule(int drid, RiderFullTimeSchedule riderFullTimeSchedule);
   void updateRider(int drid, int salary);
   void addFullTimeRider(int drid);
+  void addPartTimeShift(int drid, RiderPartTimeShift riderPartTimeShift);
+  void deletePartTimeShift(int drid, int ptsid);
+  List<RiderPartTimeShift> getRiderPartTimeShift(int drid);
 }

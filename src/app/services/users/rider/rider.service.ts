@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { Util } from 'src/app/users/util';
 import { Rider } from "../../../rider/rider";
 import { RiderFullTimeSchedule } from 'src/app/store/rider-full-time-schedule';
+import { RiderPartTimeShift } from 'src/app/store/rider-part-time-shift';
 
 @Injectable({
   providedIn: 'root'
@@ -38,8 +39,16 @@ export class RiderService {
     return this.httpClient.put(`${Util.baseURL}/rider/${drid}/fullTimeSchedule/`, fullTimeSchedule);
   }
 
-  updatePartTimeSchedule(drid: number, partTimeSchedule: RiderFullTimeSchedule) {
-    return this.httpClient.put(`${Util.baseURL}/rider/${drid}/partTimeSchedule/`, partTimeSchedule);
+  fetchPartTimeShift(drid: number) {
+    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/partTimeShift/`);
+  }
+
+  addPartTimeShift(drid: number, partTimeShift: RiderPartTimeShift) {
+    return this.httpClient.post(`${Util.baseURL}/rider/${drid}/partTimeShift/`, partTimeShift);
+  }
+
+  deletePartTimeShift(drid: number, ptsid: number) {
+    return this.httpClient.delete(`${Util.baseURL}/rider/${drid}/partTimeShift/${ptsid}`);
   }
 
   setRider(rider: Rider) {
