@@ -57,3 +57,65 @@
     <br>
     <button mat-raised-button color="primary" [disabled]="!fullTimeForm.valid">Update</button>
 </form>
+
+<div *ngIf="!isFullTime">
+    <form [formGroup]="partTimeForm" class="mat-typography" (ngSubmit)="onSubmitPartTime()">
+        <mat-label>Part Time</mat-label>
+        <br>
+        <mat-form-field>
+            <mat-label>Day of the week</mat-label>
+            <mat-select formControlName="dow" required>
+                <mat-option *ngFor="let dowChoice of dowChoices" [value]="dowChoice.value">
+                    {{dowChoice.value}}: {{dowChoice.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        &nbsp;
+        <mat-form-field>
+            <mat-label>Start Hour</mat-label>
+            <mat-select formControlName="startHour" required>
+                <mat-option *ngFor="let startHourChoice of startHourChoices" [value]="startHourChoice.value">
+                    {{startHourChoice.value}}: {{startHourChoice.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        &nbsp;
+        <mat-form-field>
+            <mat-label>End Hour</mat-label>
+            <mat-select formControlName="endHour" required>
+                <mat-option *ngFor="let endHourChoice of endHourChoices" [value]="endHourChoice.value">
+                    {{endHourChoice.value}}: {{endHourChoice.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+        <button mat-raised-button color="primary" [disabled]="!partTimeForm.valid">Add</button>
+    </form>
+
+    <mat-label>Part-Time Shifts</mat-label>
+    <mat-list *ngFor="let pts of riderPartTimeShiftList">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>
+                    ID: {{pts.ptsid}}
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item>
+                        Day of the week: {{pts.dow}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Start hour: {{pts.startHour}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        End hour: {{pts.endHour}}
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="deletePartTimeShift(pts.ptsid)" color="primary">Delete</button>
+            </mat-card-actions>
+        </mat-card>
+    </mat-list>
+</div>

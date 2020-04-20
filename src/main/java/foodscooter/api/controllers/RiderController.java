@@ -2,6 +2,7 @@ package foodscooter.api.controllers;
 
 import foodscooter.model.orders.Order;
 import foodscooter.model.users.rider.RiderFullTimeSchedule;
+import foodscooter.model.users.rider.RiderPartTimeShift;
 import foodscooter.model.users.rider.RiderType;
 import foodscooter.model.users.rider.SalaryInfo;
 import foodscooter.model.users.rider.Rider;
@@ -9,8 +10,10 @@ import foodscooter.repositories.JdbcRidersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -108,5 +111,22 @@ public class RiderController extends BaseController {
   public RiderFullTimeSchedule updateFullTimeSchedule(@PathVariable int drid, @RequestBody RiderFullTimeSchedule riderFullTimeSchedule) {
     riderRepository.updateRiderFullTimeSchedule(drid, riderFullTimeSchedule);
     return  riderRepository.getRiderFullTimeSchedule(drid);
+  }
+
+  @DeleteMapping("/rider/{drid}/partTimeShift/{ptsid}")
+  public List<RiderPartTimeShift> deletePartTimeShift(@PathVariable int drid, @PathVariable int ptsid) {
+    riderRepository.deletePartTimeShift(drid, ptsid);
+    return riderRepository.getRiderPartTimeShift(drid);
+  }
+
+  @PostMapping("/rider/{drid}/partTimeShift")
+  public List<RiderPartTimeShift> addPartTimeShift(@PathVariable int drid, @RequestBody RiderPartTimeShift riderPartTimeShift) {
+    riderRepository.addPartTimeShift(drid, riderPartTimeShift);
+    return riderRepository.getRiderPartTimeShift(drid);
+  }
+
+  @GetMapping("/rider/{drid}/partTimeShift")
+  public List<RiderPartTimeShift> getPartTimeShift(@PathVariable int drid) {
+    return riderRepository.getRiderPartTimeShift(drid);
   }
 }
