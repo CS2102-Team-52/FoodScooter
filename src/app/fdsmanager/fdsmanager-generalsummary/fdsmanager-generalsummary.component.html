@@ -1,10 +1,6 @@
 <div>
-  <mat-card>
-    <button mat-raised-button (click)="viewGeneralSummary()" color="primary">View Summary</button>
-  </mat-card>
-
-  <div *ngIf="showGeneralSummary" class="mat-typography">
-    <h2>General Summary</h2>
+  <div class="mat-typography">
+    <mat-label>General Summary</mat-label>
     <mat-card>
       <mat-card-content>
         <mat-list *ngFor="let o of generalSummaryList">
