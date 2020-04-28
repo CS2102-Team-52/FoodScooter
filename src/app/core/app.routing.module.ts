@@ -7,14 +7,18 @@ const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {
+    path: 'customers',
+    loadChildren: () => import('../customer/customer.module').then(m => m.CustomerModule)
+  },
+  {path: 'managers/:id', component: FDSManagerComponent},
+  {
     path: 'riders/:id',
     loadChildren: () => import('../rider/rider.module').then(m => m.RiderModule)
   },
   {
-    path: 'customers',
-    loadChildren: () => import('../customer/customer.module').then(m => m.CustomerModule)
-  },
-  {path: 'managers/:id', component: FDSManagerComponent}
+    path: 'staff/',
+    loadChildren: () => import('../restaurant-staff/restaurant-staff.module').then(m => m.RestaurantStaffModule)
+  }
 ];
 
 @NgModule({

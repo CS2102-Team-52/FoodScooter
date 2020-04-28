@@ -9,21 +9,27 @@ import { CustomerOrderHistoryService } from '../services/customer-order-history.
   styleUrls: ['./customer-order-history-viewer.component.css']
 })
 export class CustomerOrderHistoryViewer implements OnInit {
+  private customerId: number;
+
   orders: Order[];
+
+  toShowFeedbackForm: boolean;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private orderHistoryService: CustomerOrderHistoryService
-  ) { }
+  ) {
+    this.toShowFeedbackForm = false;
+  }
 
   ngOnInit(): void {
+    this.customerId = Number(this.activatedRoute.parent.snapshot.paramMap.get('customerId'));
     this.fetchOrders();
   }
 
   public fetchOrders() {
-    const customerId = Number(this.activatedRoute.snapshot.paramMap.get('customerId'));
-    this.orderHistoryService.fetchOrders(customerId).subscribe(
+    this.orderHistoryService.fetchOrders(this.customerId).subscribe(
       (data: Order[]) => {
         console.log(data);
         this.orders = data;
@@ -31,8 +37,8 @@ export class CustomerOrderHistoryViewer implements OnInit {
     );
   }
 
-  public giveFeedback(orderId: number) {
-    this.router.navigate([orderId, 'review'], {relativeTo: this.activatedRoute}).then(_ => {});
+  public feedbackOrder(orderId: number) {
+    this.toShowFeedbackForm = true;
   }
 
   public deleteOrder(orderId: number) {

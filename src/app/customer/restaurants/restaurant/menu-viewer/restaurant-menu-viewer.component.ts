@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FoodItem } from '../food-item';
-import { RestaurantService } from '../services/restaurant.service';
+import { RestaurantsService } from '../../services/restaurants.service';
 import { ActivatedRoute } from '@angular/router';
 import { RestaurantOrderPlacerComponent } from '../order-placer/restaurant-order-placer.component';
 
@@ -10,15 +10,15 @@ import { RestaurantOrderPlacerComponent } from '../order-placer/restaurant-order
   styleUrls: ['./restaurant-menu-viewer.component.css']
 })
 export class RestaurantMenuViewerComponent implements OnInit {
+  private restaurantId: number;
+
   foodItems: FoodItem[];
 
   @ViewChild(RestaurantOrderPlacerComponent) orderPlacerComponent;
 
-  private restaurantId: number;
-
   constructor(
     private activatedRoute: ActivatedRoute,
-    private restaurantService: RestaurantService
+    private restaurantService: RestaurantsService
   ) { }
 
   ngOnInit(): void {

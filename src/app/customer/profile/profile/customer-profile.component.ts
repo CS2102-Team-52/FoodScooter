@@ -9,9 +9,9 @@ import { CustomerProfile } from '../customer-profile';
   styleUrls: ['./customer-profile.component.css']
 })
 export class CustomerProfileComponent implements OnInit {
-  customerProfile: CustomerProfile;
+  private customerId: number;
 
-  customerId: number;
+  customerProfile: CustomerProfile;
 
   constructor(
     private activatedRoute: ActivatedRoute,

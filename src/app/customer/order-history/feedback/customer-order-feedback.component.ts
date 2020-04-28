@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CustomerOrderHistoryService } from '../services/customer-order-history.service';
 import { CustomerOrderFeedback } from './customer-order-feedback';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-order-feedback',
@@ -18,8 +17,7 @@ export class CustomerOrderFeedbackComponent implements OnInit {
   @Input() orderId: number;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private orderHistoryService: CustomerOrderHistoryService
+    private customerOrderHistoryService: CustomerOrderHistoryService
   ) {
     this.ratingChoices = [1, 2, 3, 4, 5];
   }
@@ -35,6 +33,6 @@ export class CustomerOrderFeedbackComponent implements OnInit {
       rating: this.rating,
       review: this.review
     };
-    this.orderHistoryService.submitFeedback(feedback).subscribe(_ => {});
+    this.customerOrderHistoryService.submitFeedback(feedback).subscribe(_ => {});
   }
 }

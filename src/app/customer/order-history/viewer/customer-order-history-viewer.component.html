@@ -19,10 +19,10 @@
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button (click)="giveFeedback(order.id)" color="primary">Feedback</button>
+      <button mat-raised-button (click)="feedbackOrder(order.id)" color="primary">Feedback</button>
       <button mat-raised-button (click)="deleteOrder(order.id)" color="primary">Delete</button>
     </mat-card-actions>
-    <app-order-feedback
+    <app-order-feedback *ngIf="toShowFeedbackForm"
       [restaurantId]="order.restaurantId"
       [orderId]="order.id">
     </app-order-feedback>

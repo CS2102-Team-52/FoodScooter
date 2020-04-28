@@ -29,8 +29,4 @@ export class CustomerOrderHistoryService {
   public submitFeedback(feedback: CustomerOrderFeedback) {
     return this.httpClient.post(`${Util.baseURL}/feedback`, feedback);
   }
-
-  public fetchReviews(restaurantId: number) {
-    return this.httpClient.get(`${Util.baseURL}/restaurants/${restaurantId}/reviews`);
-  }
 }

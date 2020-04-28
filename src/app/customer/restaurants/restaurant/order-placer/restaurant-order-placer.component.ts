@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FoodItem } from '../food-item';
-import { CustomerOrderDetails } from '../services/dto/customer-order-details';
+import { CustomerOrderDetails } from '../../services/dto/customer-order-details';
 import { ActivatedRoute } from '@angular/router';
-import { PaymentType } from '../../../store/payment-type.enum';
-import { RestaurantService } from '../services/restaurant.service';
-import { CustomerOrderOptions } from '../services/dto/customer-order-options';
+import { PaymentType } from '../../../../store/payment-type.enum';
+import { RestaurantsService } from '../../services/restaurants.service';
+import { CustomerOrderOptions } from '../../services/dto/customer-order-options';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -29,7 +29,7 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private restaurantService: RestaurantService
+    private restaurantService: RestaurantsService
   ) {
     this.paymentTypes = Object.keys(PaymentType);
     this.foodItemsInOrder = [];
@@ -37,7 +37,7 @@ export class RestaurantOrderPlacerComponent implements OnInit {
     this.myControl = new FormControl();
     this.recentDeliveryLocations = [];
 
-    this.customerId = Number(this.activatedRoute.snapshot.paramMap.get('customerId'));
+    this.customerId = Number(this.activatedRoute.parent.snapshot.paramMap.get('customerId'));
     this.restaurantId = Number(this.activatedRoute.snapshot.paramMap.get('restaurantId'));
   }
 

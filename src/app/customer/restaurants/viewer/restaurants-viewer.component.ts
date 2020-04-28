@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Restaurant } from '../../../store/restaurant';
-import { RestaurantService } from '../services/restaurant.service';
+import { RestaurantsService } from '../services/restaurants.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -14,7 +14,7 @@ export class RestaurantsViewerComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private restaurantService: RestaurantService
+    private restaurantService: RestaurantsService
   ) { }
 
   ngOnInit(): void {

@@ -10,7 +10,7 @@ import { CustomerOrderDetails } from './dto/customer-order-details';
 @Injectable({
   providedIn: 'root'
 })
-export class RestaurantService {
+export class RestaurantsService {
 
   constructor(
     private httpClient: HttpClient
@@ -30,5 +30,9 @@ export class RestaurantService {
 
   public placeOrder(customerId: number, order: CustomerOrderDetails) {
     return this.httpClient.post(`${Util.baseURL}/orders`, order);
+  }
+
+  public fetchReviews(restaurantId: number) {
+    return this.httpClient.get(`${Util.baseURL}/restaurants/${restaurantId}/reviews`);
   }
 }

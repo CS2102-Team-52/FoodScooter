@@ -9,6 +9,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./customer-review-history-viewer.component.css']
 })
 export class CustomerReviewHistoryViewerComponent implements OnInit {
+  private customerId: number;
+
   customerReviews: CustomerReview[];
 
   constructor(
@@ -17,14 +19,12 @@ export class CustomerReviewHistoryViewerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.customerId = Number(this.activatedRoute.snapshot.paramMap.get('customerId'));
     this.getCustomerReviews();
   }
 
   public getCustomerReviews() {
-    console.log("before sending");
-    const customerId = Number(this.activatedRoute.snapshot.paramMap.get('customerId'));
-    console.log(customerId);
-    this.reviewHistoryService.fetchReviews(customerId).subscribe(
+    this.reviewHistoryService.fetchReviews(this.customerId).subscribe(
       (data: CustomerReview[]) => {
         console.log(data);
         this.customerReviews = data;
