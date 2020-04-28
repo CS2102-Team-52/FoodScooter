@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PaymentType } from '../../../../store/payment-type.enum';
 import { RestaurantsService } from '../../services/restaurants.service';
 import { CustomerOrderOptions } from '../../services/dto/customer-order-options';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -15,13 +15,17 @@ import { map, startWith } from 'rxjs/operators';
   styleUrls: ['./restaurant-order-placer.component.css']
 })
 export class RestaurantOrderPlacerComponent implements OnInit {
+  orderForm = this.formBuilder.group({
+    rewardPoints: [''],
+    paymentType: ['', Validators.required],
+    deliveryLocation: ['', Validators.required]
+  })
+
   foodItemsInOrder: FoodItem[];
   rewardPoints: number;
   recentDeliveryLocations: string[];
   paymentTypes: string[];
-  paymentType: PaymentType;
 
-  myControl: FormControl;
   filteredOptions: Observable<string[]>;
 
   private readonly customerId: number;
@@ -29,12 +33,12 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private formBuilder: FormBuilder,
     private restaurantService: RestaurantsService
   ) {
     this.paymentTypes = Object.keys(PaymentType);
     this.foodItemsInOrder = [];
 
-    this.myControl = new FormControl();
     this.recentDeliveryLocations = [];
 
     this.customerId = Number(this.activatedRoute.parent.snapshot.paramMap.get('customerId'));
@@ -43,7 +47,7 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
   ngOnInit(): void {
     this.getOrderOptions();
-    this.filteredOptions = this.myControl.valueChanges
+    this.filteredOptions = this.orderForm.get('deliveryLocation').valueChanges
       .pipe(
         startWith(''),
         map(value => this.filter(value))
@@ -82,8 +86,8 @@ export class RestaurantOrderPlacerComponent implements OnInit {
       restaurantId: this.restaurantId,
       foodCost: null,
       rewardPointsUsed: this.rewardPoints,
-      paymentType: this.paymentType,
-      deliveryLocation: this.myControl.value,
+      paymentType: this.orderForm.get('paymentType').value,
+      deliveryLocation: this.orderForm.get('deliveryLocation').value,
       orderTime: new Date(),
       foodItems: null,
       quantity: null
