@@ -12,6 +12,7 @@ import { OrdersViewerComponent } from './order-history/orders-viewer/orders-view
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { CustomerProfileComponent } from './profile/customer-profile/customer-profile.component';
 import { ProfileModule } from './profile/profile.module';
+import { CustomerRoutingModule } from './customer-routing.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ProfileModule } from './profile/profile.module';
   exports: [
     CustomerComponent,
     CustomerProfileComponent,
+    CustomerRoutingModule,
     RestaurantsViewerComponent,
     RestaurantViewerComponent,
     OrdersViewerComponent,

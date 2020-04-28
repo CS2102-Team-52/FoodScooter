@@ -19,7 +19,7 @@ export class CustomerProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.customerId = Number(this.activatedRoute.snapshot.paramMap.get(`customerId`));
+    this.customerId = Number(this.activatedRoute.parent.snapshot.paramMap.get(`customerId`));
     this.getDetails();
   }
 
