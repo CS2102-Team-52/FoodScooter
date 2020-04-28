@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CustomerOrderHistoryService } from '../services/customer-order-history.service';
-import { CustomerOrderFeedback } from './customer-order-feedback';
+import { CustomerOrderFeedback } from '../services/dtos/customer-order-feedback';
 
 @Component({
   selector: 'app-order-feedback',

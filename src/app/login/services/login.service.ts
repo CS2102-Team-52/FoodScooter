@@ -17,21 +17,11 @@ export class LoginService {
 
   private loginResponse: LoginResponse;
 
-  login(username: string, password: string) {
-    const credentials: Credentials = {
-      username: username,
-      password: password
-    };
+  login(credentials: Credentials) {
     return this.httpClient.post(`${Util.baseURL}/login/existing`, credentials);
   }
 
-  createAccount(username: string, password: string, userType: UserType, riderType: RiderType) {
-    const accountDetails: AccountDetails = {
-      username: username,
-      password: password,
-      userType: userType,
-      riderType: riderType
-    };
+  createAccount(accountDetails: AccountDetails) {
     return this.httpClient.post(`${Util.baseURL}/login/new`, accountDetails);
   }
 
