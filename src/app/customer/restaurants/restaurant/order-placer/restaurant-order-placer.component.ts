@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FoodItem } from '../food-item';
-import { CustomerOrderDetails } from '../../services/dto/customer-order-details';
+import { CustomerOrder } from '../../services/dto/customer-order';
 import { ActivatedRoute } from '@angular/router';
 import { PaymentType } from '../../../../store/payment-type.enum';
 import { RestaurantsService } from '../../services/restaurants.service';
@@ -77,47 +77,17 @@ export class RestaurantOrderPlacerComponent implements OnInit {
   }
 
   public sendOrder() {
-    const order = this.constructOrder();
-    this.restaurantService.placeOrder(this.customerId, order).subscribe(_ => {});
-  }
-
-  private constructOrder() {
-    const totalFoodCost = this.computeTotalFoodCost();
-    const items = this.consolidateFoodItems();
-
-    const customerOrderDetails: CustomerOrderDetails = {
+    const incompleteCustomerOrder: CustomerOrder = {
       customerId: this.customerId,
       restaurantId: this.restaurantId,
-      foodCost: totalFoodCost,
+      foodCost: null,
       rewardPointsUsed: this.rewardPoints,
       paymentType: this.paymentType,
       deliveryLocation: this.myControl.value,
       orderTime: new Date(),
-      foodItems: Array.from(items.keys()),
-      quantity: Array.from(items.values())
+      foodItems: null,
+      quantity: null
     };
-    console.log(customerOrderDetails);
-    return customerOrderDetails;
-  }
-
-  private consolidateFoodItems() {
-    const items = new Map();
-    for (const foodItem of this.foodItemsInOrder) {
-      if (items.has(foodItem.id)) {
-        const count = items.get(foodItem.id);
-        items.set(foodItem.id, count + 1);
-      } else {
-        items.set(foodItem.id, 1);
-      }
-    }
-    return items;
-  }
-
-  private computeTotalFoodCost() {
-    let totalCost = 0;
-    for (const foodItem of this.foodItemsInOrder) {
-      totalCost += foodItem.price;
-    }
-    return totalCost;
+    this.restaurantService.placeOrder(this.foodItemsInOrder, incompleteCustomerOrder).subscribe(_ => {});
   }
 }

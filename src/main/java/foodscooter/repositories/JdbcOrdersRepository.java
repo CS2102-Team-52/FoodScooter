@@ -1,6 +1,6 @@
 package foodscooter.repositories;
 
-import foodscooter.model.orders.CustomerOrderDetails;
+import foodscooter.model.orders.CustomerOrder;
 import foodscooter.model.orders.Order;
 import foodscooter.model.orders.PaymentType;
 import foodscooter.repositories.specifications.OrdersRepository;
@@ -26,7 +26,7 @@ public class JdbcOrdersRepository implements OrdersRepository {
   }
 
   @Override
-  public void add(CustomerOrderDetails customerOrderDetails) {
+  public void add(CustomerOrder customerOrder) {
     int orderId = idGenerator.generate( "oid", "Orders");
     jdbcTemplate.update(
       "INSERT INTO Orders "
@@ -43,13 +43,13 @@ public class JdbcOrdersRepository implements OrdersRepository {
       + "deliverylocation = ?, "
       + "ordertime = ? "
       + "WHERE oid = ?;",
-      customerOrderDetails.getCustomerId(),
-      customerOrderDetails.getRestaurantId(),
-      customerOrderDetails.getFoodCost(),
-      customerOrderDetails.getRewardPointsUsed(),
-      customerOrderDetails.getPaymentType().toString(),
-      customerOrderDetails.getDeliveryLocation(),
-      customerOrderDetails.getOrderTime(),
+      customerOrder.getCustomerId(),
+      customerOrder.getRestaurantId(),
+      customerOrder.getFoodCost(),
+      customerOrder.getRewardPointsUsed(),
+      customerOrder.getPaymentType().toString(),
+      customerOrder.getDeliveryLocation(),
+      customerOrder.getOrderTime(),
       orderId
     );
   }

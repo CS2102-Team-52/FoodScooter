@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class CustomerOrderDetails {
+public class CustomerOrder {
   private int customerId;
   private int restaurantId;
   private BigDecimal foodCost;

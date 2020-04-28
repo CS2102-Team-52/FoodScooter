@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Util } from "../../../users/util";
-import { CustomerOrderDetails } from './dto/customer-order-details';
+import { CustomerOrder } from './dto/customer-order';
+import { FoodItem } from '../restaurant/food-item';
 
 /**
  * Provides services to:
@@ -28,8 +29,42 @@ export class RestaurantsService {
     return this.httpClient.get(`${Util.baseURL}/restaurants/${restaurantId}/menu`);
   }
 
-  public placeOrder(customerId: number, order: CustomerOrderDetails) {
+  public placeOrder(foodItemsInOrder: FoodItem[], customerOrder: CustomerOrder) {
+    const order = RestaurantsService.constructOrder(foodItemsInOrder, customerOrder)
     return this.httpClient.post(`${Util.baseURL}/orders`, order);
+  }
+
+  private static constructOrder(foodItemsInOrder: FoodItem[], customerOrder: CustomerOrder) {
+    const totalFoodCost = RestaurantsService.computeTotalFoodCost(foodItemsInOrder);
+    const items = RestaurantsService.consolidateFoodItems(foodItemsInOrder);
+
+    customerOrder.foodCost = totalFoodCost;
+    customerOrder.foodItems = Array.from(items.keys());
+    customerOrder.quantity = Array.from(items.values());
+
+    console.log(customerOrder);
+    return customerOrder;
+  }
+
+  private static computeTotalFoodCost(foodItemsInOrder: FoodItem[]) {
+    let totalCost = 0;
+    for (const foodItem of foodItemsInOrder) {
+      totalCost += foodItem.price;
+    }
+    return totalCost;
+  }
+
+  private static consolidateFoodItems(foodItemsInOrder: FoodItem[]) {
+    const items = new Map();
+    for (const foodItem of foodItemsInOrder) {
+      if (items.has(foodItem.id)) {
+        const count = items.get(foodItem.id);
+        items.set(foodItem.id, count + 1);
+      } else {
+        items.set(foodItem.id, 1);
+      }
+    }
+    return items;
   }
 
   public fetchReviews(restaurantId: number) {
