@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfileService } from '../services/profile.service';
+import { CustomerProfileService } from '../services/customer-profile.service';
 import { ActivatedRoute } from '@angular/router';
 import { CustomerProfile } from '../customer-profile';
 
@@ -15,7 +15,7 @@ export class CustomerProfileComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private profileService: ProfileService
+    private profileService: CustomerProfileService
   ) { }
 
   ngOnInit(): void {

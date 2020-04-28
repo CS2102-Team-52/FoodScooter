@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Order } from '../../../store/order';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OrderHistoryService } from '../services/order-history.service';
+import { CustomerOrderHistoryService } from '../services/customer-order-history.service';
 
 @Component({
   selector: 'app-orders-viewer',
-  templateUrl: './orders-viewer.component.html',
-  styleUrls: ['./orders-viewer.component.css']
+  templateUrl: './customer-order-history-viewer.component.html',
+  styleUrls: ['./customer-order-history-viewer.component.css']
 })
-export class OrdersViewerComponent implements OnInit {
+export class CustomerOrderHistoryViewer implements OnInit {
   orders: Order[];
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private orderHistoryService: OrderHistoryService
+    private orderHistoryService: CustomerOrderHistoryService
   ) { }
 
   ngOnInit(): void {

@@ -5,7 +5,7 @@ import { Util } from '../../../users/util';
 @Injectable({
   providedIn: 'root'
 })
-export class ReviewHistoryService {
+export class CustomerReviewHistoryService {
   constructor(
     private httpClient: HttpClient
   ) { }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CustomerProfileComponent } from './customer-profile/customer-profile.component';
+import { CustomerProfileComponent } from './profile/customer-profile.component';
 import { MaterialModule } from '../../core/material.module';
 import { FormsModule } from '@angular/forms';
 import { PipesModule } from '../../pipes/pipes.module';
@@ -19,4 +19,4 @@ import { PipesModule } from '../../pipes/pipes.module';
     CustomerProfileComponent
   ]
 })
-export class ProfileModule { }
+export class CustomerProfileModule { }

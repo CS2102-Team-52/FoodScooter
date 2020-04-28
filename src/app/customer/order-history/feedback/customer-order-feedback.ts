@@ -1,4 +1,4 @@
-export interface Feedback {
+export interface CustomerOrderFeedback {
   id: number;
   restaurantId: number;
   orderId: number;

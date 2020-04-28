@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OrdersViewerComponent } from './orders-viewer/orders-viewer.component';
+import { CustomerOrderHistoryViewer } from './viewer/customer-order-history-viewer.component';
 import { MaterialModule } from '../../core/material.module';
 import { PipesModule } from '../../pipes/pipes.module';
-import { OrderFeedbackComponent } from './order-feedback/order-feedback.component';
+import { CustomerOrderFeedbackComponent } from './feedback/customer-order-feedback.component';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    OrderFeedbackComponent,
-    OrdersViewerComponent
+    CustomerOrderFeedbackComponent,
+    CustomerOrderHistoryViewer
   ],
   imports: [
     CommonModule,
@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   exports: [
-    OrdersViewerComponent
+    CustomerOrderHistoryViewer
   ]
 })
-export class OrderHistoryModule { }
+export class CustomerOrderHistoryModule { }

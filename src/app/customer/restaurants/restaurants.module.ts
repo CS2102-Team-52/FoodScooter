@@ -4,9 +4,9 @@ import { RestaurantsViewerComponent } from './restaurants-viewer/restaurants-vie
 import { MaterialModule } from '../../core/material.module';
 import { RouterModule } from '@angular/router';
 import { RestaurantViewerComponent } from './restaurant-viewer/restaurant-viewer.component';
-import { RestaurantReviewsViewerComponent } from './restaurant-reviews-viewer/restaurant-reviews-viewer.component';
-import { RestaurantOrderPlacerComponent } from './restaurant-order-placer/restaurant-order-placer.component';
-import { RestaurantMenuViewerComponent } from './restaurant-menu-viewer/restaurant-menu-viewer.component';
+import { RestaurantReviewsViewerComponent } from './reviews-viewer/restaurant-reviews-viewer.component';
+import { RestaurantOrderPlacerComponent } from './order-placer/restaurant-order-placer.component';
+import { RestaurantMenuViewerComponent } from './menu-viewer/restaurant-menu-viewer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '../../pipes/pipes.module';
 

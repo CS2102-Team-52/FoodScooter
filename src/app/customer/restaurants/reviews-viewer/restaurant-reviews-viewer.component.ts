@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderHistoryService } from '../../order-history/services/order-history.service';
+import { CustomerOrderHistoryService } from '../../order-history/services/customer-order-history.service';
 import { ActivatedRoute } from '@angular/router';
 import { FoodReview } from './food-review';
 
@@ -13,7 +13,7 @@ export class RestaurantReviewsViewerComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private customerFeedbackService: OrderHistoryService
+    private customerFeedbackService: CustomerOrderHistoryService
   ) { }
 
   ngOnInit(): void {

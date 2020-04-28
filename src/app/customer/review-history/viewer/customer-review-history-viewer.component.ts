@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomerReview } from '../customer-review';
-import { ReviewHistoryService } from '../services/review-history.service';
+import { CustomerReviewHistoryService } from '../services/customer-review-history.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-reviews-viewer',
-  templateUrl: './reviews-viewer.component.html',
-  styleUrls: ['./reviews-viewer.component.css']
+  templateUrl: './customer-review-history-viewer.component.html',
+  styleUrls: ['./customer-review-history-viewer.component.css']
 })
-export class ReviewsViewerComponent implements OnInit {
+export class CustomerReviewHistoryViewerComponent implements OnInit {
   customerReviews: CustomerReview[];
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private reviewHistoryService: ReviewHistoryService
+    private reviewHistoryService: CustomerReviewHistoryService
   ) { }
 
   ngOnInit(): void {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Util } from "../../../users/util";
-import { Feedback } from "../order-feedback/feedback";
+import { CustomerOrderFeedback } from "../feedback/customer-order-feedback";
 
 /**
  * Provides services to:
@@ -12,7 +12,7 @@ import { Feedback } from "../order-feedback/feedback";
 @Injectable({
   providedIn: 'root'
 })
-export class OrderHistoryService {
+export class CustomerOrderHistoryService {
 
   constructor(
     private httpClient: HttpClient
@@ -26,7 +26,7 @@ export class OrderHistoryService {
     return this.httpClient.delete(`${Util.baseURL}/orders/${orderId}`);
   }
 
-  public submitFeedback(feedback: Feedback) {
+  public submitFeedback(feedback: CustomerOrderFeedback) {
     return this.httpClient.post(`${Util.baseURL}/feedback`, feedback);
   }
 

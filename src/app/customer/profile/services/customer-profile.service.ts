@@ -7,7 +7,7 @@ import { CustomerProfile } from '../customer-profile';
 @Injectable({
   providedIn: 'root'
 })
-export class ProfileService {
+export class CustomerProfileService {
 
   constructor(
     private activatedRoute: ActivatedRoute,

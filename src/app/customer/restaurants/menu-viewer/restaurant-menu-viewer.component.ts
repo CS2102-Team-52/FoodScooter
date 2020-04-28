@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FoodItem } from '../food-item';
 import { RestaurantService } from '../services/restaurant.service';
 import { ActivatedRoute } from '@angular/router';
-import { RestaurantOrderPlacerComponent } from '../restaurant-order-placer/restaurant-order-placer.component';
+import { RestaurantOrderPlacerComponent } from '../order-placer/restaurant-order-placer.component';
 
 @Component({
   selector: 'app-restaurant-menu-viewer',
