@@ -9,7 +9,7 @@ import { OrdersViewerComponent } from '../customer/order-history/orders-viewer/o
 import { OrderFeedbackComponent } from '../customer/order-history/order-feedback/order-feedback.component';
 import { ReviewsViewerComponent } from '../customer/review-history/reviews-viewer/reviews-viewer.component';
 import { CustomerProfileComponent } from '../customer/profile/customer-profile/customer-profile.component';
-import { FDSManagerComponent } from "../users/fdsmanager/fdsmanager.component";
+import { FDSManagerComponent } from "../fdsmanager/fdsmanager.component";
 import { RiderOrderComponent } from '../rider/rider-order/rider-order.component';
 
 const routes: Routes = [

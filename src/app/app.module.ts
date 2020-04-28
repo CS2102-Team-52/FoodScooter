@@ -11,13 +11,12 @@ import { CustomerModule } from './customer/customer.module';
 import { LoginModule } from './login/login.module';
 import { PipesModule } from './pipes/pipes.module';
 import { RouterModule } from '@angular/router';
-import { FDSManagerComponent } from './users/fdsmanager/fdsmanager.component';
 import { RiderModule } from './rider/rider.module';
+import {FDSManagerModule} from "./fdsmanager/fdsmanager.module";
 
 @NgModule({
   declarations: [
-    AppComponent,
-    FDSManagerComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +29,8 @@ import { RiderModule } from './rider/rider.module';
     PipesModule,
     LoginModule,
     CustomerModule,
-    RiderModule
+    RiderModule,
+    FDSManagerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
