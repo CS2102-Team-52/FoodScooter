@@ -6,7 +6,7 @@ import {Util} from "../../../users/util";
 @Injectable({
   providedIn: 'root'
 })
-export class FDSmanagerService {
+export class FDSManagerService {
 
   constructor(private httpClient: HttpClient) { }
 

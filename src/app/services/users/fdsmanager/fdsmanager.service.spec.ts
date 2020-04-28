@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FDSmanagerService } from './fdsmanager.service';
+import { FDSManagerService } from './fdsmanager.service';
 
 describe('FDSmanagerService', () => {
-  let service: FDSmanagerService;
+  let service: FDSManagerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(FDSmanagerService);
+    service = TestBed.inject(FDSManagerService);
   });
 
   it('should be created', () => {
