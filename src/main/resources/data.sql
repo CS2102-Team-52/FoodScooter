@@ -15,10 +15,10 @@ DROP TABLE IF EXISTS FoodItems CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
 
-DROP TRIGGER IF EXISTS addSpecificUserTrigger ON Users;
-DROP TRIGGER IF EXISTS hashPasswordTrigger ON Users;
-DROP TRIGGER IF EXISTS updateCustomerRewardPointsTrigger ON Orders;
-DROP TRIGGER IF EXISTS updateCustomerRecentDeliveryLocationsTrigger ON Orders;
+DROP TRIGGER IF EXISTS addSpecificUserTrigger ON Users CASCADE;
+DROP TRIGGER IF EXISTS hashPasswordTrigger ON Users CASCADE;
+DROP TRIGGER IF EXISTS updateCustomerRewardPointsTrigger ON Orders CASCADE;
+DROP TRIGGER IF EXISTS updateCustomerRecentDeliveryLocationsTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS checkAcceptedOrdersTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS checkPartTimeRiderShiftTrigger ON PTShifts CASCADE;
 
@@ -39,9 +39,9 @@ CREATE TABLE DeliveryRiders (
 );
 
 CREATE TABLE FTRiders (
-    drid INTEGER PRIMARY KEY, 
-    dayOption INTEGER ARRAY[5] DEFAULT '{1,2,3,4,5}', 
-	shiftOption INTEGER ARRAY[5] DEFAULT '{1,2,3,4,1}', 
+    drid INTEGER PRIMARY KEY,
+    dayOption INTEGER ARRAY[5] DEFAULT '{1,2,3,4,5}',
+	shiftOption INTEGER ARRAY[5] DEFAULT '{1,2,3,4,1}',
     FOREIGN KEY (drid) REFERENCES DeliveryRiders (drid) ON DELETE CASCADE
 );
 
@@ -310,7 +310,7 @@ CREATE TRIGGER updateCustomerRecentDeliveryLocationsTrigger
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRecentDeliveryLocations();
-	
+
 INSERT INTO FTShift
 VALUES (1, 10, 14, 15, 19),
        (2, 11, 15, 16, 20),
