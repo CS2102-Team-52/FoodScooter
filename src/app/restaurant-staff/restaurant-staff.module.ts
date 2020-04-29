@@ -7,24 +7,30 @@ import { RestaurantMenuComponent } from './menu/restaurant-menu.component';
 import { RestaurantPromotionsComponent } from './promotions/restaurant-promotions.component';
 import { RestaurantStaffRoutingModule } from './restaurant-staff-routing.module';
 import { RestaurantStaffSpringBoardComponent } from './restaurant-staff-spring-board.component';
+import { FoodItemEditorComponent } from './menu/food-item-editor/food-item-editor.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
+    RestaurantStaffSpringBoardComponent,
     RestaurantStaffComponent,
     RestaurantMenuComponent,
     RestaurantPromotionsComponent,
-    RestaurantStaffSpringBoardComponent
+    FoodItemEditorComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    RestaurantStaffRoutingModule,
-    MaterialModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        MaterialModule,
+        RestaurantStaffRoutingModule,
+        ReactiveFormsModule
+    ],
   exports: [
     RestaurantStaffRoutingModule,
+    RestaurantStaffSpringBoardComponent,
     RestaurantStaffComponent,
-    RestaurantStaffSpringBoardComponent
+    RestaurantMenuComponent,
+    RestaurantPromotionsComponent
   ]
 })
 export class RestaurantStaffModule { }
