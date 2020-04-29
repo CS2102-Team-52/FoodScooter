@@ -5,14 +5,14 @@ public class FoodItem {
   private String name;
   private String category;
   private float price;
-  private int dailyLimit;
+  private int availability;
 
-  public FoodItem(int id, String name, String category, float price, int dailyLimit) {
+  public FoodItem(int id, String name, String category, float price, int availability) {
     this.id = id;
     this.name = name;
     this.category = category;
     this.price = price;
-    this.dailyLimit = dailyLimit;
+    this.availability = availability;
   }
 
   public int getId() {
@@ -47,11 +47,11 @@ public class FoodItem {
     this.price = price;
   }
 
-  public int getDailyLimit() {
-    return dailyLimit;
+  public int getAvailability() {
+    return availability;
   }
 
-  public void setDailyLimit(int dailyLimit) {
-    this.dailyLimit = dailyLimit;
+  public void setAvailability(int availability) {
+    this.availability = availability;
   }
 }
