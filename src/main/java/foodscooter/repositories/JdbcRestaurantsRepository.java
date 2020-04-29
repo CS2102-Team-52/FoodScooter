@@ -27,7 +27,7 @@ public class JdbcRestaurantsRepository implements RestaurantsRepository {
         rs.getInt(1),
         rs.getString(2),
         rs.getString(3),
-        rs.getInt(4))
+        rs.getBigDecimal(4))
     );
   }
 

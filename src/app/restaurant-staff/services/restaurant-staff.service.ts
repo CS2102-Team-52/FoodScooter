@@ -15,7 +15,7 @@ export class RestaurantStaffService {
   }
 
   public getEmployingRestaurant(staffId: number) {
-    return this.httpClient.get(`${Util.baseURL}/staff/${staffId}`);
+    return this.httpClient.get(`${Util.baseURL}/staff/${staffId}/restaurant`);
   }
 
 }

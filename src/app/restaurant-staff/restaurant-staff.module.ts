@@ -20,6 +20,11 @@ import { RestaurantStaffSpringBoardComponent } from './restaurant-staff-spring-b
     RouterModule,
     RestaurantStaffRoutingModule,
     MaterialModule
+  ],
+  exports: [
+    RestaurantStaffRoutingModule,
+    RestaurantStaffComponent,
+    RestaurantStaffSpringBoardComponent
   ]
 })
 export class RestaurantStaffModule { }
