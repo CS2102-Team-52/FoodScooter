@@ -1,7 +1,7 @@
-<div>
+<form [formGroup]="customerFeedbackForm" (ngSubmit)="submitFeedback()">
   <mat-form-field>
     <mat-label>Rider Rating</mat-label>
-    <mat-select [(value)]="rating" required>
+    <mat-select formControlName="rating">
       <mat-option *ngFor="let ratingChoice of ratingChoices" [value]="ratingChoice">
         {{ratingChoice}}
       </mat-option>
@@ -10,8 +10,8 @@
   <br>
   <mat-form-field>
     <mat-label>FoodReview</mat-label>
-      <textarea matInput placeholder="FoodReview" [(ngModel)]="review"></textarea>
+      <textarea matInput placeholder="FoodReview" formControlName="review"></textarea>
   </mat-form-field>
   <br>
-  <button mat-raised-button (click)="submitFeedback()" color="primary">Submit</button>
-</div>
+  <button mat-raised-button color="primary" type="submit" [disabled]="!customerFeedbackForm.valid">Submit</button>
+</form>

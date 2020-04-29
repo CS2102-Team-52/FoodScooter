@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CustomerOrderHistoryService } from '../services/customer-order-history.service';
 import { CustomerOrderFeedback } from '../services/dtos/customer-order-feedback';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-order-feedback',
@@ -8,15 +9,18 @@ import { CustomerOrderFeedback } from '../services/dtos/customer-order-feedback'
   styleUrls: ['./customer-order-feedback.component.css']
 })
 export class CustomerOrderFeedbackComponent implements OnInit {
-  ratingChoices: number[];
-
-  rating: number;
-  review: string;
-
   @Input() restaurantId: number;
   @Input() orderId: number;
 
+  customerFeedbackForm = this.formBuilder.group({
+    rating: ['', Validators.required],
+    review: ['', Validators.required]
+  })
+
+  ratingChoices: number[];
+
   constructor(
+    private formBuilder: FormBuilder,
     private customerOrderHistoryService: CustomerOrderHistoryService
   ) {
     this.ratingChoices = [1, 2, 3, 4, 5];
@@ -30,8 +34,8 @@ export class CustomerOrderFeedbackComponent implements OnInit {
       id: -1,
       restaurantId: this.restaurantId,
       orderId: this.orderId,
-      rating: this.rating,
-      review: this.review
+      rating: this.customerFeedbackForm.get('rating').value,
+      review: this.customerFeedbackForm.get('review').value
     };
     this.customerOrderHistoryService.submitFeedback(feedback).subscribe(_ => {});
   }
