@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Order } from '../../../store/order';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CustomerOrderHistoryService } from '../services/customer-order-history.service';
 
 @Component({
@@ -16,7 +16,6 @@ export class CustomerOrderHistoryViewer implements OnInit {
   toShowFeedbackForm: boolean;
 
   constructor(
-    private router: Router,
     private activatedRoute: ActivatedRoute,
     private orderHistoryService: CustomerOrderHistoryService
   ) {
