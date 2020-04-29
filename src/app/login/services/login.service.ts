@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { UserType } from "../../store/user-type.enum";
-import { RiderType } from "../../store/rider-type.enum";
 import { AccountDetails } from "./dto/account-details";
 import { Util } from "../../users/util";
 import { Credentials } from "./dto/credentials";

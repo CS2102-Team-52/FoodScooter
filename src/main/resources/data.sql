@@ -15,7 +15,6 @@ DROP TABLE IF EXISTS FoodItems CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
 
-DROP TRIGGER IF EXISTS addSpecificUserTrigger ON Users CASCADE;
 DROP TRIGGER IF EXISTS hashPasswordTrigger ON Users CASCADE;
 DROP TRIGGER IF EXISTS updateCustomerRewardPointsTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS updateCustomerRecentDeliveryLocationsTrigger ON Orders CASCADE;
@@ -152,37 +151,6 @@ CREATE TABLE Reviews (
     FOREIGN KEY (rid) REFERENCES Restaurants (rid),
     FOREIGN KEY (oid) REFERENCES Orders (oid)
 );
-
-CREATE OR REPLACE FUNCTION addUser() RETURNS TRIGGER AS $$
-    BEGIN
-        EXECUTE FORMAT('INSERT INTO %I VALUES(%I);', tg_table_name, tg_argv[0]);
-        RETURN NEW;
-    END;
-$$ LANGUAGE PLPGSQL;
-
-CREATE TRIGGER addUserForNewCustomerTrigger
-    BEFORE INSERT
-    ON Customers
-    FOR EACH ROW
-    EXECUTE FUNCTION addSpecificUser(cid);
-
-CREATE TRIGGER addUserForNewRiderTrigger
-    BEFORE INSERT
-    ON DeliveryRiders
-    FOR EACH ROW
-    EXECUTE FUNCTION addSpecificUser(drid);
-
-CREATE TRIGGER addUserForNewManagerTrigger
-    BEFORE INSERT
-    ON FDSManagers
-    FOR EACH ROW
-EXECUTE FUNCTION addSpecificUser(fmid);
-
-CREATE TRIGGER addUserForNewStaffTrigger
-    BEFORE INSERT
-    ON RestaurantStaff
-    FOR EACH ROW
-EXECUTE FUNCTION addSpecificUser(rsid);
 
 CREATE OR REPLACE FUNCTION hashPassword() RETURNS TRIGGER AS $$
     BEGIN
@@ -340,21 +308,7 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
        (2, 3, 'Cabbage with Sesame Oil', 'Singaporean', 3, 500),
        (3, 3, 'Char Siew', 'Singaporean', 3, 500);
 
-INSERT INTO Customers
-VALUES(1, '')
+-- UPDATE DeliveryRiders SET salary = 2000;
 
-INSERT INTO DeliveryRiders
-
-INSERT INTO FDSManagers
-
-INSERT INTO RestaurantStaff
-
-VALUES (1, 'customer', 'customer', 'Customer'),
-       (2, 'rider', 'rider', 'Delivery Rider'),
-       (3, 'staff', 'staff', 'Restaurant Staff');
-
-UPDATE DeliveryRiders SET salary = 2000;
-
-INSERT INTO FTRiders
-VALUES (2);
-
+-- INSERT INTO FTRiders
+-- VALUES (2);

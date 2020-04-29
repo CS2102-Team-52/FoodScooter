@@ -6,5 +6,5 @@ export interface AccountDetails {
   password: string;
   userType: UserType;
   riderType: RiderType;
-  restaurant: string;
+  restaurantId: number;
 }

@@ -94,13 +94,29 @@ export class LoginComponent implements OnInit {
   }
 
   createAccount() {
+    const userType: UserType = this.accountCreationForm.get('userType').value;
     const accountDetails: AccountDetails = {
       username: this.accountCreationForm.get('username').value,
       password: this.accountCreationForm.get('password').value,
-      userType: this.accountCreationForm.get('userType').value,
-      riderType: this.accountCreationForm.get('riderType').value == '' ? undefined : this.accountCreationForm.get('riderType').value,
-      restaurant: this.accountCreationForm.get('restaurant').value == '' ? undefined : this.accountCreationForm.get('restaurant').value
+      userType: userType,
+      riderType: undefined,
+      restaurantId: undefined
     };
+
+    switch(UserType[userType]) {
+      case UserType.DELIVERY_RIDER:
+        accountDetails.riderType = this.accountCreationForm.get('riderType').value;
+        break;
+      case UserType.RESTAURANT_STAFF:
+        console.log(this.accountCreationForm.get('restaurant').value);
+        accountDetails.restaurantId = this.restaurants.filter(
+          restaurant => restaurant.name == this.accountCreationForm.get('restaurant').value
+        )[0].id;
+        break;
+      default:
+        // will not reach here
+    }
+
     console.log(accountDetails);
     this.loginService.createAccount(accountDetails).subscribe(
       (data: LoginResponse) => {
