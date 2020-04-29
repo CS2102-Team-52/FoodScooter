@@ -33,7 +33,7 @@ CREATE TABLE Users (
 
 CREATE TABLE DeliveryRiders (
     drid INTEGER PRIMARY KEY,
-    salary INTEGER,
+    salary INTEGER NOT NULL,
     rating NUMERIC(2,1),
     FOREIGN KEY (drid) REFERENCES Users (uid) ON DELETE CASCADE
 );
@@ -71,7 +71,7 @@ CREATE TABLE PTShifts (
 CREATE TABLE Customers (
     cid INTEGER PRIMARY KEY,
     creditCardNumber VARCHAR(16),
-    rewardPoints INTEGER,
+    rewardPoints INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (cid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
@@ -153,33 +153,36 @@ CREATE TABLE Reviews (
     FOREIGN KEY (oid) REFERENCES Orders (oid)
 );
 
-CREATE OR REPLACE FUNCTION addSpecificUser() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION addUser() RETURNS TRIGGER AS $$
     BEGIN
-        CASE NEW.type
-            WHEN 'Customer' THEN
-                INSERT INTO Customers
-                VALUES(NEW.uid);
-                UPDATE Customers
-                SET rewardpoints = 0
-                WHERE cid = NEW.uid;
-            WHEN 'Delivery Rider' THEN
-                INSERT INTO DeliveryRiders
-                VALUES(NEW.uid);
-            WHEN 'Food Scooter Manager' THEN
-                INSERT INTO FDSManagers
-                VALUES(NEW.uid);
-            ELSE
-
-        END CASE;
+        EXECUTE FORMAT('INSERT INTO %I VALUES(%I);', tg_table_name, tg_argv[0]);
         RETURN NEW;
     END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE TRIGGER addSpecificUserTrigger
-    AFTER INSERT
-    ON Users
+CREATE TRIGGER addUserForNewCustomerTrigger
+    BEFORE INSERT
+    ON Customers
     FOR EACH ROW
-    EXECUTE FUNCTION addSpecificUser();
+    EXECUTE FUNCTION addSpecificUser(cid);
+
+CREATE TRIGGER addUserForNewRiderTrigger
+    BEFORE INSERT
+    ON DeliveryRiders
+    FOR EACH ROW
+    EXECUTE FUNCTION addSpecificUser(drid);
+
+CREATE TRIGGER addUserForNewManagerTrigger
+    BEFORE INSERT
+    ON FDSManagers
+    FOR EACH ROW
+EXECUTE FUNCTION addSpecificUser(fmid);
+
+CREATE TRIGGER addUserForNewStaffTrigger
+    BEFORE INSERT
+    ON RestaurantStaff
+    FOR EACH ROW
+EXECUTE FUNCTION addSpecificUser(rsid);
 
 CREATE OR REPLACE FUNCTION hashPassword() RETURNS TRIGGER AS $$
     BEGIN
@@ -337,9 +340,18 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
        (2, 3, 'Cabbage with Sesame Oil', 'Singaporean', 3, 500),
        (3, 3, 'Char Siew', 'Singaporean', 3, 500);
 
-INSERT INTO Users
+INSERT INTO Customers
+VALUES(1, '')
+
+INSERT INTO DeliveryRiders
+
+INSERT INTO FDSManagers
+
+INSERT INTO RestaurantStaff
+
 VALUES (1, 'customer', 'customer', 'Customer'),
-       (2, 'rider', 'rider', 'Delivery Rider');
+       (2, 'rider', 'rider', 'Delivery Rider'),
+       (3, 'staff', 'staff', 'Restaurant Staff');
 
 UPDATE DeliveryRiders SET salary = 2000;
 

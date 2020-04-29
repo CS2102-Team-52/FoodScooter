@@ -4,10 +4,10 @@ import { LoginService } from './services/login.service';
 import { UserType } from '../store/user-type.enum';
 import { RiderType } from '../store/rider-type.enum';
 import { LoginResponse } from './services/dto/login-response';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { AccountDetails } from './services/dto/account-details';
 import { Credentials } from './services/dto/credentials';
-import { MatOptionSelectionChange } from '@angular/material/core';
+import { Restaurant } from '../store/restaurant';
 
 @Component({
   selector: 'app-login',
@@ -17,44 +17,69 @@ import { MatOptionSelectionChange } from '@angular/material/core';
 export class LoginComponent implements OnInit {
   private path: string;
 
-  toShowRiderTypeInput: boolean;
+  toShowRiderTypeInputField: boolean;
+  toShowRestaurantInputField: boolean;
 
   loginForm = this.formBuilder.group({
     username: ['', Validators.required],
     password: ['', Validators.required]
-  })
+  });
 
   accountCreationForm = this.formBuilder.group({
     username: ['', Validators.required],
     password: ['', Validators.required],
     userType: ['', Validators.required],
-    riderType: ['']
-  })
+    riderType: [''],
+    restaurant: ['']
+  });
 
   userTypes: string[];
   riderTypes: string[];
+  restaurants: Restaurant[];
 
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
     private loginService: LoginService
   ) {
-    this.toShowRiderTypeInput = false;
+    this.toShowRiderTypeInputField = false;
+    this.toShowRestaurantInputField = false;
     this.userTypes = Object.keys(UserType);
     this.riderTypes = Object.keys(RiderType);
   }
 
   ngOnInit(): void {
+    this.loginService.getRestaurants().subscribe(
+      (data: Restaurant[]) => {
+        console.log(data);
+        this.restaurants = data;
+      }
+    );
   }
 
-  checkIfRequireRiderType(): void {
-    const isDeliveryRider = UserType[this.accountCreationForm.get('userType').value] == UserType.DELIVERY_RIDER;
-    if (isDeliveryRider) {
-      this.accountCreationForm.get('riderType').setValidators([Validators.required]);
-      this.toShowRiderTypeInput = true;
-    } else {
-      this.accountCreationForm.get('riderType').setValidators(null);
-      this.toShowRiderTypeInput = false;
+  checkIfRequireOtherInputOptions() {
+    const userType: UserType = UserType[this.accountCreationForm.get('userType').value];
+    switch (userType) {
+      case UserType.DELIVERY_RIDER:
+        this.accountCreationForm.get('restaurant').setValidators(null);
+        this.toShowRestaurantInputField = false;
+
+        this.accountCreationForm.get('riderType').setValidators([Validators.required]);
+        this.toShowRiderTypeInputField = true;
+        break;
+      case UserType.RESTAURANT_STAFF:
+        this.accountCreationForm.get('riderType').setValidators(null);
+        this.toShowRiderTypeInputField = false;
+
+        this.accountCreationForm.get('restaurant').setValidators([Validators.required]);
+        this.toShowRestaurantInputField = true;
+        break;
+      default:
+        this.accountCreationForm.get('riderType').setValidators(null);
+        this.toShowRiderTypeInputField = false;
+
+        this.accountCreationForm.get('restaurant').setValidators(null);
+        this.toShowRestaurantInputField = false;
     }
   }
 
@@ -73,7 +98,8 @@ export class LoginComponent implements OnInit {
       username: this.accountCreationForm.get('username').value,
       password: this.accountCreationForm.get('password').value,
       userType: this.accountCreationForm.get('userType').value,
-      riderType: this.accountCreationForm.get('riderType').value == '' ? undefined : this.accountCreationForm.get('riderType').value
+      riderType: this.accountCreationForm.get('riderType').value == '' ? undefined : this.accountCreationForm.get('riderType').value,
+      restaurant: this.accountCreationForm.get('restaurant').value == '' ? undefined : this.accountCreationForm.get('restaurant').value
     };
     console.log(accountDetails);
     this.loginService.createAccount(accountDetails).subscribe(
@@ -100,9 +126,13 @@ export class LoginComponent implements OnInit {
         break;
       case UserType.FOOD_SCOOTER_MANAGER:
         type = 'managers';
+        break;
+      default:
+      // do nothing
     }
     this.loginService.setLoginResponse(response);
     this.path = `${type}/${response.userId}`;
-    this.router.navigate([this.path]).then(() => {});
+    this.router.navigate([this.path]).then(() => {
+    });
   }
 }

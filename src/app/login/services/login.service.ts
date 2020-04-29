@@ -32,4 +32,8 @@ export class LoginService {
   getLoginResponse() {
     return this.loginResponse;
   }
+
+  getRestaurants() {
+    return this.httpClient.get(`${Util.baseURL}/restaurants`)
+  }
 }

@@ -8,6 +8,7 @@ public class AccountDetails {
   private String password;
   private UserType userType;
   private RiderType riderType;
+  private int restaurantId;
 
   public String getUsername() {
     return username;
@@ -39,5 +40,13 @@ public class AccountDetails {
 
   public void setRiderType(RiderType riderType) {
     this.riderType = riderType;
+  }
+
+  public int getRestaurantId() {
+    return restaurantId;
+  }
+
+  public void setRestaurantId(int restaurantId) {
+    this.restaurantId = restaurantId;
   }
 }

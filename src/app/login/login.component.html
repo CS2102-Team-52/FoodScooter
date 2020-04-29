@@ -57,7 +57,7 @@
               <td>
                 <mat-form-field>
                   <mat-label>User Type</mat-label>
-                  <mat-select formControlName="userType" (selectionChange)="checkIfRequireRiderType()">
+                  <mat-select formControlName="userType" (selectionChange)="checkIfRequireOtherInputOptions()">
                     <mat-option *ngFor="let userType of userTypes" [value]="userType">
                       {{userType | pretty}}
                     </mat-option>
@@ -67,11 +67,23 @@
             </tr>
             <tr>
               <td>
-                <mat-form-field *ngIf="toShowRiderTypeInput">
+                <mat-form-field *ngIf="toShowRiderTypeInputField">
                   <mat-label>Rider Type</mat-label>
                   <mat-select formControlName="riderType">
                     <mat-option *ngFor="let riderType of riderTypes" [value]="riderType">
                       {{riderType | pretty}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <mat-form-field *ngIf="toShowRestaurantInputField">
+                  <mat-label>Restaurant</mat-label>
+                  <mat-select formControlName="restaurant">
+                    <mat-option *ngFor="let restaurant of restaurants" [value]="restaurant">
+                      {{restaurant.name}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
