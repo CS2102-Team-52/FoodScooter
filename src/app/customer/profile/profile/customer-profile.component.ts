@@ -18,7 +18,8 @@ export class CustomerProfileComponent implements OnInit {
     creditCardNumber: ['']
   });
 
-  customerProfile: CustomerProfile;
+  rewardPoints: number;
+  recentDeliveryLocations: string[];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -28,6 +29,8 @@ export class CustomerProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.customerId = Number(this.activatedRoute.parent.snapshot.paramMap.get(`customerId`));
+    this.rewardPoints = 0;
+    this.recentDeliveryLocations = [];
     this.getDetails();
   }
 
@@ -35,15 +38,23 @@ export class CustomerProfileComponent implements OnInit {
     this.profileService.getDetails(this.customerId).subscribe(
       (data: CustomerProfile) => {
         console.log(data);
-        this.customerProfile = data;
-        this.profileForm.get('username').setValue(this.customerProfile.username);
+        this.profileForm.get('username').setValue(data.username);
         this.profileForm.get('password').setValue('');
-        this.profileForm.get('creditCardNumber').setValue(this.customerProfile.creditCardNumber);
+        this.profileForm.get('creditCardNumber').setValue(data.creditCardNumber);
+        this.rewardPoints = data.rewardPoints;
+        this.recentDeliveryLocations = data.recentDeliveryLocations;
       }
     )
   }
 
   public putDetails() {
-    this.profileService.putDetails(this.customerId, this.customerProfile).subscribe(_ => {})
+    const customerProfile: CustomerProfile = {
+      username: this.profileForm.get('username').value,
+      password: this.profileForm.get('password').value,
+      creditCardNumber: this.profileForm.get('creditCardNumber').value,
+      rewardPoints: this.rewardPoints,
+      recentDeliveryLocations: this.recentDeliveryLocations
+    }
+    this.profileService.putDetails(this.customerId, customerProfile).subscribe(_ => {})
   }
 }

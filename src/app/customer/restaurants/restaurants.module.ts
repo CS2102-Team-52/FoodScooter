@@ -7,7 +7,7 @@ import { RestaurantViewerComponent } from './restaurant/viewer/restaurant-viewer
 import { RestaurantReviewsViewerComponent } from './restaurant/reviews-viewer/restaurant-reviews-viewer.component';
 import { RestaurantOrderPlacerComponent } from './restaurant/order-placer/restaurant-order-placer.component';
 import { RestaurantMenuViewerComponent } from './restaurant/menu-viewer/restaurant-menu-viewer.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
@@ -22,7 +22,6 @@ import { PipesModule } from '../../pipes/pipes.module';
     CommonModule,
     MaterialModule,
     RouterModule,
-    FormsModule,
     PipesModule,
     ReactiveFormsModule
   ],

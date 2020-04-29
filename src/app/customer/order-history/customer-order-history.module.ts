@@ -4,7 +4,7 @@ import { CustomerOrderHistoryViewer } from './viewer/customer-order-history-view
 import { MaterialModule } from '../../core/material.module';
 import { PipesModule } from '../../pipes/pipes.module';
 import { CustomerOrderFeedbackComponent } from './feedback/customer-order-feedback.component';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     MaterialModule,
     PipesModule,
-    FormsModule
+    ReactiveFormsModule
   ],
   exports: [
     CustomerOrderHistoryViewer
