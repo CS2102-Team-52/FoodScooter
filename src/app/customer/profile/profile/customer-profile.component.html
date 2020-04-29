@@ -1,24 +1,53 @@
-<form class="example-form">
-  <mat-form-field class="example-full-width">
-    <mat-label>Username</mat-label>
-    <input matInput placeholder="Username" name="username" [(ngModel)]="customerProfile.username">
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <mat-label>Password</mat-label>
-    <input matInput placeholder="Password" name="password" [(ngModel)]="customerProfile.password">
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <mat-label>Credit Card Number</mat-label>
-    <input matInput placeholder="Credit Card Number" name="creditcardnumber" [(ngModel)]="customerProfile.creditCardNumber">
-  </mat-form-field>
-</form>
-<mat-list>
-  <mat-list-item>
-    Reward Points: {{customerProfile.rewardPoints}}
-  </mat-list-item>
-  <mat-list-item>
-    Recent Delivery Locations: {{customerProfile.recentDeliveryLocations | flatten}}
-  </mat-list-item>
-</mat-list>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Profile
+    </mat-card-title>
+  </mat-card-header>
 
-<button mat-raised-button (click)="putDetails()" color="primary">Update</button>
+  <mat-card-content>
+    <form [formGroup]="profileForm" (ngSubmit)="putDetails()">
+      <table>
+        <tr>
+          <td>
+            <mat-form-field>
+              <mat-label>Username</mat-label>
+              <input matInput placeholder="Username" formControlName="username">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field>
+              <mat-label>Password</mat-label>
+              <input matInput placeholder="Password" formControlName="password">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field>
+              <mat-label>Credit Card Number</mat-label>
+              <input matInput placeholder="Credit Card Number" formControlName="creditCardNumber">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Reward Points: {{customerProfile.rewardPoints}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Recent Delivery Locations: {{customerProfile.recentDeliveryLocations | flatten}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button mat-raised-button color="primary" type="submit">Update</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </mat-card-content>
+</mat-card>
