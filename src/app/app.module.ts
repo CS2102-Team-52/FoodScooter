@@ -12,7 +12,8 @@ import { LoginModule } from './login/login.module';
 import { PipesModule } from './pipes/pipes.module';
 import { RouterModule } from '@angular/router';
 import { RiderModule } from './rider/rider.module';
-import {FDSManagerModule} from "./fdsmanager/fdsmanager.module";
+import { FDSManagerModule } from "./fdsmanager/fdsmanager.module";
+import { RestaurantStaffModule } from './restaurant-staff/restaurant-staff.module';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {FDSManagerModule} from "./fdsmanager/fdsmanager.module";
     LoginModule,
     CustomerModule,
     RiderModule,
-    FDSManagerModule
+    FDSManagerModule,
+    RestaurantStaffModule
   ],
   providers: [],
   bootstrap: [AppComponent]
