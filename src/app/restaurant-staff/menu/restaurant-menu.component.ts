@@ -73,16 +73,37 @@ export class RestaurantMenuComponent implements OnInit {
     this.foodItemToUpdate = this.selectedFoodItems.selected[0];
     this.toShowFoodItemEditor = true;
     this.selectedFoodItems.clear();
-    this.restaurantStaffService.updateFoodItem(this.restaurantId, this.foodItemToUpdate).subscribe(_ => {});
   }
 
   removeFoodItems() {
     const foodItemsToRemove: FoodItem[] = this.selectedFoodItems.selected;
     this.selectedFoodItems.clear();
     console.log(foodItemsToRemove);
-    foodItemsToRemove.forEach(
-      foodItemToRemove =>this.menuDataSource = new MatTableDataSource<FoodItem>(this.menuDataSource.data.filter(foodItem => foodItem != foodItemToRemove))
-    );
-    this.restaurantStaffService.removeFoodItems(this.restaurantId, foodItemsToRemove).subscribe(_ => {});
+    for (const foodItemToRemove of foodItemsToRemove) {
+      this.menuDataSource = new MatTableDataSource<FoodItem>(this.menuDataSource.data.filter(foodItem => foodItem != foodItemToRemove))
+    }
+    this.restaurantStaffService.removeFoodItems(
+      this.restaurantId,
+      foodItemsToRemove.map(foodItem => foodItem.id)
+    ).subscribe(_ => {});
+  }
+
+  handleFoodItemEditorCompletion(event: any) {
+    this.toShowFoodItemEditor = false;
+    const foodItem: FoodItem = event as FoodItem;
+    const data = this.menuDataSource.data;
+    if (foodItem.id == null) {
+      data.push(foodItem);
+      this.menuDataSource.data = data;
+    } else {
+      const updatedMenu = [];
+      data.forEach(f => {
+        if (f.id == foodItem.id) {
+          f = foodItem;
+        }
+        updatedMenu.push(f);
+      });
+      this.menuDataSource.data = updatedMenu;
+    }
   }
 }

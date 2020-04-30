@@ -6,7 +6,7 @@
   </mat-card-header>
 
   <mat-card-content>
-    <form [formGroup]="foodItemForm">
+    <form [formGroup]="foodItemForm" (ngSubmit)="submit()">
       <table>
         <tr>
           <td>

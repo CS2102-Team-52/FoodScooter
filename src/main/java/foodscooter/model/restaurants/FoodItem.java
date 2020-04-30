@@ -1,13 +1,15 @@
 package foodscooter.model.restaurants;
 
+import java.math.BigDecimal;
+
 public class FoodItem {
   private int id;
   private String name;
   private String category;
-  private float price;
+  private BigDecimal price;
   private int availability;
 
-  public FoodItem(int id, String name, String category, float price, int availability) {
+  public FoodItem(int id, String name, String category, BigDecimal price, int availability) {
     this.id = id;
     this.name = name;
     this.category = category;
@@ -39,11 +41,11 @@ public class FoodItem {
     this.category = category;
   }
 
-  public float getPrice() {
+  public BigDecimal getPrice() {
     return price;
   }
 
-  public void setPrice(float price) {
+  public void setPrice(BigDecimal price) {
     this.price = price;
   }
 

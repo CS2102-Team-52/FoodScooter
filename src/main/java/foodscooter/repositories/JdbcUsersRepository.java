@@ -7,6 +7,7 @@ import foodscooter.model.users.rider.RiderType;
 import foodscooter.repositories.specifications.UsersRepository;
 import foodscooter.repositories.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -118,21 +119,21 @@ public class JdbcUsersRepository implements UsersRepository {
 
   @Override
   public Optional<User> get(String username, String password) {
-    return jdbcTemplate.queryForObject(
-      "SELECT * "
-      + "FROM Users U "
-      + "WHERE U.username = ? AND U.password = crypt(?, U.password) ;",
-      new Object[] { username, password },
-      ((rs, rowNum) -> {
-        int userId = rs.getInt(1);
-        if (userId == 0) {
-          return Optional.empty();
-        }
-        User user = new User(
-          userId,
-          UserType.map(rs.getString(4)));
-        return Optional.of(user);
-      }));
+    try {
+      return jdbcTemplate.queryForObject(
+        "SELECT * "
+          + "FROM Users U "
+          + "WHERE U.username = ? AND U.password = crypt(?, U.password) ;",
+        new Object[]{username, password},
+        (rs, rowNum) ->
+          Optional.of(new User(
+            rs.getInt(1),
+            UserType.map(rs.getString(4)))
+          )
+      );
+    } catch (EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
   }
 
   @Override

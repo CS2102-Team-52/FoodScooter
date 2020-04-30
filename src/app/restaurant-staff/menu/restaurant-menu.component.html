@@ -6,15 +6,16 @@
 <br>
 
 <button mat-raised-button (click)="addFoodItem()">Add Food Item</button>
-<button mat-raised-button (click)="removeFoodItems()">Remove Food Item</button>
 <button mat-raised-button (click)="updateFoodItem()">Update Food Item</button>
+<button mat-raised-button (click)="removeFoodItems()">Remove Food Item</button>
 
 <br>
 <br>
 <ng-container *ngIf="toShowFoodItemEditor">
   <app-food-item-editor
     [mode]="foodItemEditorMode"
-    [foodItem]="foodItemToUpdate">
+    [foodItem]="foodItemToUpdate"
+    (foodItemResult)="handleFoodItemEditorCompletion($event)">
   </app-food-item-editor>
   <br>
   <br>

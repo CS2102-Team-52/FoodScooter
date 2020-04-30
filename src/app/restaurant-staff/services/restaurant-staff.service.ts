@@ -20,14 +20,14 @@ export class RestaurantStaffService {
   }
 
   public addFoodItems(restaurantId: number, foodItem: FoodItem) {
-    return this.httpClient.post(`${Util.baseURL}/restaurants/${restaurantId}/menu`, foodItem);
+    return this.httpClient.put(`${Util.baseURL}/restaurants/${restaurantId}/menu`, foodItem);
   }
 
   public updateFoodItem(restaurantId: number, foodItem: FoodItem) {
-    return this.httpClient.put(`${Util.baseURL}/restaurants/${restaurantId}/menu/${foodItem.id}`, foodItem);
+    return this.httpClient.patch(`${Util.baseURL}/restaurants/${restaurantId}/menu/${foodItem.id}`, foodItem);
   }
 
-  public removeFoodItems(restaurantId: number, foodItems: FoodItem[]) {
-    return this.httpClient.put(`${Util.baseURL}/restaurants/${restaurantId}/menu`, foodItems);
+  public removeFoodItems(restaurantId: number, foodItemIds: number[]) {
+    return this.httpClient.post(`${Util.baseURL}/restaurants/${restaurantId}/menu/batch-removal`, foodItemIds);
   }
 }
