@@ -25,6 +25,22 @@ public class JdbcRestaurantsRepository implements RestaurantsRepository {
   }
 
   @Override
+  public Restaurant get(int restaurantId) {
+    return jdbcTemplate.queryForObject(
+      "SELECT * "
+      + "FROM Restaurants "
+      + "WHERE rid = ?;",
+      new Object[] { restaurantId },
+      (rs, rowNum) -> new Restaurant(
+        rs.getInt(1),
+        rs.getString(2),
+        rs.getString(3),
+        rs.getBigDecimal(4)
+      )
+    );
+  }
+
+  @Override
   public List<Restaurant> getAll() {
     return jdbcTemplate.query(
       "SELECT rid, name, description, minimumpurchase "
@@ -34,6 +50,21 @@ public class JdbcRestaurantsRepository implements RestaurantsRepository {
         rs.getString(2),
         rs.getString(3),
         rs.getBigDecimal(4))
+    );
+  }
+
+  @Override
+  public void update(int restaurantId, Restaurant restaurant) {
+    jdbcTemplate.update(
+      "UPDATE Restaurants "
+      + "SET name = ?, "
+      + "description = ?, "
+      + "minimumPurchase = ? "
+      + "WHERE rid = ?;",
+      restaurant.getName(),
+      restaurant.getDescription(),
+      restaurant.getMinimumPurchase(),
+      restaurantId
     );
   }
 

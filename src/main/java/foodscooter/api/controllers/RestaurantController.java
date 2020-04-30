@@ -30,9 +30,22 @@ public class RestaurantController extends BaseController {
     this.feedbackRepository = feedbackRepository;
   }
 
+  @GetMapping("/restaurants/{restaurantId}")
+  public Restaurant getRestaurant(@PathVariable int restaurantId) {
+    return restaurantsRepository.get(restaurantId);
+  }
+
   @GetMapping("/restaurants")
   public List<Restaurant> getAllRestaurants() {
     return restaurantsRepository.getAll();
+  }
+
+  @PatchMapping("/restaurants/{restaurantId}")
+  public ResponseEntity<?> patchRestaurant(
+    @PathVariable int restaurantId,
+    @RequestBody Restaurant restaurant) {
+    restaurantsRepository.update(restaurantId, restaurant);
+    return ResponseEntity.ok().build();
   }
 
   @GetMapping("/restaurants/{restaurantId}/menu")

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CustomerProfileService } from '../services/customer-profile.service';
 import { ActivatedRoute } from '@angular/router';
 import { CustomerProfile } from '../customer-profile';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-profile',
@@ -13,7 +13,7 @@ export class CustomerProfileComponent implements OnInit {
   private customerId: number;
 
   profileForm = this.formBuilder.group({
-    username: [''],
+    username: ['', Validators.required],
     password: [''],
     creditCardNumber: ['']
   });

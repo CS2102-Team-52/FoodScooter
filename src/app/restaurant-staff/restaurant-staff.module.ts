@@ -9,6 +9,8 @@ import { RestaurantStaffRoutingModule } from './restaurant-staff-routing.module'
 import { RestaurantStaffSpringBoardComponent } from './restaurant-staff-spring-board.component';
 import { FoodItemEditorComponent } from './menu/food-item-editor/food-item-editor.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RestaurantProfileComponent } from './profile/restaurant-profile.component';
+import { RestaurantSummaryComponent } from './summary/restaurant-summary.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     RestaurantStaffComponent,
     RestaurantMenuComponent,
     RestaurantPromotionsComponent,
-    FoodItemEditorComponent
+    FoodItemEditorComponent,
+    RestaurantProfileComponent,
+    RestaurantSummaryComponent
   ],
     imports: [
         CommonModule,

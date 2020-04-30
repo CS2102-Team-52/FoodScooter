@@ -1,8 +1,10 @@
 <mat-sidenav-container>
   <mat-sidenav mode="side" opened>
     <mat-nav-list>
+      <a mat-list-item [routerLink]="['profile']">Profile</a>
       <a mat-list-item [routerLink]="['menu']">Menu</a>
       <a mat-list-item [routerLink]="['promotions']">Promotions</a>
+      <a mat-list-item [routerLink]="['summary']">Summary</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
