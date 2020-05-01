@@ -15,10 +15,9 @@ DROP TABLE IF EXISTS FoodItems CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
 
-DROP TRIGGER IF EXISTS addSpecificUserTrigger ON Users;
-DROP TRIGGER IF EXISTS hashPasswordTrigger ON Users;
-DROP TRIGGER IF EXISTS updateCustomerRewardPointsTrigger ON Orders;
-DROP TRIGGER IF EXISTS updateCustomerRecentDeliveryLocationsTrigger ON Orders;
+DROP TRIGGER IF EXISTS hashPasswordTrigger ON Users CASCADE;
+DROP TRIGGER IF EXISTS updateCustomerRewardPointsTrigger ON Orders CASCADE;
+DROP TRIGGER IF EXISTS updateCustomerRecentDeliveryLocationsTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS checkAcceptedOrdersTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS checkPartTimeRiderShiftTrigger ON PTShifts CASCADE;
 
@@ -33,15 +32,15 @@ CREATE TABLE Users (
 
 CREATE TABLE DeliveryRiders (
     drid INTEGER PRIMARY KEY,
-    salary INTEGER,
+    salary INTEGER NOT NULL,
     rating NUMERIC(2,1),
     FOREIGN KEY (drid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
 CREATE TABLE FTRiders (
-    drid INTEGER PRIMARY KEY, 
-    dayOption INTEGER ARRAY[5] DEFAULT '{1,2,3,4,5}', 
-	shiftOption INTEGER ARRAY[5] DEFAULT '{1,2,3,4,1}', 
+    drid INTEGER PRIMARY KEY,
+    dayOption INTEGER ARRAY[5] DEFAULT '{1,2,3,4,5}',
+	shiftOption INTEGER ARRAY[5] DEFAULT '{1,2,3,4,1}',
     FOREIGN KEY (drid) REFERENCES DeliveryRiders (drid) ON DELETE CASCADE
 );
 
@@ -71,7 +70,7 @@ CREATE TABLE PTShifts (
 CREATE TABLE Customers (
     cid INTEGER PRIMARY KEY,
     creditCardNumber VARCHAR(16),
-    rewardPoints INTEGER,
+    rewardPoints INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (cid) REFERENCES Users (uid) ON DELETE CASCADE
 );
 
@@ -152,34 +151,6 @@ CREATE TABLE Reviews (
     FOREIGN KEY (rid) REFERENCES Restaurants (rid),
     FOREIGN KEY (oid) REFERENCES Orders (oid)
 );
-
-CREATE OR REPLACE FUNCTION addSpecificUser() RETURNS TRIGGER AS $$
-    BEGIN
-        CASE NEW.type
-            WHEN 'Customer' THEN
-                INSERT INTO Customers
-                VALUES(NEW.uid);
-                UPDATE Customers
-                SET rewardpoints = 0
-                WHERE cid = NEW.uid;
-            WHEN 'Delivery Rider' THEN
-                INSERT INTO DeliveryRiders
-                VALUES(NEW.uid);
-            WHEN 'Food Scooter Manager' THEN
-                INSERT INTO FDSManagers
-                VALUES(NEW.uid);
-            ELSE
-
-        END CASE;
-        RETURN NEW;
-    END;
-$$ LANGUAGE PLPGSQL;
-
-CREATE TRIGGER addSpecificUserTrigger
-    AFTER INSERT
-    ON Users
-    FOR EACH ROW
-    EXECUTE FUNCTION addSpecificUser();
 
 CREATE OR REPLACE FUNCTION hashPassword() RETURNS TRIGGER AS $$
     BEGIN
@@ -310,7 +281,7 @@ CREATE TRIGGER updateCustomerRecentDeliveryLocationsTrigger
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRecentDeliveryLocations();
-	
+
 INSERT INTO FTShift
 VALUES (1, 10, 14, 15, 19),
        (2, 11, 15, 16, 20),
@@ -337,12 +308,7 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
        (2, 3, 'Cabbage with Sesame Oil', 'Singaporean', 3, 500),
        (3, 3, 'Char Siew', 'Singaporean', 3, 500);
 
-INSERT INTO Users
-VALUES (1, 'customer', 'customer', 'Customer'),
-       (2, 'rider', 'rider', 'Delivery Rider');
+-- UPDATE DeliveryRiders SET salary = 2000;
 
-UPDATE DeliveryRiders SET salary = 2000;
-
-INSERT INTO FTRiders
-VALUES (2);
-
+-- INSERT INTO FTRiders
+-- VALUES (2);

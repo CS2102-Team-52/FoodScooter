@@ -6,7 +6,7 @@ public enum UserType {
   RESTAURANT_STAFF("Restaurant Staff"),
   FOOD_SCOOTER_MANAGER("Food Scooter Manager");
 
-  private String string;
+  private final String string;
 
   UserType(String string) {
     this.string = string;

@@ -1,0 +1,53 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Profile
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="profileForm" (ngSubmit)="putDetails()">
+      <table>
+        <tr>
+          <td>
+            <mat-form-field>
+              <mat-label>Username</mat-label>
+              <input matInput placeholder="Username" formControlName="username">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field>
+              <mat-label>Password</mat-label>
+              <input matInput placeholder="Password" formControlName="password">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field>
+              <mat-label>Credit Card Number</mat-label>
+              <input matInput placeholder="Credit Card Number" formControlName="creditCardNumber">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Reward Points: {{rewardPoints}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Recent Delivery Locations: {{recentDeliveryLocations | flatten}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button mat-raised-button color="primary" type="submit">Update</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </mat-card-content>
+</mat-card>

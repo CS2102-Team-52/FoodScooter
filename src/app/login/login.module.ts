@@ -2,9 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login.component';
 import { MaterialModule } from '../core/material.module';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '../pipes/pipes.module';
-import { LoginService } from './services/login.service';
 
 @NgModule({
   declarations: [
@@ -13,8 +12,8 @@ import { LoginService } from './services/login.service';
   imports: [
     CommonModule,
     MaterialModule,
-    FormsModule,
-    PipesModule
+    PipesModule,
+    ReactiveFormsModule
   ],
   exports: [
     LoginComponent

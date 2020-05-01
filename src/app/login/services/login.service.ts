@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { UserType } from "../../store/user-type.enum";
-import { RiderType } from "../../store/rider-type.enum";
 import { AccountDetails } from "./dto/account-details";
 import { Util } from "../../users/util";
 import { Credentials } from "./dto/credentials";
@@ -17,21 +15,11 @@ export class LoginService {
 
   private loginResponse: LoginResponse;
 
-  login(username: string, password: string) {
-    const credentials: Credentials = {
-      username: username,
-      password: password
-    };
+  login(credentials: Credentials) {
     return this.httpClient.post(`${Util.baseURL}/login/existing`, credentials);
   }
 
-  createAccount(username: string, password: string, userType: UserType, riderType: RiderType) {
-    const accountDetails: AccountDetails = {
-      username: username,
-      password: password,
-      userType: userType,
-      riderType: riderType
-    };
+  createAccount(accountDetails: AccountDetails) {
     return this.httpClient.post(`${Util.baseURL}/login/new`, accountDetails);
   }
 
@@ -41,5 +29,9 @@ export class LoginService {
 
   getLoginResponse() {
     return this.loginResponse;
+  }
+
+  getRestaurants() {
+    return this.httpClient.get(`${Util.baseURL}/restaurants`)
   }
 }

@@ -1,12 +1,14 @@
 package foodscooter.model.restaurants;
 
+import java.math.BigDecimal;
+
 public class Restaurant {
   private int id;
   private String name;
   private String description;
-  private int minimumPurchase;
+  private BigDecimal minimumPurchase;
 
-  public Restaurant(int id, String name, String description, int minimumPurchase) {
+  public Restaurant(int id, String name, String description, BigDecimal minimumPurchase) {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -37,11 +39,11 @@ public class Restaurant {
     this.description = description;
   }
 
-  public int getMinimumPurchase() {
+  public BigDecimal getMinimumPurchase() {
     return minimumPurchase;
   }
 
-  public void setMinimumPurchase(int minimumPurchase) {
+  public void setMinimumPurchase(BigDecimal minimumPurchase) {
     this.minimumPurchase = minimumPurchase;
   }
 }

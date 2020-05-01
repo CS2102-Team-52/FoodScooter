@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 public class FDSManagerController extends BaseController {
-  private JdbcSummaryRepository summaryRepository;
+  private final JdbcSummaryRepository summaryRepository;
 
   @Autowired
   public FDSManagerController(JdbcSummaryRepository summaryRepository) {

@@ -1,11 +1,10 @@
 package foodscooter.api.controllers;
 
-import foodscooter.model.orders.CustomerOrderDetails;
+import foodscooter.model.orders.CustomerOrder;
 import foodscooter.model.orders.CustomerOrderOptions;
 import foodscooter.model.orders.Order;
 import foodscooter.model.reviews.CustomerReview;
 import foodscooter.model.reviews.Feedback;
-import foodscooter.model.users.customer.Customer;
 import foodscooter.model.users.customer.CustomerProfile;
 import foodscooter.repositories.JdbcCustomersRepository;
 import foodscooter.repositories.JdbcReviewsRepository;
@@ -66,17 +65,17 @@ public class CustomerController extends BaseController {
   }
 
   @PostMapping("/orders")
-  public ResponseEntity<?> postOrders(@RequestBody CustomerOrderDetails customerOrderDetails) {
-    List<Integer> foodItems = customerOrderDetails.getFoodItems();
-    List<Integer> quantity = customerOrderDetails.getQuantity();
+  public ResponseEntity<?> postOrders(@RequestBody CustomerOrder customerOrder) {
+    List<Integer> foodItems = customerOrder.getFoodItems();
+    List<Integer> quantity = customerOrder.getQuantity();
 
     int foodItemsCount = foodItems.size();
-    int restaurantId = customerOrderDetails.getRestaurantId();
+    int restaurantId = customerOrder.getRestaurantId();
     for (int i = 0; i <  foodItemsCount; i++) {
       restaurantsRepository.updateAvailability(restaurantId, foodItems.get(i), quantity.get(i));
     }
 
-    orderRepository.add(customerOrderDetails);
+    orderRepository.add(customerOrder);
     return ResponseEntity.ok().build();
   }
 

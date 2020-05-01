@@ -64,6 +64,7 @@ public class JdbcCustomersRepository implements CustomersRepository {
     return new CustomerOrderOptions(rewardPoints.get(), recentDeliveryLocations);
   }
 
+  //TODO implement conditional updates
   @Override
   public void putProfile(int customerId, CustomerProfile profile) {
     jdbcTemplate.update(

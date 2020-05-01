@@ -1,0 +1,30 @@
+<mat-list *ngFor="let order of orders">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Order Number: {{order.id}}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          Total Cost: {{order.foodCost}}
+        </mat-list-item>
+        <mat-list-item>
+          Payment Type: {{order.paymentType | pretty}}
+        </mat-list-item>
+        <mat-list-item>
+          Order Time: {{order.orderTime}}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="feedbackOrder(order.id)" color="primary">Feedback</button>
+      <button mat-raised-button (click)="deleteOrder(order.id)" color="primary">Delete</button>
+    </mat-card-actions>
+    <app-order-feedback *ngIf="toShowFeedbackForm"
+      [restaurantId]="order.restaurantId"
+      [orderId]="order.id">
+    </app-order-feedback>
+  </mat-card>
+</mat-list>
