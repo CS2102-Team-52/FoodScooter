@@ -15,4 +15,16 @@ export class FDSManagerService {
   fetchGeneralSummary(): Observable<any> {
     return this.httpClient.get(`${Util.baseURL}/summaryInfo/general`);
   }
+
+  fetchCustomerSummary(): Observable<any> {
+    return this.httpClient.get(`${Util.baseURL}/summaryInfo/customers`);
+  }
+
+  fetchLocationSummary(): Observable<any> {
+    return this.httpClient.get(`${Util.baseURL}/summaryInfo/locations`);
+  }
+
+  fetchRiderSummary(): Observable<any> {
+    return this.httpClient.get(`${Util.baseURL}/summaryInfo/riders`);
+  }
 }

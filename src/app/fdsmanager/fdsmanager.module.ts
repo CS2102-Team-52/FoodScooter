@@ -6,13 +6,19 @@ import {PipesModule} from "../pipes/pipes.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { FDSManagerGeneralsummaryComponent } from './fdsmanager-generalsummary/fdsmanager-generalsummary.component';
 import {FDSManagerRoutingModule} from "./fdsmanager-routing.module";
+import { FDSManagerCustomersummaryComponent } from './fdsmanager-customersummary/fdsmanager-customersummary.component';
+import { FDSManagerLocationsummaryComponent } from './fdsmanager-locationsummary/fdsmanager-locationsummary.component';
+import { FDSManagerRidersummaryComponent } from './fdsmanager-ridersummary/fdsmanager-ridersummary.component';
 
 
 
 @NgModule({
   declarations: [
     FDSManagerComponent,
-    FDSManagerGeneralsummaryComponent
+    FDSManagerGeneralsummaryComponent,
+    FDSManagerCustomersummaryComponent,
+    FDSManagerLocationsummaryComponent,
+    FDSManagerRidersummaryComponent
   ],
   imports: [
     CommonModule,
