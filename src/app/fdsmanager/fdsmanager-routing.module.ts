@@ -6,7 +6,7 @@ import {FDSManagerGeneralsummaryComponent} from "./fdsmanager-generalsummary/fds
 const routes: Routes = [
   {
     path: '', component: FDSManagerComponent, children: [
-      { path: 'generalsummary', component: FDSManagerGeneralsummaryComponent },
+      { path: 'generalsummary', component: FDSManagerGeneralsummaryComponent }
     ]
   }
 ];

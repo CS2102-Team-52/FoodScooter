@@ -8,19 +8,19 @@ import {GeneralSummary} from "../../store/generalSummary";
   styleUrls: ['./fdsmanager-generalsummary.component.css']
 })
 export class FDSManagerGeneralsummaryComponent implements OnInit {
+  id: number;
+  generalSummaryList: GeneralSummary[];
 
   constructor(
     private fdsManagerService: FDSManagerService
   ) { }
-
-  generalSummaryList: GeneralSummary[];
 
   ngOnInit(): void {
     this.getGeneralSummary();
   }
 
   getGeneralSummary(): void {
-    this.fdsManagerService.fetchGeneralSummary().subscribe((data: any) => {
+    this.fdsManagerService.fetchGeneralSummary().subscribe((data: any[]) => {
       console.log(data);
       this.generalSummaryList = data;
     })
