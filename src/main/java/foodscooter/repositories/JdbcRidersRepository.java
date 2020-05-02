@@ -11,12 +11,15 @@ import foodscooter.repositories.specifications.RidersRepository;
 import foodscooter.repositories.util.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Array;
 import java.sql.Connection;
 import java.sql.JDBCType;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -281,13 +284,26 @@ public class JdbcRidersRepository implements RidersRepository {
   }
 
   @Override
-  public void addPartTimeShift(int drid, RiderPartTimeShift riderPartTimeShift) {
+  public void addPartTimeShift(int drid, List<RiderPartTimeShift> riderPartTimeShiftList) {
     int ptsId = idGenerator.generate( "ptsid", "PTShifts");
-    jdbcTemplate.update(
-      "INSERT INTO PTShifts "
-        + " VALUES (?, ?, ?, ?, ?)",
-      ptsId, drid, riderPartTimeShift.getDow(),
-      riderPartTimeShift.getStartHour(), riderPartTimeShift.getEndHour());
+    jdbcTemplate.batchUpdate(
+      "INSERT INTO PTShifts VALUES (?, ?, ?, ?, ?)",
+      new BatchPreparedStatementSetter() {
+
+        public void setValues(PreparedStatement ps, int i)
+          throws SQLException {
+          ps.setInt(1, ptsId);
+          ps.setInt(2, riderPartTimeShiftList.get(i).getDrid());
+          ps.setInt(3, riderPartTimeShiftList.get(i).getDow());
+          ps.setInt(4, riderPartTimeShiftList.get(i).getStartHour());
+          ps.setInt(5, riderPartTimeShiftList.get(i).getEndHour());
+        }
+
+        public int getBatchSize() {
+          return riderPartTimeShiftList.size();
+        }
+
+      });
   }
 
   @Override

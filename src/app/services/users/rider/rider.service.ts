@@ -43,12 +43,12 @@ export class RiderService {
     return this.httpClient.get(`${Util.baseURL}/rider/${drid}/partTimeShift/`);
   }
 
-  addPartTimeShift(drid: number, partTimeShift: RiderPartTimeShift) {
-    return this.httpClient.post(`${Util.baseURL}/rider/${drid}/partTimeShift/`, partTimeShift);
-  }
-
   deletePartTimeShift(drid: number, ptsid: number) {
     return this.httpClient.delete(`${Util.baseURL}/rider/${drid}/partTimeShift/${ptsid}`);
+  }
+
+  addPartTimeShift(drid: number, partTimeShiftList: RiderPartTimeShift[]) {
+    return this.httpClient.post(`${Util.baseURL}/rider/${drid}/partTimeShift/`, partTimeShiftList);
   }
 
   setRider(rider: Rider) {

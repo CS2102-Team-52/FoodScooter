@@ -110,19 +110,27 @@ public class RiderController extends BaseController {
   @PutMapping("/rider/{drid}/fullTimeSchedule")
   public RiderFullTimeSchedule updateFullTimeSchedule(@PathVariable int drid, @RequestBody RiderFullTimeSchedule riderFullTimeSchedule) {
     riderRepository.updateRiderFullTimeSchedule(drid, riderFullTimeSchedule);
-    return  riderRepository.getRiderFullTimeSchedule(drid);
+    return riderRepository.getRiderFullTimeSchedule(drid);
   }
 
   @DeleteMapping("/rider/{drid}/partTimeShift/{ptsid}")
-  public List<RiderPartTimeShift> deletePartTimeShift(@PathVariable int drid, @PathVariable int ptsid) {
-    riderRepository.deletePartTimeShift(drid, ptsid);
-    return riderRepository.getRiderPartTimeShift(drid);
+  public ResponseEntity<?> deletePartTimeShift(@PathVariable int drid, @PathVariable int ptsid) {
+    try {
+      riderRepository.deletePartTimeShift(drid, ptsid);
+    } catch (DataAccessException e) {
+      return ResponseEntity.status(409).body(e.getMessage());
+    }
+    return ResponseEntity.ok(riderRepository.getRiderPartTimeShift(drid));
   }
 
   @PostMapping("/rider/{drid}/partTimeShift")
-  public List<RiderPartTimeShift> addPartTimeShift(@PathVariable int drid, @RequestBody RiderPartTimeShift riderPartTimeShift) {
-    riderRepository.addPartTimeShift(drid, riderPartTimeShift);
-    return riderRepository.getRiderPartTimeShift(drid);
+  public ResponseEntity<?> addPartTimeShift(@PathVariable int drid, @RequestBody List<RiderPartTimeShift> riderPartTimeShiftList) {
+    try {
+      riderRepository.addPartTimeShift(drid, riderPartTimeShiftList);
+    } catch (DataAccessException e) {
+      return ResponseEntity.status(409).body(e.getMessage());
+    }
+    return ResponseEntity.ok(riderRepository.getRiderPartTimeShift(drid));
   }
 
   @GetMapping("/rider/{drid}/partTimeShift")

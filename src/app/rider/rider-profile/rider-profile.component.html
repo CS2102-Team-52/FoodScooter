@@ -59,7 +59,34 @@
 </form>
 
 <div *ngIf="!isFullTime">
-    <form [formGroup]="partTimeForm" class="mat-typography" (ngSubmit)="onSubmitPartTime()">
+    <mat-label>Current Part-Time Shifts</mat-label>
+    <mat-list *ngFor="let pts of riderPartTimeShiftList">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>
+                    ID: {{pts.ptsid}}
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item>
+                        Day of the week: {{pts.dow}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Start hour: {{pts.startHour}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        End hour: {{pts.endHour}}
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="deletePartTimeShift(pts)" color="primary">Delete</button>
+            </mat-card-actions>
+        </mat-card>
+    </mat-list>
+
+    <form [formGroup]="partTimeForm" class="mat-typography" (ngSubmit)="addPartTime()">
         <mat-label>Part Time</mat-label>
         <br>
         <mat-form-field>
@@ -92,30 +119,35 @@
         <button mat-raised-button color="primary" [disabled]="!partTimeForm.valid">Add</button>
     </form>
 
-    <mat-label>Part-Time Shifts</mat-label>
-    <mat-list *ngFor="let pts of riderPartTimeShiftList">
-        <mat-card>
-            <mat-card-header>
-                <mat-card-title>
-                    ID: {{pts.ptsid}}
-                </mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <mat-list>
-                    <mat-list-item>
-                        Day of the week: {{pts.dow}}
-                    </mat-list-item>
-                    <mat-list-item>
-                        Start hour: {{pts.startHour}}
-                    </mat-list-item>
-                    <mat-list-item>
-                        End hour: {{pts.endHour}}
-                    </mat-list-item>
-                </mat-list>
-            </mat-card-content>
-            <mat-card-actions>
-                <button mat-raised-button (click)="deletePartTimeShift(pts.ptsid)" color="primary">Delete</button>
-            </mat-card-actions>
-        </mat-card>
-    </mat-list>
+    <div *ngIf="updateRiderPartTimeShiftList?.length > 0">
+        <mat-label>New Part-Time Shifts [Note: This will add on to the current shifts]</mat-label>
+        <mat-list *ngFor="let pts of updateRiderPartTimeShiftList">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>
+                        ID: {{pts.ptsid}}
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-list>
+                        <mat-list-item>
+                            Day of the week: {{pts.dow}}
+                        </mat-list-item>
+                        <mat-list-item>
+                            Start hour: {{pts.startHour}}
+                        </mat-list-item>
+                        <mat-list-item>
+                            End hour: {{pts.endHour}}
+                        </mat-list-item>
+                    </mat-list>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-raised-button (click)="deleteUpdatePartTimeShift(pts.ptsid)" color="primary">Delete</button>
+                </mat-card-actions>
+            </mat-card>
+        </mat-list>
+        <mat-card-actions>
+            <button mat-raised-button (click)="updatePartTimeShift()" color="primary">Submit</button>
+        </mat-card-actions>
+    </div>>
 </div>
