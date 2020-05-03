@@ -25,7 +25,7 @@ public interface RidersRepository {
   void updateRiderFullTimeSchedule(int drid, RiderFullTimeSchedule riderFullTimeSchedule);
   void updateRider(int drid, int salary);
   void addFullTimeRider(int drid);
-  void addPartTimeShift(int drid, RiderPartTimeShift riderPartTimeShift);
+  void addPartTimeShift(int drid, List<RiderPartTimeShift> riderPartTimeShiftList);
   void deletePartTimeShift(int drid, int ptsid);
   List<RiderPartTimeShift> getRiderPartTimeShift(int drid);
 }

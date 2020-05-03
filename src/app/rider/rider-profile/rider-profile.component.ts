@@ -25,6 +25,7 @@ export class RiderProfileComponent implements OnInit {
   };
 
   riderPartTimeShiftList: RiderPartTimeShift[];
+  updateRiderPartTimeShiftList: RiderPartTimeShift[] = [];
 
   dayChoices: any[] = [
     {value: 1, viewValue: 'Monday - Friday'},
@@ -169,7 +170,7 @@ export class RiderProfileComponent implements OnInit {
     })
   }
 
-  onSubmitPartTime() {
+  addPartTime() {
     let partTimeShift: RiderPartTimeShift;
     partTimeShift = {
       ptsid: 0,
@@ -178,14 +179,26 @@ export class RiderProfileComponent implements OnInit {
       startHour: this.partTimeForm.controls.startHour.value,
       endHour: this.partTimeForm.controls.endHour.value
     };
-    this.riderService.addPartTimeShift(this.rider.id, partTimeShift).subscribe((data: any[]) => {
-      this.riderPartTimeShiftList = data;
-    });
+   this.updateRiderPartTimeShiftList.push(partTimeShift);
   }
 
   deletePartTimeShift(ptsid: number) {
     this.riderService.deletePartTimeShift(this.rider.id, ptsid).subscribe((data: any[]) => {
       this.riderPartTimeShiftList = data;
+    });
+  }
+
+  deleteUpdatePartTimeShift(pts: RiderPartTimeShift) {
+    const index = this.updateRiderPartTimeShiftList.indexOf(pts);
+    if (index > -1) {
+      this.updateRiderPartTimeShiftList.splice(index, 1);
+    }
+  }
+
+  updatePartTimeShift() {
+    this.riderService.addPartTimeShift(this.rider.id, this.updateRiderPartTimeShiftList).subscribe((data: any[]) => {
+      this.riderPartTimeShiftList = data;
+      this.updateRiderPartTimeShiftList = [];
     });
   }
 }

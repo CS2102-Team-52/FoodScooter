@@ -19,7 +19,8 @@ DROP TRIGGER IF EXISTS hashPasswordTrigger ON Users CASCADE;
 DROP TRIGGER IF EXISTS updateCustomerRewardPointsTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS updateCustomerRecentDeliveryLocationsTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS checkAcceptedOrdersTrigger ON Orders CASCADE;
-DROP TRIGGER IF EXISTS checkPartTimeRiderShiftTrigger ON PTShifts CASCADE;
+DROP TRIGGER IF EXISTS checkPartTimeRiderShiftBreakTrigger ON PTShifts CASCADE;
+DROP TRIGGER IF EXISTS checkPartTimeRiderShiftHoursTrigger ON PTShifts CASCADE;
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
@@ -201,7 +202,7 @@ CREATE TRIGGER updateCustomerRewardPointsTrigger
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRewardPoints();
 
-CREATE OR REPLACE FUNCTION checkPartTimeRiderShift() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION checkPartTimeRiderShiftBreak() RETURNS TRIGGER AS $$
 	DECLARE
 		shift INTEGER;
     BEGIN
@@ -216,12 +217,33 @@ CREATE OR REPLACE FUNCTION checkPartTimeRiderShift() RETURNS TRIGGER AS $$
     END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE CONSTRAINT TRIGGER checkPartTimeRiderShiftTrigger
-    AFTER UPDATE OR INSERT
+CREATE CONSTRAINT TRIGGER checkPartTimeRiderShiftBreakTrigger
+    AFTER INSERT
 	ON PTShifts
 	DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW
-	EXECUTE FUNCTION checkPartTimeRiderShift();
+	EXECUTE FUNCTION checkPartTimeRiderShiftBreak();
+	
+CREATE OR REPLACE FUNCTION checkPartTimeRiderShiftHours() RETURNS TRIGGER AS $$
+	DECLARE
+		totalHours INTEGER;
+    BEGIN
+		SELECT SUM(P.endHour - P.startHour) INTO totalHours
+			FROM PTShifts P
+			WHERE P.drid = NEW.drid;
+        IF ((totalHours < 10) OR (totalHours > 48)) THEN
+			RAISE exception 'Total work hours = %. Must be at least 10 and at most 48.', totalHours;
+		END IF;
+		RETURN NULL;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE CONSTRAINT TRIGGER checkPartTimeRiderShiftHoursTrigger
+    AFTER INSERT OR DELETE
+	ON PTShifts
+	DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW
+	EXECUTE FUNCTION checkPartTimeRiderShiftHours();
 
 CREATE OR REPLACE FUNCTION updateCustomerRecentDeliveryLocations() RETURNS TRIGGER AS $$
     BEGIN
@@ -307,8 +329,5 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
        (1, 3, 'Regular Chicken Rice', 'Singaporean', 3, 500),
        (2, 3, 'Cabbage with Sesame Oil', 'Singaporean', 3, 500),
        (3, 3, 'Char Siew', 'Singaporean', 3, 500);
+	   
 
--- UPDATE DeliveryRiders SET salary = 2000;
-
--- INSERT INTO FTRiders
--- VALUES (2);
