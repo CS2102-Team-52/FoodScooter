@@ -10,7 +10,8 @@ const routes: Routes = [
     path: 'customers',
     loadChildren: () => import('../customer/customer.module').then(m => m.CustomerModule)
   },
-  {path: 'managers/:id', component: FDSManagerComponent},
+  {path: 'managers/:id',
+    loadChildren: () => import('../fdsmanager/fdsmanager.module').then(m => m.FDSManagerModule)},
   {
     path: 'riders/:id',
     loadChildren: () => import('../rider/rider.module').then(m => m.RiderModule)

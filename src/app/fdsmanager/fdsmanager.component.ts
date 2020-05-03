@@ -8,6 +8,7 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./fdsmanager.component.css']
 })
 export class FDSManagerComponent implements OnInit {
+  id: number;
   // import my services here
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -16,10 +17,6 @@ export class FDSManagerComponent implements OnInit {
     this.id = Number(activatedRoute.snapshot.paramMap.get('id'));
   }
 
-  id: number;
-  showGeneralSummary: boolean;
-
   ngOnInit(): void {
-    this.showGeneralSummary = false;
   }
 }
