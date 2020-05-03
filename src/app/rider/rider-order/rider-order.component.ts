@@ -49,37 +49,15 @@ export class RiderOrderComponent implements OnInit {
 
   getOrder(): void {
     if (RiderType[this.rider.riderType] === RiderType.FULL_TIME) {
-      /*  this.riderOrderService.fetchFullTimeOrders(this.rider.id).subscribe((data: any[])=>{
+      this.riderOrderService.fetchFullTimeOrders(this.rider.id).subscribe((data: any[]) => {
         console.log(data);
         this.orderList = data;
-      }) */
-      const order1: Order = {
-        id: 1,
-        restaurantId: -1, //added for compatibility
-        foodCost: 1,
-        deliveryFee: 1,
-        paymentType: "test",
-        location: "te",
-        orderTime: null,
-        deliveryTime: null
-      };
-      this.orderList = [order1];
+      })
     } else {
-      /* this.riderOrderService.fetchPartTimeOrders(this.rider.id).subscribe((data: any[])=>{
-      console.log(data);
-      this.orderList = data;
-    }) */
-      const order2: Order = {
-        id: 2,
-        restaurantId: -1, //added for compatibility
-        foodCost: 2,
-        deliveryFee: 2,
-        paymentType: "test",
-        location: "te",
-        orderTime: null,
-        deliveryTime: null
-      };
-      this.orderList = [order2];
+      this.riderOrderService.fetchPartTimeOrders(this.rider.id).subscribe((data: any[]) => {
+        console.log(data);
+        this.orderList = data;
+      });
     }
   }
 
@@ -88,7 +66,7 @@ export class RiderOrderComponent implements OnInit {
     this.getOrder();
   }
 
-    refreshAcceptedOrders(orderId: number) {
+  refreshAcceptedOrders(orderId: number) {
     this.doneOrder(orderId);
     this.getAcceptedOrders();
   }

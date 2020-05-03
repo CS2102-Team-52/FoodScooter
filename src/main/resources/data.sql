@@ -231,7 +231,7 @@ CREATE OR REPLACE FUNCTION checkPartTimeRiderShiftHours() RETURNS TRIGGER AS $$
 		SELECT SUM(P.endHour - P.startHour) INTO totalHours
 			FROM PTShifts P
 			WHERE P.drid = NEW.drid;
-        IF ((totalHours < 10) OR (totalHours > 48) THEN
+        IF ((totalHours < 10) OR (totalHours > 48)) THEN
 			RAISE exception 'Total work hours = %. Must be at least 10 and at most 48.', totalHours;
 		END IF;
 		RETURN NULL;
@@ -329,8 +329,5 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
        (1, 3, 'Regular Chicken Rice', 'Singaporean', 3, 500),
        (2, 3, 'Cabbage with Sesame Oil', 'Singaporean', 3, 500),
        (3, 3, 'Char Siew', 'Singaporean', 3, 500);
+	   
 
--- UPDATE DeliveryRiders SET salary = 2000;
-
--- INSERT INTO FTRiders
--- VALUES (2);

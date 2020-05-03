@@ -25,7 +25,7 @@ export class RiderProfileComponent implements OnInit {
   };
 
   riderPartTimeShiftList: RiderPartTimeShift[];
-  updateRiderPartTimeShiftList: RiderPartTimeShift[];
+  updateRiderPartTimeShiftList: RiderPartTimeShift[] = [];
 
   dayChoices: any[] = [
     {value: 1, viewValue: 'Monday - Friday'},
@@ -198,7 +198,7 @@ export class RiderProfileComponent implements OnInit {
   updatePartTimeShift() {
     this.riderService.addPartTimeShift(this.rider.id, this.updateRiderPartTimeShiftList).subscribe((data: any[]) => {
       this.riderPartTimeShiftList = data;
+      this.updateRiderPartTimeShiftList = [];
     });
-    this.updateRiderPartTimeShiftList = [];
   }
 }

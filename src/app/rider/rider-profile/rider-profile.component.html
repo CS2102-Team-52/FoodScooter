@@ -58,7 +58,7 @@
     <button mat-raised-button color="primary" [disabled]="!fullTimeForm.valid">Update</button>
 </form>
 
-<div *ngIf="!isFullTime">
+<div *ngIf="!isFullTime" class="mat-typography">
     <mat-label>Current Part-Time Shifts</mat-label>
     <mat-list *ngFor="let pts of riderPartTimeShiftList">
         <mat-card>
@@ -81,12 +81,12 @@
                 </mat-list>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-raised-button (click)="deletePartTimeShift(pts)" color="primary">Delete</button>
+                <button mat-raised-button (click)="deletePartTimeShift(pts.ptsid)" color="primary">Delete</button>
             </mat-card-actions>
         </mat-card>
     </mat-list>
 
-    <form [formGroup]="partTimeForm" class="mat-typography" (ngSubmit)="addPartTime()">
+    <form [formGroup]="partTimeForm" (ngSubmit)="addPartTime()">
         <mat-label>Part Time</mat-label>
         <br>
         <mat-form-field>
@@ -119,7 +119,7 @@
         <button mat-raised-button color="primary" [disabled]="!partTimeForm.valid">Add</button>
     </form>
 
-    <div *ngIf="updateRiderPartTimeShiftList?.length > 0">
+    <div *ngIf="updateRiderPartTimeShiftList.length > 0">
         <mat-label>New Part-Time Shifts [Note: This will add on to the current shifts]</mat-label>
         <mat-list *ngFor="let pts of updateRiderPartTimeShiftList">
             <mat-card>
@@ -142,7 +142,7 @@
                     </mat-list>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-raised-button (click)="deleteUpdatePartTimeShift(pts.ptsid)" color="primary">Delete</button>
+                    <button mat-raised-button (click)="deleteUpdatePartTimeShift(pts)" color="primary">Delete</button>
                 </mat-card-actions>
             </mat-card>
         </mat-list>

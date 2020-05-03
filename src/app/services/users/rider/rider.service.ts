@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from "rxjs";
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from "rxjs";
 import { Util } from 'src/app/users/util';
 import { Rider } from "../../../rider/rider";
 import { RiderFullTimeSchedule } from 'src/app/store/rider-full-time-schedule';
 import { RiderPartTimeShift } from 'src/app/store/rider-part-time-shift';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -44,11 +45,11 @@ export class RiderService {
   }
 
   deletePartTimeShift(drid: number, ptsid: number) {
-    return this.httpClient.delete(`${Util.baseURL}/rider/${drid}/partTimeShift/${ptsid}`);
+    return this.httpClient.delete(`${Util.baseURL}/rider/${drid}/partTimeShift/${ptsid}`).pipe(catchError(this.handleError));
   }
 
   addPartTimeShift(drid: number, partTimeShiftList: RiderPartTimeShift[]) {
-    return this.httpClient.post(`${Util.baseURL}/rider/${drid}/partTimeShift/`, partTimeShiftList);
+    return this.httpClient.post(`${Util.baseURL}/rider/${drid}/partTimeShift/`, partTimeShiftList).pipe(catchError(this.handleError));
   }
 
   setRider(rider: Rider) {
@@ -57,5 +58,18 @@ export class RiderService {
 
   getRider() {
     return this.rider;
+  }
+
+  handleError(error: HttpErrorResponse) {
+    let errorMessage = 'Unknown error!';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side errors
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // Server-side errors
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    window.alert(errorMessage);
+    return throwError(errorMessage);
   }
 }
