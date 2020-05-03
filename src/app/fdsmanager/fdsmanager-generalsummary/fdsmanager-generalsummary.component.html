@@ -1,21 +1,18 @@
-<div>
-  <div class="mat-typography">
-    <mat-label>General Summary</mat-label>
-    <mat-card>
-      <mat-card-content>
-        <mat-list *ngFor="let o of generalSummaryList">
-          <mat-list-item>
-            {{o.month}}
-          </mat-list-item>
-          <mat-list-item>
-            {{o.numOrders}}
-          </mat-list-item>
-          <mat-list-item>
-            {{o.totalCost}}
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
+<div class="mat-typography">
+  <mat-label>General Summary</mat-label>
+  <mat-card>
+    <mat-card-content>
+      <mat-list *ngFor="let o of generalSummaryList">
+        <mat-list-item>
+          {{o.month}}
+        </mat-list-item>
+        <mat-list-item>
+          {{o.numOrders}}
+        </mat-list-item>
+        <mat-list-item>
+          {{o.totalCost}}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
 </div>

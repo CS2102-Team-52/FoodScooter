@@ -1,21 +1,18 @@
-<div>
-  <div class="mat-typography">
-    <mat-label>Location Summary</mat-label>
-    <mat-card>
-      <mat-card-content>
-        <mat-list *ngFor="let o of locationSummaryList">
-          <mat-list-item>
-            {{o.hour}}
-          </mat-list-item>
-          <mat-list-item>
-            {{o.location}}
-          </mat-list-item>
-          <mat-list-item>
-            {{o.numOrders}}
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
+<div class="mat-typography">
+  <mat-label>Location Summary</mat-label>
+  <mat-card>
+    <mat-card-content>
+      <mat-list *ngFor="let o of locationSummaryList">
+        <mat-list-item>
+          {{o.hour}}
+        </mat-list-item>
+        <mat-list-item>
+          {{o.location}}
+        </mat-list-item>
+        <mat-list-item>
+          {{o.numOrders}}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
 </div>

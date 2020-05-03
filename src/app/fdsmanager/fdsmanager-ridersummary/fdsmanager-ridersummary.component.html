@@ -1,36 +1,33 @@
-<div>
-  <div class="mat-typography">
-    <mat-label>Rider Summary</mat-label>
-    <mat-card>
-      <mat-card-content>
-        <mat-list *ngFor="let o of riderSummaryList">
-          <mat-list-item>
-            {{o.month}}
-          </mat-list-item>
-          <mat-list-item>
-            {{o.drid}}
-          </mat-list-item>
-          <mat-list-item>
-            {{o.numOrders}}
-          </mat-list-item>
-          <mat-list-item>
-            {{o.hoursWorked}}
-          </mat-list-item>
-          <mat-list-item>
-            {{o.totalSalary}}
-          </mat-list-item>
-          <mat-list-item>
-            {{o.avgDeliveryTime}}
-          </mat-list-item>
-          <mat-list-item>
-            {{o.numRatings}}
-          </mat-list-item>
-          <mat-list-item>
-            {{o.avgRatings}}
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
+<div class="mat-typography">
+  <mat-label>Rider Summary</mat-label>
+  <mat-card>
+    <mat-card-content>
+      <mat-list *ngFor="let o of riderSummaryList">
+        <mat-list-item>
+          {{o.month}}
+        </mat-list-item>
+        <mat-list-item>
+          {{o.drid}}
+        </mat-list-item>
+        <mat-list-item>
+          {{o.numOrders}}
+        </mat-list-item>
+        <mat-list-item>
+          {{o.hoursWorked}}
+        </mat-list-item>
+        <mat-list-item>
+          {{o.totalSalary}}
+        </mat-list-item>
+        <mat-list-item>
+          {{o.avgDeliveryTime}}
+        </mat-list-item>
+        <mat-list-item>
+          {{o.numRatings}}
+        </mat-list-item>
+        <mat-list-item>
+          {{o.avgRatings}}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
 </div>
