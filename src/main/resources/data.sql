@@ -3,7 +3,6 @@ DROP TABLE IF EXISTS DeliveryRiders CASCADE;
 DROP TABLE IF EXISTS FTRiders CASCADE;
 DROP TABLE IF EXISTS FTShift CASCADE;
 DROP TABLE IF EXISTS PTRiders CASCADE;
-DROP TABLE IF EXISTS PTSchedules CASCADE;
 DROP TABLE IF EXISTS PTShifts CASCADE;
 DROP TABLE IF EXISTS Customers CASCADE;
 DROP TABLE IF EXISTS CustomerRecentDeliveryLocations CASCADE;
@@ -92,8 +91,8 @@ CREATE TABLE Promotions (
     pid INTEGER PRIMARY KEY,
     startDate TIMESTAMP,
     endDate TIMESTAMP,
-    promotionType VARCHAR(100),
-    discount INTEGER
+    type VARCHAR(100),
+    discount NUMERIC(2, 2)
 );
 
 /* pid = id of promotion offered by restaurant */
@@ -168,6 +167,26 @@ CREATE TRIGGER hashPasswordTrigger
 
 CREATE OR REPLACE FUNCTION checkAcceptedOrders() RETURNS TRIGGER AS $$
 	DECLARE
+		adrid INTEGER;
+    BEGIN
+		SELECT O.drid INTO adrid
+			FROM Orders O
+			WHERE O.oid = NEW.oid;
+        IF adrid IS NOT NULL THEN
+			RAISE exception '% has already accepted %', adrid, NEW.oid;
+		END IF;
+		RETURN NULL;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER checkAcceptedOrdersTrigger
+    BEFORE UPDATE OF drid
+	ON Orders
+    FOR EACH ROW
+	EXECUTE FUNCTION checkAcceptedOrders();
+
+CREATE OR REPLACE FUNCTION checkAcceptOneOrder() RETURNS TRIGGER AS $$
+	DECLARE
 		aoid INTEGER;
     BEGIN
 		SELECT O.oid INTO aoid
@@ -179,13 +198,6 @@ CREATE OR REPLACE FUNCTION checkAcceptedOrders() RETURNS TRIGGER AS $$
 		RETURN NULL;
     END;
 $$ LANGUAGE PLPGSQL;
-
-CREATE CONSTRAINT TRIGGER checkAcceptedOrdersTrigger
-    AFTER UPDATE OF drid OR INSERT
-	ON Orders
-	DEFERRABLE INITIALLY DEFERRED
-    FOR EACH ROW
-	EXECUTE FUNCTION checkAcceptedOrders();
 
 CREATE OR REPLACE FUNCTION updateCustomerRewardPoints() RETURNS TRIGGER AS $$
     BEGIN
@@ -223,7 +235,7 @@ CREATE CONSTRAINT TRIGGER checkPartTimeRiderShiftBreakTrigger
 	DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW
 	EXECUTE FUNCTION checkPartTimeRiderShiftBreak();
-	
+
 CREATE OR REPLACE FUNCTION checkPartTimeRiderShiftHours() RETURNS TRIGGER AS $$
 	DECLARE
 		totalHours INTEGER;
@@ -329,5 +341,5 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
        (1, 3, 'Regular Chicken Rice', 'Singaporean', 3, 500),
        (2, 3, 'Cabbage with Sesame Oil', 'Singaporean', 3, 500),
        (3, 3, 'Char Siew', 'Singaporean', 3, 500);
-	   
+
 
