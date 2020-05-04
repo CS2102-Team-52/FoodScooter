@@ -1,15 +1,16 @@
 DROP TABLE IF EXISTS Users CASCADE;
+DROP TABLE IF EXISTS Customers CASCADE;
+DROP TABLE IF EXISTS CustomerRecentDeliveryLocations CASCADE;
 DROP TABLE IF EXISTS DeliveryRiders CASCADE;
 DROP TABLE IF EXISTS FTRiders CASCADE;
 DROP TABLE IF EXISTS FTShift CASCADE;
 DROP TABLE IF EXISTS PTRiders CASCADE;
 DROP TABLE IF EXISTS PTShifts CASCADE;
-DROP TABLE IF EXISTS Customers CASCADE;
-DROP TABLE IF EXISTS CustomerRecentDeliveryLocations CASCADE;
 DROP TABLE IF EXISTS FDSManagers CASCADE;
-DROP TABLE IF EXISTS Promotions CASCADE;
 DROP TABLE IF EXISTS Restaurants CASCADE;
 DROP TABLE IF EXISTS RestaurantStaff CASCADE;
+DROP TABLE IF EXISTS Promotions CASCADE;
+DROP TABLE IF EXISTS RestaurantPromotions CASCADE;
 DROP TABLE IF EXISTS FoodItems CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
@@ -29,6 +30,21 @@ CREATE TABLE Users (
     username VARCHAR(100) UNIQUE NOT NULL,
     password TEXT NOT NULL,
     type VARCHAR(50) NOT NULL CHECK (type IN ('Customer', 'Delivery Rider', 'Food Scooter Manager', 'Restaurant Staff'))
+);
+
+CREATE TABLE Customers (
+    cid INTEGER PRIMARY KEY,
+    creditCardNumber VARCHAR(16),
+    rewardPoints INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY (cid) REFERENCES Users (uid) ON DELETE CASCADE
+);
+
+CREATE TABLE CustomerRecentDeliveryLocations (
+    cid INTEGER,
+    deliveryLocation VARCHAR(100) NOT NULL,
+    orderTime TIMESTAMP NOT NULL,
+    PRIMARY KEY (cid, deliveryLocation),
+    FOREIGN KEY (cid) REFERENCES Customers (cid) ON DELETE CASCADE
 );
 
 CREATE TABLE DeliveryRiders (
@@ -68,24 +84,23 @@ CREATE TABLE PTShifts (
 	CHECK (startHour <= endHour)
 );
 
-CREATE TABLE Customers (
-    cid INTEGER PRIMARY KEY,
-    creditCardNumber VARCHAR(16),
-    rewardPoints INTEGER NOT NULL DEFAULT 0,
-    FOREIGN KEY (cid) REFERENCES Users (uid) ON DELETE CASCADE
-);
-
-CREATE TABLE CustomerRecentDeliveryLocations (
-    cid INTEGER,
-    deliveryLocation VARCHAR(100) NOT NULL,
-    orderTime TIMESTAMP NOT NULL,
-    PRIMARY KEY (cid, deliveryLocation),
-    FOREIGN KEY (cid) REFERENCES Customers (cid) ON DELETE CASCADE
-);
-
 CREATE TABLE FDSManagers (
     fmid INTEGER PRIMARY KEY,
     FOREIGN KEY (fmid) REFERENCES Users (uid) ON DELETE CASCADE
+);
+
+CREATE TABLE Restaurants (
+    rid INTEGER PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(1000),
+    minimumPurchase NUMERIC(6, 2) NOT NULL DEFAULT 0 CHECK (minimumPurchase >= 0)
+);
+
+CREATE TABLE RestaurantStaff (
+    rsid INTEGER PRIMARY KEY,
+    employedBy INTEGER NOT NULL,
+    FOREIGN KEY (rsid) REFERENCES Users (uid) ON DELETE CASCADE,
+    FOREIGN KEY (employedBy) REFERENCES Restaurants (rid) ON DELETE CASCADE
 );
 
 CREATE TABLE Promotions (
@@ -96,20 +111,12 @@ CREATE TABLE Promotions (
     discount NUMERIC(2, 2) NOT NULL CHECK (discount > 0)
 );
 
-CREATE TABLE Restaurants (
-    rid INTEGER PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    description VARCHAR(1000),
-    minimumPurchase NUMERIC(6, 2) NOT NULL DEFAULT 0 CHECK (minimumPurchase >= 0),
-    pid INTEGER,
+CREATE TABLE RestaurantPromotions (
+    rid INTEGER,
+    pid INTEGER UNIQUE,
+    PRIMARY KEY (rid, pid),
+    FOREIGN KEY (rid) REFERENCES Restaurants (rid),
     FOREIGN KEY (pid) REFERENCES Promotions (pid)
-);
-
-CREATE TABLE RestaurantStaff (
-    rsid INTEGER PRIMARY KEY,
-    employedBy INTEGER NOT NULL,
-    FOREIGN KEY (rsid) REFERENCES Users (uid) ON DELETE CASCADE,
-    FOREIGN KEY (employedBy) REFERENCES Restaurants (rid) ON DELETE CASCADE
 );
 
 CREATE TABLE FoodItems (
@@ -147,7 +154,7 @@ CREATE TABLE Reviews (
     rvid INTEGER PRIMARY KEY,
     rid INTEGER,
     oid INTEGER,
-    content VARCHAR(1000),
+    content VARCHAR(1000) NOT NULL,
     FOREIGN KEY (rid) REFERENCES Restaurants (rid),
     FOREIGN KEY (oid) REFERENCES Orders (oid)
 );
