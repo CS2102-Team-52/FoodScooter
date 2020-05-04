@@ -168,20 +168,20 @@ CREATE TRIGGER hashPasswordTrigger
 
 CREATE OR REPLACE FUNCTION checkAcceptedOrders() RETURNS TRIGGER AS $$
 	DECLARE
-		aoid INTEGER;
+		adrid INTEGER;
     BEGIN
-		SELECT O.oid INTO aoid
+		SELECT O.drid INTO adrid
 			FROM Orders O
-			WHERE O.drid = NEW.drid AND O.deliveryTime IS NULL AND O.oid <> NEW.oid;
-        IF aoid IS NOT NULL THEN
-			RAISE exception '% has already accepted %', NEW.drid, aoid;
+			WHERE O.oid = NEW.oid;
+        IF adrid IS NOT NULL THEN
+			RAISE exception '% has already accepted %', adrid, NEW.oid;
 		END IF;
 		RETURN NULL;
     END;
 $$ LANGUAGE PLPGSQL;
 
 CREATE CONSTRAINT TRIGGER checkAcceptedOrdersTrigger
-    AFTER UPDATE OF drid OR INSERT
+    BEFORE UPDATE OF drid
 	ON Orders
 	DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW
