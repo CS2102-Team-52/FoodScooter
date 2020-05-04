@@ -19,6 +19,7 @@ DROP TRIGGER IF EXISTS hashPasswordTrigger ON Users CASCADE;
 DROP TRIGGER IF EXISTS updateCustomerRewardPointsTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS updateCustomerRecentDeliveryLocationsTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS checkAcceptedOrdersTrigger ON Orders CASCADE;
+DROP TRIGGER IF EXISTS checkAcceptOneOrderTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS checkPartTimeRiderShiftBreakTrigger ON PTShifts CASCADE;
 DROP TRIGGER IF EXISTS checkPartTimeRiderShiftHoursTrigger ON PTShifts CASCADE;
 
@@ -186,6 +187,27 @@ CREATE CONSTRAINT TRIGGER checkAcceptedOrdersTrigger
 	DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW
 	EXECUTE FUNCTION checkAcceptedOrders();
+	
+CREATE OR REPLACE FUNCTION checkAcceptOneOrder() RETURNS TRIGGER AS $$
+	DECLARE
+		aoid INTEGER;
+    BEGIN
+		SELECT O.oid INTO aoid
+			FROM Orders O
+			WHERE O.drid = NEW.drid AND O.deliveryTime IS NULL AND O.oid <> NEW.oid;
+        IF aoid IS NOT NULL THEN
+			RAISE exception '% has already accepted %', NEW.drid, aoid;
+		END IF;
+		RETURN NULL;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE CONSTRAINT TRIGGER checkAcceptOneOrderTrigger
+    AFTER UPDATE OF drid OR INSERT
+	ON Orders
+	DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW
+	EXECUTE FUNCTION checkAcceptOneOrder();
 
 CREATE OR REPLACE FUNCTION updateCustomerRewardPoints() RETURNS TRIGGER AS $$
     BEGIN
