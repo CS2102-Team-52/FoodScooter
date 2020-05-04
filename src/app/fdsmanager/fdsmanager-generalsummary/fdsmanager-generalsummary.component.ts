@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FDSManagerService} from "../../services/users/fdsmanager/fdsmanager.service";
-import {GeneralSummary} from "../../store/generalSummary";
+import {GeneralSummary} from "../../store/summaries/generalSummary";
 
 @Component({
   selector: 'app-fdsmanager-generalsummary',

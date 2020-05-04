@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {CustomerSummary} from "../../store/customerSummary";
+import {CustomerSummary} from "../../store/summaries/customerSummary";
 import {FDSManagerService} from "../../services/users/fdsmanager/fdsmanager.service";
 
 @Component({

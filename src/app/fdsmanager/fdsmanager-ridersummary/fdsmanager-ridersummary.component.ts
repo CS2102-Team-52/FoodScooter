@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {RiderSummary} from "../../store/riderSummary";
+import {RiderSummary} from "../../store/summaries/riderSummary";
 import {FDSManagerService} from "../../services/users/fdsmanager/fdsmanager.service";
 
 @Component({

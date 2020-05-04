@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {LocationSummary} from "../../store/locationSummary";
+import {LocationSummary} from "../../store/summaries/locationSummary";
 import {FDSManagerService} from "../../services/users/fdsmanager/fdsmanager.service";
 
 @Component({
