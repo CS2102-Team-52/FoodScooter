@@ -28,7 +28,7 @@ CREATE TABLE Users (
     uid INTEGER PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    type VARCHAR(50) NOT NULL
+    type VARCHAR(50) NOT NULL CHECK (type IN ('Customer', 'Delivery Rider', 'Food Scooter Manager', 'Restaurant Staff'))
 );
 
 CREATE TABLE DeliveryRiders (
@@ -40,17 +40,17 @@ CREATE TABLE DeliveryRiders (
 
 CREATE TABLE FTRiders (
     drid INTEGER PRIMARY KEY,
-    dayOption INTEGER ARRAY[5] DEFAULT '{1,2,3,4,5}',
-	shiftOption INTEGER ARRAY[5] DEFAULT '{1,2,3,4,1}',
+    dayOption INTEGER ARRAY[5] NOT NULL DEFAULT '{1,2,3,4,5}',
+	shiftOption INTEGER ARRAY[5] NOT NULL DEFAULT '{1,2,3,4,1}',
     FOREIGN KEY (drid) REFERENCES DeliveryRiders (drid) ON DELETE CASCADE
 );
 
 CREATE TABLE FTShift (
     fsid INTEGER PRIMARY KEY,
-	startOneHour INTEGER,
-	endOneHour INTEGER,
-	startTwoHour INTEGER,
-	endTwoHour INTEGER
+	startOneHour INTEGER NOT NULL,
+	endOneHour INTEGER NOT NULL,
+	startTwoHour INTEGER NOT NULL,
+	endTwoHour INTEGER NOT NULL
 );
 
 CREATE TABLE PTRiders (
@@ -61,9 +61,9 @@ CREATE TABLE PTRiders (
 CREATE TABLE PTShifts (
     ptsid INTEGER PRIMARY KEY,
     drid INTEGER,
-    dow INTEGER check(dow in (1,2,3,4,5,6,7)),
-    startHour INTEGER check(startHour in (10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21)),
-    endHour INTEGER check(endHour in (11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22)),
+    dow INTEGER NOT NULL CHECK (dow in (1,2,3,4,5,6,7)),
+    startHour INTEGER NOT NULL CHECK (startHour in (10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21)),
+    endHour INTEGER NOT NULL CHECK (endHour in (11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22)),
 	FOREIGN KEY (drid) REFERENCES PTRiders (drid) ON DELETE CASCADE,
 	CHECK (startHour <= endHour)
 );
@@ -77,8 +77,8 @@ CREATE TABLE Customers (
 
 CREATE TABLE CustomerRecentDeliveryLocations (
     cid INTEGER,
-    deliveryLocation VARCHAR(100),
-    orderTime TIMESTAMP,
+    deliveryLocation VARCHAR(100) NOT NULL,
+    orderTime TIMESTAMP NOT NULL,
     PRIMARY KEY (cid, deliveryLocation),
     FOREIGN KEY (cid) REFERENCES Customers (cid) ON DELETE CASCADE
 );
@@ -92,16 +92,15 @@ CREATE TABLE Promotions (
     pid INTEGER PRIMARY KEY,
     startDate TIMESTAMP,
     endDate TIMESTAMP,
-    type VARCHAR(100),
-    discount NUMERIC(2, 2)
+    type VARCHAR(100) NOT NULL,
+    discount NUMERIC(2, 2) NOT NULL CHECK (discount > 0)
 );
 
-/* pid = id of promotion offered by restaurant */
 CREATE TABLE Restaurants (
     rid INTEGER PRIMARY KEY,
-    name VARCHAR(100),
+    name VARCHAR(100) NOT NULL,
     description VARCHAR(1000),
-    minimumPurchase NUMERIC(6, 2),
+    minimumPurchase NUMERIC(6, 2) NOT NULL DEFAULT 0 CHECK (minimumPurchase >= 0),
     pid INTEGER,
     FOREIGN KEY (pid) REFERENCES Promotions (pid)
 );
@@ -116,10 +115,10 @@ CREATE TABLE RestaurantStaff (
 CREATE TABLE FoodItems (
     fid INTEGER,
     rid INTEGER,
-    name VARCHAR(100),
-    category VARCHAR(100),
-    price NUMERIC(6, 2),
-    availability INTEGER,
+    name VARCHAR(100) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    price NUMERIC(6, 2) NOT NULL CHECK (price > 0),
+    availability INTEGER NOT NULL CHECK (availability >= 0),
     PRIMARY KEY (fid, rid),
     FOREIGN KEY (rid) REFERENCES Restaurants (rid) ON DELETE CASCADE
 );
@@ -129,12 +128,12 @@ CREATE TABLE Orders (
     cid INTEGER,
     drid INTEGER,
     rid INTEGER,
-    foodCost NUMERIC(6, 2),
-    deliveryFee NUMERIC(6, 2),
-    rewardPointsUsed INTEGER,
-    paymentType VARCHAR(100),
-    deliveryLocation VARCHAR(100),
-    orderTime TIMESTAMP,
+    foodCost NUMERIC(6, 2) NOT NULL CHECK (foodCost >= 0),
+    deliveryFee NUMERIC(6, 2) NOT NULL CHECK (deliveryFee >= 0),
+    rewardPointsUsed INTEGER NOT NULL CHECK (rewardPointsUsed >= 0),
+    paymentType VARCHAR(100) NOT NULL,
+    deliveryLocation VARCHAR(100) NOT NULL,
+    orderTime TIMESTAMP NOT NULL,
     departureTime TIMESTAMP,
     restaurantArrivalTime TIMESTAMP,
     restaurantDepartureTime TIMESTAMP,
