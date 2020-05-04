@@ -68,8 +68,10 @@ public class JdbcSummaryRepository implements SummaryRepository {
 
   @Override
   public List<RiderSummary> getRiderSummary() {
+    List<RiderSummary> result;
+
     String sql = "SELECT date_trunc('month', orderTime) as month, Orders.drid, COUNT(Orders.oid) as numOrders, "
-      + "0 as hours, salary, AVG(DATE_PART('minute', departureTime - deliveryTime)) as avgDeliveryTime, "
+      + "40 as hours, salary, AVG(DATE_PART('minute', departureTime - deliveryTime)) as avgDeliveryTime, "
       + "COUNT(rating) as numRatings, AVG(rating) as avgRatings "
       + "FROM Orders "
       + "LEFT JOIN DeliveryRiders "
@@ -77,7 +79,7 @@ public class JdbcSummaryRepository implements SummaryRepository {
       + "LEFT JOIN Reviews "
       + "ON Orders.oid = Reviews.oid "
       + "GROUP BY month, Orders.drid, salary;";
-    return jdbcTemplate.query(
+    result = jdbcTemplate.query(
       sql,
       (rs, rowNum) -> new RiderSummary(
         rs.getTimestamp(1).toLocalDateTime(),
@@ -89,6 +91,21 @@ public class JdbcSummaryRepository implements SummaryRepository {
         rs.getInt(7),
         rs.getInt(8)
       ));
+
+    // Update the total hours worked for part time riders
+    for (RiderSummary riderSummary : result) {
+      int drid = riderSummary.getDrid();
+      int hoursWorked;
+      String sql1 = "SELECT SUM(endHour - startHour)\n"
+        + "FROM PTShifts\n"
+        + "WHERE drid = ?;\n";
+      hoursWorked = jdbcTemplate.queryForObject(sql1, new Object[]{drid}, Integer.class);
+      if (hoursWorked != 0) {
+        riderSummary.setHoursWorked(hoursWorked);
+      }
+    }
+
+    return result;
   }
 
   @Override

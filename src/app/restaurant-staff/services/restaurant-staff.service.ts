@@ -30,4 +30,12 @@ export class RestaurantStaffService {
   public removeFoodItems(restaurantId: number, foodItemIds: number[]) {
     return this.httpClient.post(`${Util.baseURL}/restaurants/${restaurantId}/menu/batch-removal`, foodItemIds);
   }
+
+  public fetchRestaurantSummary(restaurantId: number) {
+    return this.httpClient.get(`${Util.baseURL}/staff/${restaurantId}/restaurantSummary`);
+  }
+
+  public fetchPromotionSummary(restaurantId: number) {
+    return this.httpClient.get(`${Util.baseURL}/staff/${restaurantId}/promotionSummary`);
+  }
 }
