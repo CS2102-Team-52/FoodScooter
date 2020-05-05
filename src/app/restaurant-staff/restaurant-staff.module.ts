@@ -11,6 +11,7 @@ import { FoodItemEditorComponent } from './menu/food-item-editor/food-item-edito
 import { ReactiveFormsModule } from '@angular/forms';
 import { RestaurantProfileComponent } from './profile/restaurant-profile.component';
 import { RestaurantSummaryComponent } from './summary/restaurant-summary.component';
+import { PromotionEditorComponent } from './promotions/promotion-editor/promotion-editor.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { RestaurantSummaryComponent } from './summary/restaurant-summary.compone
     RestaurantPromotionsComponent,
     FoodItemEditorComponent,
     RestaurantProfileComponent,
-    RestaurantSummaryComponent
+    RestaurantSummaryComponent,
+    PromotionEditorComponent
   ],
     imports: [
         CommonModule,

@@ -1,1 +1,15 @@
-<p>restaurant-promotions works!</p>
+<button mat-raised-button (click)="addPromotion()">Add Promotion</button>
+<button mat-raised-button (click)="updatePromotion()">Update Promotion</button>
+<!--<button mat-raised-button (click)="removeFoodItems()">Remove Promotion</button>-->
+
+<br>
+<br>
+<ng-container *ngIf="toShowPromotionEditor">
+  <app-promotion-editor
+    [mode]="promotionEditorMode"
+    [promotion]="promotionToUpdate"
+    (promotionResult)="handlePromotionEditorCompletion($event)">
+  </app-promotion-editor>
+  <br>
+  <br>
+</ng-container>

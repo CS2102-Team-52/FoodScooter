@@ -1,8 +1,10 @@
 package foodscooter.api.controllers;
 
+import foodscooter.model.Promotion;
 import foodscooter.model.reviews.FoodReview;
 import foodscooter.model.restaurants.FoodItem;
 import foodscooter.model.restaurants.Restaurant;
+import foodscooter.repositories.JdbcPromotionsRepository;
 import foodscooter.repositories.JdbcReviewsRepository;
 import foodscooter.repositories.JdbcRestaurantsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +23,16 @@ import java.util.List;
 public class RestaurantController extends BaseController {
   private final JdbcRestaurantsRepository restaurantsRepository;
   private final JdbcReviewsRepository feedbackRepository;
+  private final JdbcPromotionsRepository promotionsRepository;
 
   @Autowired
   public RestaurantController(
     JdbcRestaurantsRepository restaurantsRepository,
-    JdbcReviewsRepository feedbackRepository) {
+    JdbcReviewsRepository feedbackRepository,
+    JdbcPromotionsRepository promotionsRepository) {
     this.restaurantsRepository = restaurantsRepository;
     this.feedbackRepository = feedbackRepository;
+    this.promotionsRepository = promotionsRepository;
   }
 
   @GetMapping("/restaurants/{restaurantId}")
@@ -81,5 +86,32 @@ public class RestaurantController extends BaseController {
   @GetMapping("/restaurants/{restaurantId}/reviews")
   public List<FoodReview> getReviews(@PathVariable int restaurantId) {
     return feedbackRepository.getReviewsByRestaurant(restaurantId);
+  }
+
+  @GetMapping("/restaurants/{restaurantId}/promotions/add")
+  public ResponseEntity<?> addRestaurantPromotion(
+    @PathVariable int restaurantId,
+    @RequestBody Promotion promotion
+  ) {
+    promotionsRepository.addRestaurantPromotion(restaurantId, promotion);
+    return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/restaurants/{restaurantId}/promotions/update")
+  public ResponseEntity<?> updateRestaurantPromotion(
+    @PathVariable int restaurantId,
+    @RequestBody Promotion promotion
+  ) {
+    promotionsRepository.updateRestaurantPromotion(restaurantId, promotion.getId(), promotion);
+    return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/restaurants/{restaurantId}/promotions/remove")
+  public ResponseEntity<?> removeRestaurantPromotion(
+    @PathVariable int restaurantId,
+    @RequestBody int promotionId
+  ) {
+    promotionsRepository.removeRestaurantPromotion(restaurantId, promotionId);
+    return ResponseEntity.ok().build();
   }
 }

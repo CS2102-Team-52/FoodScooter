@@ -87,7 +87,7 @@ public class JdbcRestaurantsRepository implements RestaurantsRepository {
       + "category = ?, "
       + "price = ?, "
       + "availability = ? "
-      + "WHERE rid = ? AND fid = ? ",
+      + "WHERE rid = ? AND fid = ?;",
       foodItem.getName(), foodItem.getCategory(), foodItem.getPrice(),
       foodItem.getAvailability(), restaurantId, foodItemId
     );
@@ -127,7 +127,7 @@ public class JdbcRestaurantsRepository implements RestaurantsRepository {
     jdbcTemplate.update(
       "UPDATE FoodItems "
       + "SET availability = availability + ?"
-      + "WHERE rid = ? AND fid = ?",
+      + "WHERE rid = ? AND fid = ?;",
       delta, restaurantId, foodItemId
     );
   }
