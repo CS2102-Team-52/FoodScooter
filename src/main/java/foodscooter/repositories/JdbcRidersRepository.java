@@ -212,13 +212,25 @@ public class JdbcRidersRepository implements RidersRepository {
   @Override
   public void acceptOrder(int drid, int oid) {
     jdbcTemplate.update(
-      "UPDATE Orders SET drid = ? WHERE oid = ?", new Object[]{ drid, oid});
+      "UPDATE Orders SET drid = ?, departureTime = LOCALTIMESTAMP WHERE oid = ?", new Object[]{ drid, oid});
   }
 
   @Override
   public void doneOrder(int drid, int oid) {
     jdbcTemplate.update(
       "UPDATE Orders SET deliveryTime = LOCALTIMESTAMP WHERE drid = ? AND oid = ?", new Object[]{drid, oid});
+  }
+
+  @Override
+  public void reachRestaurant(int drid, int oid) {
+    jdbcTemplate.update(
+      "UPDATE Orders SET restaurantArrivalTime = LOCALTIMESTAMP WHERE drid = ? AND oid = ?", new Object[]{drid, oid});
+  }
+
+  @Override
+  public void leaveRestaurant(int drid, int oid) {
+    jdbcTemplate.update(
+      "UPDATE Orders SET restaurantDepartureTime = LOCALTIMESTAMP WHERE drid = ? AND oid = ?", new Object[]{drid, oid});
   }
 
   @Override

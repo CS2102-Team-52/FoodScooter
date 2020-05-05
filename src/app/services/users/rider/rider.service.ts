@@ -43,7 +43,6 @@ export class RiderService {
   fetchPartTimeShift(drid: number) {
     return this.httpClient.get(`${Util.baseURL}/rider/${drid}/partTimeShift/`);
   }
-
   deletePartTimeShift(drid: number, ptsid: number) {
     return this.httpClient.delete(`${Util.baseURL}/rider/${drid}/partTimeShift/${ptsid}`).pipe(catchError(this.handleError));
   }

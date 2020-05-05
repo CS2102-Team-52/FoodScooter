@@ -18,6 +18,8 @@ public interface RidersRepository {
   List<Order> getAcceptedOrders(int drid);
   void acceptOrder(int drid, int oid);
   void doneOrder(int drid, int oid);
+  void reachRestaurant(int drid, int oid);
+  void leaveRestaurant(int drid, int oid);
   int getBaseSalary(int drid);
   SalaryInfo getSummaryCurrentMonth(int drid, int baseSalary);
   SalaryInfo getSummaryCurrentWeek(int drid, int baseSalary);

@@ -19,12 +19,17 @@
                         Payment Type: {{o.paymentType | pretty}}
                     </mat-list-item>
                     <mat-list-item>
-                        Location: {{o.location}}
+                        Location: {{o.deliveryLocation}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Location: {{o.restaurantId}}
                     </mat-list-item>
                 </mat-list>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-raised-button (click)="refreshAcceptedOrders(o.id)" color="primary">Order delivered</button>
+                <button mat-raised-button (click)="reachRestaurant(o.id)" color="primary" *ngIf="!o. restaurantArrivalTime">Reach Restaurant</button>
+                <button mat-raised-button (click)="leaveRestaurant(o.id)" color="primary" *ngIf="o. restaurantArrivalTime && !o.restaurantDepartureTime">Leave Restaurant</button>
+                <button mat-raised-button (click)="refreshAcceptedOrders(o.id)" color="primary" *ngIf="o. restaurantArrivalTime && o.restaurantDepartureTime">Order delivered</button>
             </mat-card-actions>
         </mat-card>
     </mat-list>
@@ -51,7 +56,10 @@
                         Payment Type: {{o.paymentType | pretty}}
                     </mat-list-item>
                     <mat-list-item>
-                        Location: {{o.location}}
+                        Location: {{o.deliveryLocation}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        Location: {{o.restaurantId}}
                     </mat-list-item>
                 </mat-list>
             </mat-card-content>
