@@ -104,13 +104,13 @@ public class RiderController extends BaseController {
 
   @PutMapping("/rider/{drid}/reachRestaurant")
   public List<Order> reachRestaurant(@PathVariable int drid, @RequestBody int oid) {
-    riderRepository.doneOrder(drid, oid);
+    riderRepository.reachRestaurant(drid, oid);
     return riderRepository.getAcceptedOrders(drid);
   }
 
   @PutMapping("/rider/{drid}/leaveRestaurant")
   public List<Order> leaveRestaurant(@PathVariable int drid, @RequestBody int oid) {
-    riderRepository.doneOrder(drid, oid);
+    riderRepository.leaveRestaurant(drid, oid);
     return riderRepository.getAcceptedOrders(drid);
   }
 
