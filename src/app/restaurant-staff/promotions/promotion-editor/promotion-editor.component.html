@@ -1,0 +1,57 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Promotion
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="promotionForm" (ngSubmit)="submit()">
+      <table>
+        <tr>
+          <td>
+<!--            <mat-form-field>-->
+<!--              <mat-label>Start Date</mat-label>-->
+<!--              <input matInput placeholder="Start Date" formControlName="startDate">-->
+<!--            </mat-form-field>-->
+            <mat-form-field>
+              <mat-label>Start Date</mat-label>
+              <input matInput formControlName="startDate" [matDatepicker]="picker">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </td>
+          <td>
+<!--            <mat-form-field>-->
+<!--              <mat-label>End Date</mat-label>-->
+<!--              <input matInput placeholder="End Date" formControlName="endDate">-->
+<!--            </mat-form-field>-->
+            <mat-form-field>
+              <mat-label>End Date</mat-label>
+              <input matInput formControlName="endDate" [matDatepicker]="picker2">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field>
+              <mat-label>Type</mat-label>
+              <input matInput placeholder="Type" formControlName="type">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field>
+              <mat-label>Discount</mat-label>
+              <input matInput placeholder="Discount" formControlName="discount">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!promotionForm.valid">Submit</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </mat-card-content>
+</mat-card>
