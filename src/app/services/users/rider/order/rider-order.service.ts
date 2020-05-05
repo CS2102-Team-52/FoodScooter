@@ -32,6 +32,14 @@ export class RiderOrderService {
     return this.httpClient.put(`${Util.baseURL}/rider/${drid}/doneOrder/`, orderId);
   }
 
+  public reachRestaurant(drid: number, orderId: number) {
+    return this.httpClient.put(`${Util.baseURL}/rider/${drid}/reachRestaurant/`, orderId);
+  }
+
+  public leaveRestaurant(drid: number, orderId: number) {
+    return this.httpClient.put(`${Util.baseURL}/rider/${drid}/leaveRestaurant/`, orderId);
+  }
+
   public fetchAcceptedOrders(drid: number) {
     return this.httpClient.get(`${Util.baseURL}/rider/${drid}/acceptedOrders/`).pipe(catchError(this.handleError));
   }

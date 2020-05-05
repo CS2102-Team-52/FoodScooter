@@ -102,6 +102,18 @@ public class RiderController extends BaseController {
     return riderRepository.getOrderSummary(drid);
   }
 
+  @PutMapping("/rider/{drid}/reachRestaurant")
+  public List<Order> reachRestaurant(@PathVariable int drid, @RequestBody int oid) {
+    riderRepository.doneOrder(drid, oid);
+    return riderRepository.getAcceptedOrders(drid);
+  }
+
+  @PutMapping("/rider/{drid}/leaveRestaurant")
+  public List<Order> leaveRestaurant(@PathVariable int drid, @RequestBody int oid) {
+    riderRepository.doneOrder(drid, oid);
+    return riderRepository.getAcceptedOrders(drid);
+  }
+
   @GetMapping("/rider/{drid}/fullTimeSchedule")
   public RiderFullTimeSchedule getFullTimeSchedule(@PathVariable int drid) {
     return riderRepository.getRiderFullTimeSchedule(drid);

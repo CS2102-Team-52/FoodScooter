@@ -70,4 +70,18 @@ export class RiderOrderComponent implements OnInit {
     this.doneOrder(orderId);
     this.getAcceptedOrders();
   }
+
+  reachRestaurant(orderId: number) {
+    this.riderOrderService.reachRestaurant(this.rider.id, orderId).subscribe((data: any[]) => {
+      console.log(data);
+      this.acceptedOrderList = data;
+    })
+  }
+
+  leaveRestaurant(orderId: number) {
+    this.riderOrderService.leaveRestaurant(this.rider.id, orderId).subscribe((data: any[]) => {
+      console.log(data);
+      this.acceptedOrderList = data;
+    })
+  }
 }
