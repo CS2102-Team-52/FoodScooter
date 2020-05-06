@@ -25,10 +25,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     FormsModule
   ],
   exports: [
-    RiderComponent,
-    RiderOrderComponent,
-    RiderSummaryComponent,
-    RiderProfileComponent
+    RiderRoutingModule
   ]
 })
 export class RiderModule { }

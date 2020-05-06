@@ -32,10 +32,7 @@ import { PromotionsModule } from '../promotions/promotions.module';
     PromotionsModule
   ],
   exports: [
-    RestaurantStaffRoutingModule,
-    RestaurantStaffSpringBoardComponent,
-    RestaurantStaffComponent,
-    RestaurantMenuComponent
+    RestaurantStaffRoutingModule
   ]
 })
 export class RestaurantStaffModule {

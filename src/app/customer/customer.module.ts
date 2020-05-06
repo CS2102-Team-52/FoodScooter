@@ -28,13 +28,7 @@ import { CustomerRoutingModule } from './customer-routing.module';
     CustomerReviewHistoryModule
   ],
   exports: [
-    CustomerComponent,
-    CustomerProfileComponent,
-    CustomerRoutingModule,
-    RestaurantsViewerComponent,
-    RestaurantViewerComponent,
-    CustomerOrderHistoryViewer,
-    CustomerReviewHistoryViewerComponent
+    CustomerRoutingModule
   ]
 })
 export class CustomerModule { }

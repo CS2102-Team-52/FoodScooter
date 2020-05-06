@@ -10,8 +10,6 @@ import { FDSManagerCustomersummaryComponent } from './fdsmanager-customersummary
 import { FDSManagerLocationsummaryComponent } from './fdsmanager-locationsummary/fdsmanager-locationsummary.component';
 import { FDSManagerRidersummaryComponent } from './fdsmanager-ridersummary/fdsmanager-ridersummary.component';
 
-
-
 @NgModule({
   declarations: [
     FDSManagerComponent,
@@ -29,8 +27,7 @@ import { FDSManagerRidersummaryComponent } from './fdsmanager-ridersummary/fdsma
     FDSManagerRoutingModule
   ],
   exports: [
-    FDSManagerComponent,
-    FDSManagerGeneralsummaryComponent
+    FDSManagerRoutingModule
   ]
 })
 export class FDSManagerModule { }
