@@ -1,10 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {PromotionEditMode} from "./promotion-edit-mode.enum";
-import {Promotion} from "../../../store/promotion";
-import {FormBuilder, Validators} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
-import {Observable} from "rxjs";
-import {PromotionsService} from "../../../services/common/promotions.service";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { PromotionEditMode } from './promotion-edit-mode.enum';
+import { Promotion } from '../promotion';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { PromotionsService } from '../services/promotions.service';
+import { PromotionType } from '../promotion-type';
 
 @Component({
   selector: 'app-promotion-editor',
@@ -14,15 +15,16 @@ import {PromotionsService} from "../../../services/common/promotions.service";
 export class PromotionEditorComponent implements OnInit {
   private restaurantId: number;
 
+  @Input() type: PromotionType;
   @Input() mode: PromotionEditMode;
   @Input() promotion: Promotion;
 
   @Output() promotionResult: EventEmitter<Promotion>;
 
   promotionForm = this.formBuilder.group({
+    name: ['', Validators.required],
     startDate: ['', Validators.required],
     endDate: ['', Validators.required],
-    type: ['', Validators.required],
     discount: ['', Validators.required]
   });
 
@@ -38,9 +40,9 @@ export class PromotionEditorComponent implements OnInit {
     this.restaurantId = Number(this.activatedRoute.parent.snapshot.paramMap.get('restaurantId'));
     if (this.mode == PromotionEditMode.UPDATE) {
       this.promotionForm.setValue({
+        name: this.promotion.name,
         startDate: this.promotion.startDate,
         endDate: this.promotion.endDate,
-        type: this.promotion.type,
         discount: this.promotion.discount
       });
     }
@@ -49,22 +51,24 @@ export class PromotionEditorComponent implements OnInit {
   public submit() {
     const promotion: Promotion = {
       id: this.promotion == undefined ? null : this.promotion.id,
+      name: this.promotionForm.get('name').value,
       startDate: this.promotionForm.get('startDate').value,
       endDate: this.promotionForm.get('endDate').value,
-      type: this.promotionForm.get('type').value,
+      type: PromotionType.RESTAURANT,
       discount: this.promotionForm.get('discount').value
-    }
+    };
+    console.log(promotion);
     let action: Observable<Object>;
-    switch(this.mode) {
+    switch (this.mode) {
       case PromotionEditMode.ADD:
         action = this.promotionsService.addRestaurantPromotion(this.restaurantId, promotion);
         break;
       case PromotionEditMode.UPDATE:
         action = this.promotionsService.updateRestaurantPromotion(this.restaurantId, promotion);
+        break;
       default:
-        // will not reach here
+      // will not reach here
     }
     return action.subscribe(_ => this.promotionResult.emit(promotion));
   }
-
 }

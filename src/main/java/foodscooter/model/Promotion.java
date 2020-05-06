@@ -1,13 +1,30 @@
 package foodscooter.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Promotion {
   private int id;
-  private LocalDateTime startDay;
-  private LocalDateTime endDay;
+  private String name;
+  private LocalDateTime startDate;
+  private LocalDateTime endDate;
   private PromotionType type;
-  private int discount;
+  private BigDecimal discount;
+
+  public Promotion(
+    int id,
+    String name,
+    LocalDateTime startDate,
+    LocalDateTime endDate,
+    PromotionType type,
+    BigDecimal discount) {
+    this.id = id;
+    this.name = name;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.type = type;
+    this.discount = discount;
+  }
 
   public int getId() {
     return id;
@@ -17,20 +34,28 @@ public class Promotion {
     this.id = id;
   }
 
-  public LocalDateTime getStartDay() {
-    return startDay;
+  public String getName() {
+    return name;
   }
 
-  public void setStartDay(LocalDateTime startDay) {
-    this.startDay = startDay;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public LocalDateTime getEndDay() {
-    return endDay;
+  public LocalDateTime getStartDate() {
+    return startDate;
   }
 
-  public void setEndDay(LocalDateTime endDay) {
-    this.endDay = endDay;
+  public void setStartDate(LocalDateTime startDate) {
+    this.startDate = startDate;
+  }
+
+  public LocalDateTime getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(LocalDateTime endDate) {
+    this.endDate = endDate;
   }
 
   public PromotionType getType() {
@@ -41,11 +66,11 @@ public class Promotion {
     this.type = type;
   }
 
-  public int getDiscount() {
+  public BigDecimal getDiscount() {
     return discount;
   }
 
-  public void setDiscount(int discount) {
+  public void setDiscount(BigDecimal discount) {
     this.discount = discount;
   }
 }

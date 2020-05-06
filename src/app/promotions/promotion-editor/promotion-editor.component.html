@@ -10,33 +10,25 @@
       <table>
         <tr>
           <td>
-<!--            <mat-form-field>-->
-<!--              <mat-label>Start Date</mat-label>-->
-<!--              <input matInput placeholder="Start Date" formControlName="startDate">-->
-<!--            </mat-form-field>-->
+            <mat-form-field>
+              <mat-label>Name</mat-label>
+              <input matInput placeholder="Name" formControlName="name">
+            </mat-form-field>
+          </td>
+          <td>
             <mat-form-field>
               <mat-label>Start Date</mat-label>
-              <input matInput formControlName="startDate" [matDatepicker]="picker">
+              <input matInput [matDatepicker]="picker" formControlName="startDate">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
           </td>
           <td>
-<!--            <mat-form-field>-->
-<!--              <mat-label>End Date</mat-label>-->
-<!--              <input matInput placeholder="End Date" formControlName="endDate">-->
-<!--            </mat-form-field>-->
             <mat-form-field>
               <mat-label>End Date</mat-label>
-              <input matInput formControlName="endDate" [matDatepicker]="picker2">
+              <input matInput [matDatepicker]="picker2" formControlName="endDate">
               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
               <mat-datepicker #picker2></mat-datepicker>
-            </mat-form-field>
-          </td>
-          <td>
-            <mat-form-field>
-              <mat-label>Type</mat-label>
-              <input matInput placeholder="Type" formControlName="type">
             </mat-form-field>
           </td>
           <td>

@@ -105,10 +105,11 @@ CREATE TABLE RestaurantStaff (
 
 CREATE TABLE Promotions (
     pid INTEGER PRIMARY KEY,
+    name VARCHAR(100),
     startDate TIMESTAMP,
     endDate TIMESTAMP,
     type VARCHAR(100) NOT NULL,
-    discount NUMERIC(2, 2) NOT NULL CHECK (discount > 0)
+    discount NUMERIC(5, 2) NOT NULL CHECK (discount > 0 AND discount <= 100)
 );
 
 CREATE TABLE RestaurantPromotions (
