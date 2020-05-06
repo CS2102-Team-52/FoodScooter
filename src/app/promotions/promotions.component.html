@@ -13,7 +13,8 @@
 <br>
 <ng-container *ngIf="toShowPromotionEditor">
   <app-promotion-editor
-    [type]="promotionType"
+    [restaurantId]="restaurantId"
+    [promotionType]="promotionType"
     [mode]="promotionEditorMode"
     [promotion]="promotionToUpdate"
     (promotionResult)="handlePromotionEditorCompletion($event)">

@@ -11,19 +11,41 @@ export class PromotionsService {
     private httpClient: HttpClient
   ) { }
 
-  public addRestaurantPromotion(restaurantId: number, promotion: Promotion) {
-    return this.httpClient.post(`${Util.baseURL}/restaurants/${restaurantId}/promotions`, promotion);
-  }
-
-  public updateRestaurantPromotion(restaurantId: number, promotion: Promotion) {
-    return this.httpClient.patch(`${Util.baseURL}/restaurants/${restaurantId}/promotions/${promotion.id}`, promotion);
-  }
-
-  public removeRestaurantPromotion(restaurantId: number, promotionIds: number[]) {
-    return this.httpClient.post(`${Util.baseURL}/restaurants/${restaurantId}/promotions/batch-removal`, promotionIds);
-  }
-
   public fetchPromotions(restaurantId: number) {
-    return this.httpClient.get(`${Util.baseURL}/restaurants/${restaurantId}/promotions`);
+    let endpointUrl: string = `${Util.baseURL}/`;
+    if (restaurantId != undefined) {
+      endpointUrl += `restaurants/${restaurantId}/`;
+    }
+    endpointUrl += 'promotions';
+    console.log(endpointUrl);
+    return this.httpClient.get(endpointUrl);
+  }
+
+  public addPromotion(restaurantId: number, promotion: Promotion) {
+    let endpointUrl: string = `${Util.baseURL}/`;
+    if (restaurantId != undefined) {
+      endpointUrl += `restaurants/${restaurantId}/`;
+    }
+    endpointUrl += 'promotions';
+    console.log(endpointUrl);
+    return this.httpClient.post(endpointUrl, promotion);
+  }
+
+  public updatePromotion(restaurantId: number, promotion: Promotion) {
+    let endpointUrl: string = `${Util.baseURL}/`;
+    if (restaurantId != undefined) {
+      endpointUrl += `restaurants/${restaurantId}/`;
+    }
+    endpointUrl += `promotions/${promotion.id}`;
+    return this.httpClient.patch(endpointUrl, promotion);
+  }
+
+  public removePromotion(restaurantId: number, promotionIds: number[]) {
+    let endpointUrl = `${Util.baseURL}/`;
+    if (restaurantId != undefined) {
+      endpointUrl += `restaurants/${restaurantId}/`;
+    }
+    endpointUrl += 'promotions/batch-removal';
+    return this.httpClient.post(endpointUrl, promotionIds);
   }
 }

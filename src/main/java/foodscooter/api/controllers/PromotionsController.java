@@ -4,9 +4,7 @@ import foodscooter.model.Promotion;
 import foodscooter.repositories.JdbcPromotionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +23,33 @@ public class PromotionsController extends BaseController{
     this.promotionsRepository = promotionsRepository;
   }
 
+  @GetMapping("/promotions")
+  public Collection<Promotion> getPromotions() {
+    return promotionsRepository.getPromotions();
+  }
+
+  @PostMapping("/promotions")
+  public ResponseEntity<?> addPromotion(@RequestBody Promotion promotion) {
+    System.out.println("Add");
+    promotionsRepository.addPromotion(promotion);
+    return ResponseEntity.ok().build();
+  }
+
+  @PatchMapping("/promotions/{promotionId}")
+  public ResponseEntity<?> updatePromotion(
+    @PathVariable int promotionId,
+    @RequestBody Promotion promotion
+  ) {
+    promotionsRepository.updatePromotion(promotionId, promotion);
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/promotions/batch-removal")
+  public ResponseEntity<?> removePromotions(@RequestBody List<Integer> promotionIds) {
+    promotionsRepository.removePromotions(promotionIds);
+    return ResponseEntity.ok().build();
+  }
+
   @GetMapping("/restaurants/{restaurantId}/promotions")
   public Collection<Promotion> getRestaurantPromotions(
     @PathVariable int restaurantId
@@ -38,6 +63,7 @@ public class PromotionsController extends BaseController{
     @RequestBody Promotion promotion
   ) {
     promotionsRepository.addRestaurantPromotion(restaurantId, promotion);
+    System.out.println("adding");
     return ResponseEntity.ok().build();
   }
 
@@ -52,11 +78,11 @@ public class PromotionsController extends BaseController{
   }
 
   @PostMapping("/restaurants/{restaurantId}/promotions/batch-removal")
-  public ResponseEntity<?> removeRestaurantPromotion(
+  public ResponseEntity<?> removeRestaurantPromotions(
     @PathVariable int restaurantId,
     @RequestBody List<Integer> promotionIds
   ) {
-    promotionsRepository.removeRestaurantPromotion(restaurantId, promotionIds);
+    promotionsRepository.removeRestaurantPromotions(restaurantId, promotionIds);
     return ResponseEntity.ok().build();
   }
 }

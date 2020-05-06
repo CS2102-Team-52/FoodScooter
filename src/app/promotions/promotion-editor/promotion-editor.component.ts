@@ -13,9 +13,8 @@ import { PromotionType } from '../promotion-type';
   styleUrls: ['./promotion-editor.component.css']
 })
 export class PromotionEditorComponent implements OnInit {
-  private restaurantId: number;
-
-  @Input() type: PromotionType;
+  @Input() restaurantId: number;
+  @Input() promotionType: PromotionType;
   @Input() mode: PromotionEditMode;
   @Input() promotion: Promotion;
 
@@ -37,7 +36,6 @@ export class PromotionEditorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.restaurantId = Number(this.activatedRoute.parent.snapshot.paramMap.get('restaurantId'));
     if (this.mode == PromotionEditMode.UPDATE) {
       this.promotionForm.setValue({
         name: this.promotion.name,
@@ -54,17 +52,17 @@ export class PromotionEditorComponent implements OnInit {
       name: this.promotionForm.get('name').value,
       startDate: this.promotionForm.get('startDate').value,
       endDate: this.promotionForm.get('endDate').value,
-      type: PromotionType.RESTAURANT,
+      type: this.promotionType,
       discount: this.promotionForm.get('discount').value
     };
     console.log(promotion);
     let action: Observable<Object>;
     switch (this.mode) {
       case PromotionEditMode.ADD:
-        action = this.promotionsService.addRestaurantPromotion(this.restaurantId, promotion);
+        action = this.promotionsService.addPromotion(this.restaurantId, promotion);
         break;
       case PromotionEditMode.UPDATE:
-        action = this.promotionsService.updateRestaurantPromotion(this.restaurantId, promotion);
+        action = this.promotionsService.updatePromotion(this.restaurantId, promotion);
         break;
       default:
       // will not reach here

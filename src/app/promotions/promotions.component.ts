@@ -7,7 +7,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { PromotionsService } from './services/promotions.service';
 import { PromotionType } from './promotion-type';
-import { FoodItem } from '../customer/restaurants/restaurant/food-item';
 
 @Component({
   selector: 'app-promotions',
@@ -15,8 +14,7 @@ import { FoodItem } from '../customer/restaurants/restaurant/food-item';
   styleUrls: ['./promotions.component.css']
 })
 export class PromotionsComponent implements OnInit {
-  private restaurantId: number;
-
+  @Input() restaurantId: number;
   @Input() promotionType: PromotionType;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -37,7 +35,6 @@ export class PromotionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.restaurantId = Number(this.activatedRoute.parent.snapshot.paramMap.get('restaurantId'));
     this.populatePromotions();
   }
 
@@ -88,7 +85,7 @@ export class PromotionsComponent implements OnInit {
         this.promotionsDataSource.data.filter(promotion => promotion != promotionToRemove)
       )
     }
-    this.promotionsService.removeRestaurantPromotion(
+    this.promotionsService.removePromotion(
       this.restaurantId,
       promotionsToRemove.map(promotion => promotion.id)
     ).subscribe(_ => {});
