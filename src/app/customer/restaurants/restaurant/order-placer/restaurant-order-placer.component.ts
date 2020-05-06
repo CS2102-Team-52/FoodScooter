@@ -8,6 +8,7 @@ import { CustomerOrderOptions } from '../../services/dto/customer-order-options'
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Promotion } from '../../../../promotions/promotion';
 
 @Component({
   selector: 'app-restaurant-order-placer',
@@ -16,15 +17,18 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class RestaurantOrderPlacerComponent implements OnInit {
   orderForm = this.formBuilder.group({
-    rewardPoints: [''],
+    rewardPoints: [0],
+    promotion: [0],
     paymentType: ['', Validators.required],
     deliveryLocation: ['', Validators.required]
   })
 
   foodItemsInOrder: FoodItem[];
   rewardPoints: number;
+  promotionalDiscount: number;
   recentDeliveryLocations: string[];
   paymentTypes: string[];
+  availablePromotions: Promotion[];
 
   filteredOptions: Observable<string[]>;
 
@@ -39,6 +43,7 @@ export class RestaurantOrderPlacerComponent implements OnInit {
     this.paymentTypes = Object.keys(PaymentType);
     this.foodItemsInOrder = [];
 
+    this.promotionalDiscount = 0;
     this.recentDeliveryLocations = [];
 
     this.customerId = Number(this.activatedRoute.parent.snapshot.paramMap.get('customerId'));
@@ -76,6 +81,7 @@ export class RestaurantOrderPlacerComponent implements OnInit {
         console.log(data);
         this.rewardPoints = data.rewardPoints;
         this.recentDeliveryLocations = data.recentDeliveryLocations;
+        this.availablePromotions = data.availablePromotions;
       }
     );
   }
@@ -85,13 +91,15 @@ export class RestaurantOrderPlacerComponent implements OnInit {
       customerId: this.customerId,
       restaurantId: this.restaurantId,
       foodCost: null,
-      rewardPointsUsed: this.rewardPoints,
+      rewardPointsUsed: this.orderForm.get('rewardPoints').value,
+      discountApplied: this.orderForm.get('promotion').value,
       paymentType: this.orderForm.get('paymentType').value,
       deliveryLocation: this.orderForm.get('deliveryLocation').value,
       orderTime: new Date(),
       foodItems: null,
       quantity: null
     };
+    console.log(incompleteCustomerOrder);
     this.restaurantService.placeOrder(this.foodItemsInOrder, incompleteCustomerOrder).subscribe(_ => {});
   }
 }

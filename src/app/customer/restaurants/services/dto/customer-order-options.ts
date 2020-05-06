@@ -1,4 +1,7 @@
+import { Promotion } from '../../../../promotions/promotion';
+
 export interface CustomerOrderOptions {
   rewardPoints: number,
-  recentDeliveryLocations: string[]
+  recentDeliveryLocations: string[],
+  availablePromotions: Promotion[]
 }
