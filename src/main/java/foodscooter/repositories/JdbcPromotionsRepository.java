@@ -10,6 +10,8 @@ import foodscooter.repositories.specifications.PromotionsRepository;
 import foodscooter.repositories.util.IdGenerator;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @Repository
 public class JdbcPromotionsRepository implements PromotionsRepository {
@@ -70,16 +72,20 @@ public class JdbcPromotionsRepository implements PromotionsRepository {
       + "discount = ? "
       + "WHERE pid = ?;",
       promotion.getName(), promotion.getStartDate(), promotion.getEndDate(),
-      promotion.getType(), promotion.getDiscount(), promotionId
+      promotion.getType().toString(), promotion.getDiscount(), promotionId
     );
   }
 
   @Override
-  public void removeRestaurantPromotion(int restaurantId, int promotionId) {
+  public void removeRestaurantPromotion(int restaurantId, List<Integer> promotionIds) {
+    Collections.sort(promotionIds);
+    int firstPromotionId = promotionIds.get(0);
+    int lastPromotionId = promotionIds.get(promotionIds.size() - 1);
     jdbcTemplate.update(
-      "DELETE FROM Promotions "
-      + "WHERE pid = ?;",
-      promotionId
+      "DELETE FROM RestaurantPromotions "
+      + "WHERE rid = ? "
+      + "AND pid BETWEEN ? AND ?; ",
+      restaurantId, firstPromotionId, lastPromotionId
     );
   }
 }

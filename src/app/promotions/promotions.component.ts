@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { PromotionsService } from './services/promotions.service';
 import { PromotionType } from './promotion-type';
+import { FoodItem } from '../customer/restaurants/restaurant/food-item';
 
 @Component({
   selector: 'app-promotions',
@@ -49,22 +50,6 @@ export class PromotionsComponent implements OnInit {
       });
   }
 
-  addPromotion() {
-    this.promotionEditorMode = PromotionEditMode.ADD;
-    this.toShowPromotionEditor = true;
-  }
-
-  updatePromotion() {
-    this.promotionEditorMode = PromotionEditMode.UPDATE;
-    this.promotionToUpdate = this.selectedPromotions.selected[0];
-    this.toShowPromotionEditor = true;
-    this.selectedPromotions.clear();
-  }
-
-  removePromotion() {
-
-  }
-
   filterPromotions(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.promotionsDataSource.filter = filterValue.trim().toLowerCase();
@@ -82,8 +67,49 @@ export class PromotionsComponent implements OnInit {
       this.promotionsDataSource.data.forEach(row => this.selectedPromotions.select(row));
   }
 
+  addPromotion() {
+    this.promotionEditorMode = PromotionEditMode.ADD;
+    this.toShowPromotionEditor = true;
+  }
+
+  updatePromotion() {
+    this.promotionEditorMode = PromotionEditMode.UPDATE;
+    this.promotionToUpdate = this.selectedPromotions.selected[0];
+    this.toShowPromotionEditor = true;
+    this.selectedPromotions.clear();
+  }
+
+  removePromotion() {
+    const promotionsToRemove: Promotion[] = this.selectedPromotions.selected;
+    this.selectedPromotions.clear();
+    console.log(promotionsToRemove);
+    for (const promotionToRemove of promotionsToRemove) {
+      this.promotionsDataSource = new MatTableDataSource<Promotion>(
+        this.promotionsDataSource.data.filter(promotion => promotion != promotionToRemove)
+      )
+    }
+    this.promotionsService.removeRestaurantPromotion(
+      this.restaurantId,
+      promotionsToRemove.map(promotion => promotion.id)
+    ).subscribe(_ => {});
+  }
+
   handlePromotionEditorCompletion(event: any) {
     this.toShowPromotionEditor = false;
     const promotion: Promotion = event as Promotion;
+    const data = this.promotionsDataSource.data;
+    if (promotion.id == null) {
+      data.push(promotion);
+      this.promotionsDataSource.data = data;
+    } else {
+      const updatedMenu = [];
+      data.forEach(p => {
+        if (p.id == promotion.id) {
+          p = promotion;
+        }
+        updatedMenu.push(p);
+      });
+      this.promotionsDataSource.data = updatedMenu;
+    }
   }
 }

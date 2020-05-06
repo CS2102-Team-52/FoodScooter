@@ -12,18 +12,18 @@ export class PromotionsService {
   ) { }
 
   public addRestaurantPromotion(restaurantId: number, promotion: Promotion) {
-    return this.httpClient.post(`${Util.baseURL}/restaurants/${restaurantId}/promotions/add`, promotion);
+    return this.httpClient.post(`${Util.baseURL}/restaurants/${restaurantId}/promotions`, promotion);
   }
 
   public updateRestaurantPromotion(restaurantId: number, promotion: Promotion) {
-    return this.httpClient.patch(`${Util.baseURL}/restaurants/${restaurantId}/promotions/update`, promotion);
+    return this.httpClient.patch(`${Util.baseURL}/restaurants/${restaurantId}/promotions/${promotion.id}`, promotion);
   }
 
-  public removeRestaurantPromotion(restaurantId: number, promotionId: number) {
-    return this.httpClient.delete(`${Util.baseURL}/restaurants/${restaurantId}/promotions/remove`, promotionId);
+  public removeRestaurantPromotion(restaurantId: number, promotionIds: number[]) {
+    return this.httpClient.post(`${Util.baseURL}/restaurants/${restaurantId}/promotions/batch-removal`, promotionIds);
   }
 
   public fetchPromotions(restaurantId: number) {
-    return this.httpClient.get(`${Util.baseURL}/promotions/${restaurantId}`)
+    return this.httpClient.get(`${Util.baseURL}/restaurants/${restaurantId}/promotions`);
   }
 }
