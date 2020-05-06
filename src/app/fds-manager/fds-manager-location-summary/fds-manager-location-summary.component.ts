@@ -3,11 +3,11 @@ import {LocationSummary} from "../../store/summaries/locationSummary";
 import {FDSManagerService} from "../../services/users/fdsmanager/fdsmanager.service";
 
 @Component({
-  selector: 'app-fdsmanager-locationsummary',
-  templateUrl: './fdsmanager-locationsummary.component.html',
-  styleUrls: ['./fdsmanager-locationsummary.component.css']
+  selector: 'app-fds-manager-location-summary',
+  templateUrl: './fds-manager-location-summary.component.html',
+  styleUrls: ['./fds-manager-location-summary.component.css']
 })
-export class FDSManagerLocationsummaryComponent implements OnInit {
+export class FdsManagerLocationSummaryComponent implements OnInit {
   locationSummaryList: LocationSummary[];
 
   constructor(

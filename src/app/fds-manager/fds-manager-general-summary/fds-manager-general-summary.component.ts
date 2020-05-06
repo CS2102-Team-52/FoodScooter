@@ -3,11 +3,11 @@ import {FDSManagerService} from "../../services/users/fdsmanager/fdsmanager.serv
 import {GeneralSummary} from "../../store/summaries/generalSummary";
 
 @Component({
-  selector: 'app-fdsmanager-generalsummary',
-  templateUrl: './fdsmanager-generalsummary.component.html',
-  styleUrls: ['./fdsmanager-generalsummary.component.css']
+  selector: 'app-fds-manager-general-summary',
+  templateUrl: './fds-manager-general-summary.component.html',
+  styleUrls: ['./fds-manager-general-summary.component.css']
 })
-export class FDSManagerGeneralsummaryComponent implements OnInit {
+export class FdsManagerGeneralSummaryComponent implements OnInit {
   id: number;
   generalSummaryList: GeneralSummary[];
 

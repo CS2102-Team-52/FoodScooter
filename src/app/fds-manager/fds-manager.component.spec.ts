@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FDSManagerComponent } from './fdsmanager.component';
+import { FdsManagerComponent } from './fds-manager.component';
 
-describe('FDSManagerComponent', () => {
-  let component: FDSManagerComponent;
-  let fixture: ComponentFixture<FDSManagerComponent>;
+describe('FdsManagerComponent', () => {
+  let component: FdsManagerComponent;
+  let fixture: ComponentFixture<FdsManagerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FDSManagerComponent ]
+      declarations: [ FdsManagerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FDSManagerComponent);
+    fixture = TestBed.createComponent(FdsManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

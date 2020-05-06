@@ -3,11 +3,11 @@ import {FDSManagerService} from "../services/users/fdsmanager/fdsmanager.service
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
-  selector: 'app-fdsmanager',
-  templateUrl: './fdsmanager.component.html',
-  styleUrls: ['./fdsmanager.component.css']
+  selector: 'app-fds-manager',
+  templateUrl: './fds-manager.component.html',
+  styleUrls: ['./fds-manager.component.css']
 })
-export class FDSManagerComponent implements OnInit {
+export class FdsManagerComponent implements OnInit {
   id: number;
   // import my services here
   constructor(
