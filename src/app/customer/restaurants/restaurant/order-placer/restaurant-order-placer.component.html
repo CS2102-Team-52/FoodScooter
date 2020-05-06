@@ -41,6 +41,18 @@
         <tr>
           <td>
             <mat-form-field>
+              <mat-label>Available Promotions</mat-label>
+              <mat-select formControlName="promotion">
+                <mat-option *ngFor="let promotion of availablePromotions" [value]="promotion.discount">
+                  {{promotion.name + ' ' + promotion.type + ' ' + promotion.discount}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field>
               <mat-label>Payment Type</mat-label>
               <mat-select formControlName="paymentType">
                 <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType">

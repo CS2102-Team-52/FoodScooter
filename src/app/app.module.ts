@@ -12,7 +12,7 @@ import { LoginModule } from './login/login.module';
 import { PipesModule } from './pipes/pipes.module';
 import { RouterModule } from '@angular/router';
 import { RiderModule } from './rider/rider.module';
-import { FDSManagerModule } from "./fdsmanager/fdsmanager.module";
+import { FdsManagerModule } from "./fds-manager/fds-manager.module";
 import { RestaurantStaffModule } from './restaurant-staff/restaurant-staff.module';
 
 @NgModule({
@@ -31,7 +31,7 @@ import { RestaurantStaffModule } from './restaurant-staff/restaurant-staff.modul
     LoginModule,
     CustomerModule,
     RiderModule,
-    FDSManagerModule,
+    FdsManagerModule,
     RestaurantStaffModule
   ],
   providers: [],

@@ -1,0 +1,65 @@
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="filterPromotions($event)">
+</mat-form-field>
+
+<br>
+
+<button mat-raised-button (click)="addPromotion()">Add Promotion</button>
+<button mat-raised-button (click)="updatePromotion()">Update Promotion</button>
+<button mat-raised-button (click)="removePromotion()">Remove Promotion</button>
+
+<br>
+<br>
+<ng-container *ngIf="toShowPromotionEditor">
+  <app-promotion-editor
+    [restaurantId]="restaurantId"
+    [promotionType]="promotionType"
+    [mode]="promotionEditorMode"
+    [promotion]="promotionToUpdate"
+    (promotionResult)="handlePromotionEditorCompletion($event)">
+  </app-promotion-editor>
+  <br>
+  <br>
+</ng-container>
+
+<table mat-table [dataSource]="promotionsDataSource" matSort>
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selectedPromotions.hasValue() && isAllSelected()"
+                    [indeterminate]="selectedPromotions.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selectedPromotions.toggle(row) : null"
+                    [checked]="selectedPromotions.isSelected(row)">
+      </mat-checkbox>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>name</th>
+    <td mat-cell *matCellDef="let promotion"> {{promotion.name}} </td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="start date">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>start date</th>
+    <td mat-cell *matCellDef="let promotion"> {{promotion.startDate}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="end date">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>end date</th>
+    <td mat-cell *matCellDef="let promotion"> {{promotion.endDate}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="discount">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>discount</th>
+    <td mat-cell *matCellDef="let promotion"> {{promotion.discount}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="promotionsColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: promotionsColumns;"></tr>
+</table>

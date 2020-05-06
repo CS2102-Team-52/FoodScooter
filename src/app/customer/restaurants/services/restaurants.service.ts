@@ -35,7 +35,12 @@ export class RestaurantsService {
   }
 
   private static constructOrder(foodItemsInOrder: FoodItem[], customerOrder: CustomerOrder) {
-    const totalFoodCost = RestaurantsService.computeTotalFoodCost(foodItemsInOrder);
+    const nominalFoodCost = RestaurantsService.computeTotalFoodCost(foodItemsInOrder);
+    const totalFoodCost = RestaurantsService.applyPriceReductions(
+      nominalFoodCost,
+      customerOrder.rewardPointsUsed,
+      customerOrder.discountApplied
+    )
     const items = RestaurantsService.consolidateFoodItems(foodItemsInOrder);
 
     customerOrder.foodCost = totalFoodCost;
@@ -52,6 +57,15 @@ export class RestaurantsService {
       totalCost += foodItem.price;
     }
     return totalCost;
+  }
+
+  private static applyPriceReductions(totalCost: number, rewardPointsUsed: number, discountApplied: number) {
+    totalCost -= rewardPointsUsed;
+    if (discountApplied == 0) {
+      return totalCost;
+    } else {
+      return totalCost * (100 - discountApplied) / 100;
+    }
   }
 
   private static consolidateFoodItems(foodItemsInOrder: FoodItem[]) {

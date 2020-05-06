@@ -3,11 +3,11 @@ import {RiderSummary} from "../../store/summaries/riderSummary";
 import {FDSManagerService} from "../../services/users/fdsmanager/fdsmanager.service";
 
 @Component({
-  selector: 'app-fdsmanager-ridersummary',
-  templateUrl: './fdsmanager-ridersummary.component.html',
-  styleUrls: ['./fdsmanager-ridersummary.component.css']
+  selector: 'app-fds-manager-rider-summary',
+  templateUrl: './fds-manager-rider-summary.component.html',
+  styleUrls: ['./fds-manager-rider-summary.component.css']
 })
-export class FDSManagerRidersummaryComponent implements OnInit {
+export class FdsManagerRiderSummaryComponent implements OnInit {
   riderSummaryList: RiderSummary[];
 
   constructor(

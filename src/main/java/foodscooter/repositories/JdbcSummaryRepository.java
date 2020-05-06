@@ -126,13 +126,13 @@ public class JdbcSummaryRepository implements SummaryRepository {
 
   @Override
   public List<PromotionSummary> getPromotionSummary(int rid) {
-    String sql = "SELECT Promotions.pid, age(endDate, startDate) as duration, promotionType, discount, \n"
+    String sql = "SELECT Promotions.pid, age(endDate, startDate) as duration, type, discount, \n"
       + "(SELECT COUNT(oid) as avgOrdersPerDay \n"
       + "FROM Orders\n"
       + "WHERE orderTime BETWEEN startDate AND endDate)\n"
-      + "FROM Restaurants\n"
+      + "FROM RestaurantPromotions\n"
       + "LEFT JOIN Promotions\n"
-      + "ON Restaurants.pid = Promotions.pid\n"
+      + "ON RestaurantPromotions.pid = Promotions.pid\n"
       + "WHERE rid = ?;";
     return jdbcTemplate.query(
       sql,

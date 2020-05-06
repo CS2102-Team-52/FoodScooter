@@ -3,11 +3,11 @@ import {CustomerSummary} from "../../store/summaries/customerSummary";
 import {FDSManagerService} from "../../services/users/fdsmanager/fdsmanager.service";
 
 @Component({
-  selector: 'app-fdsmanager-customersummary',
-  templateUrl: './fdsmanager-customersummary.component.html',
-  styleUrls: ['./fdsmanager-customersummary.component.css']
+  selector: 'app-fds-manager-customer-summary',
+  templateUrl: './fds-manager-customer-summary.component.html',
+  styleUrls: ['./fds-manager-customer-summary.component.css']
 })
-export class FDSManagerCustomersummaryComponent implements OnInit {
+export class FdsManagerCustomerSummaryComponent implements OnInit {
   customerSummaryList: CustomerSummary[];
 
   constructor(

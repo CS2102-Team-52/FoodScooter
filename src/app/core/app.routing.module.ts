@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
-import { FDSManagerComponent } from '../fdsmanager/fdsmanager.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -11,7 +10,7 @@ const routes: Routes = [
     loadChildren: () => import('../customer/customer.module').then(m => m.CustomerModule)
   },
   {path: 'managers/:id',
-    loadChildren: () => import('../fdsmanager/fdsmanager.module').then(m => m.FDSManagerModule)},
+    loadChildren: () => import('../fds-manager/fds-manager.module').then(m => m.FdsManagerModule)},
   {
     path: 'riders/:id',
     loadChildren: () => import('../rider/rider.module').then(m => m.RiderModule)

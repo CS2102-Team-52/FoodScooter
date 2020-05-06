@@ -1,5 +1,7 @@
 package foodscooter.repositories;
 
+import foodscooter.model.Promotion;
+import foodscooter.model.PromotionType;
 import foodscooter.model.orders.CustomerOrderOptions;
 import foodscooter.model.users.customer.CustomerProfile;
 import foodscooter.repositories.specifications.CustomersRepository;
@@ -8,7 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class JdbcCustomersRepository implements CustomersRepository {
@@ -46,12 +47,12 @@ public class JdbcCustomersRepository implements CustomersRepository {
 
   @Override
   public CustomerOrderOptions getOrderOptions(int customerId) {
-    Optional<Integer> rewardPoints = jdbcTemplate.queryForObject(
+    int rewardPoints = jdbcTemplate.queryForObject(
       "SELECT rewardpoints "
       + "FROM Customers "
       + "WHERE cid = ?;",
       new Object[] { customerId },
-      (rs, rowNum) -> Optional.of(rs.getInt(1)));
+      (rs, rowNum) -> rs.getInt(1));
 
     List<String> recentDeliveryLocations = jdbcTemplate.query(
       "SELECT deliverylocation "
@@ -61,7 +62,23 @@ public class JdbcCustomersRepository implements CustomersRepository {
       (rs, rowNum) -> rs.getString(1)
     );
 
-    return new CustomerOrderOptions(rewardPoints.get(), recentDeliveryLocations);
+    List<Promotion> availablePromotions = jdbcTemplate.query(
+      "SELECT * "
+      + "FROM Promotions; ",
+      (rs, rowNum) -> new Promotion(
+        rs.getInt(1),
+        rs.getString(2),
+        rs.getTimestamp(3).toLocalDateTime(),
+        rs.getTimestamp(4).toLocalDateTime(),
+        PromotionType.map(rs.getString(5)),
+        rs.getBigDecimal(6)
+      )
+    );
+
+    return new CustomerOrderOptions(
+      rewardPoints,
+      recentDeliveryLocations,
+      availablePromotions);
   }
 
   //TODO implement conditional updates

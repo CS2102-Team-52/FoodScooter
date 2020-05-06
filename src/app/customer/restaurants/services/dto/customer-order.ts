@@ -5,6 +5,7 @@ export interface CustomerOrder {
   restaurantId: number,
   foodCost: number,
   rewardPointsUsed: number,
+  discountApplied: number,
   paymentType: PaymentType,
   deliveryLocation: string,
   orderTime: Date,

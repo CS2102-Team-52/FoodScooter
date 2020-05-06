@@ -87,31 +87,4 @@ public class RestaurantController extends BaseController {
   public List<FoodReview> getReviews(@PathVariable int restaurantId) {
     return feedbackRepository.getReviewsByRestaurant(restaurantId);
   }
-
-  @GetMapping("/restaurants/{restaurantId}/promotions/add")
-  public ResponseEntity<?> addRestaurantPromotion(
-    @PathVariable int restaurantId,
-    @RequestBody Promotion promotion
-  ) {
-    promotionsRepository.addRestaurantPromotion(restaurantId, promotion);
-    return ResponseEntity.ok().build();
-  }
-
-  @GetMapping("/restaurants/{restaurantId}/promotions/update")
-  public ResponseEntity<?> updateRestaurantPromotion(
-    @PathVariable int restaurantId,
-    @RequestBody Promotion promotion
-  ) {
-    promotionsRepository.updateRestaurantPromotion(restaurantId, promotion.getId(), promotion);
-    return ResponseEntity.ok().build();
-  }
-
-  @GetMapping("/restaurants/{restaurantId}/promotions/remove")
-  public ResponseEntity<?> removeRestaurantPromotion(
-    @PathVariable int restaurantId,
-    @RequestBody int promotionId
-  ) {
-    promotionsRepository.removeRestaurantPromotion(restaurantId, promotionId);
-    return ResponseEntity.ok().build();
-  }
 }

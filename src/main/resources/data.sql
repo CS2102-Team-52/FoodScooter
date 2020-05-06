@@ -22,6 +22,7 @@ DROP TRIGGER IF EXISTS checkAcceptedOrdersTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS checkAcceptOneOrderTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS checkPartTimeRiderShiftBreakTrigger ON PTShifts CASCADE;
 DROP TRIGGER IF EXISTS checkPartTimeRiderShiftHoursTrigger ON PTShifts CASCADE;
+DROP TRIGGER IF EXISTS removePromotionTrigger ON RestaurantPromotions CASCADE;
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
@@ -105,10 +106,12 @@ CREATE TABLE RestaurantStaff (
 
 CREATE TABLE Promotions (
     pid INTEGER PRIMARY KEY,
-    startDate TIMESTAMP,
-    endDate TIMESTAMP,
+    name VARCHAR(100) UNIQUE,
+    startDate TIMESTAMP NOT NULL,
+    endDate TIMESTAMP NOT NULL,
     type VARCHAR(100) NOT NULL,
-    discount NUMERIC(2, 2) NOT NULL CHECK (discount > 0)
+    discount NUMERIC(5, 2) NOT NULL CHECK (discount > 0 AND discount <= 100),
+    CHECK (startDate <= endDate)
 );
 
 CREATE TABLE RestaurantPromotions (
@@ -329,6 +332,20 @@ CREATE TRIGGER updateCustomerRecentDeliveryLocationsTrigger
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRecentDeliveryLocations();
+
+CREATE OR REPLACE FUNCTION removePromotion() RETURNS TRIGGER AS $$
+    BEGIN
+        DELETE FROM Promotions P
+        WHERE P.pid = OLD.pid;
+        RETURN OLD;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER removePromotionTrigger
+    AFTER DELETE
+    ON RestaurantPromotions
+    FOR EACH ROW
+    EXECUTE FUNCTION removePromotion();
 
 INSERT INTO FTShift
 VALUES (1, 10, 14, 15, 19),

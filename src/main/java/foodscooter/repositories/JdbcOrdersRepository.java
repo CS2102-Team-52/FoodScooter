@@ -30,27 +30,17 @@ public class JdbcOrdersRepository implements OrdersRepository {
     int orderId = idGenerator.generate( "oid", "Orders");
     jdbcTemplate.update(
       "INSERT INTO Orders "
-    + "VALUES (?)",
-      orderId);
-
-    jdbcTemplate.update(
-      "UPDATE Orders "
-      + "SET cid = ?,"
-      + "rid = ?,"
-      + "foodCost = ?,"
-      + "rewardpointsused = ?,"
-      + "paymentType = ?,"
-      + "deliverylocation = ?, "
-      + "ordertime = ? "
-      + "WHERE oid = ?;",
+    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      orderId,
       customerOrder.getCustomerId(),
+      null,
       customerOrder.getRestaurantId(),
       customerOrder.getFoodCost(),
+      0,
       customerOrder.getRewardPointsUsed(),
       customerOrder.getPaymentType().toString(),
       customerOrder.getDeliveryLocation(),
-      customerOrder.getOrderTime(),
-      orderId
+      customerOrder.getOrderTime()
     );
   }
 
