@@ -54,7 +54,7 @@
           <td>
             <mat-form-field>
               <mat-label>Payment Type</mat-label>
-              <mat-select formControlName="paymentType">
+              <mat-select formControlName="paymentType" required>
                 <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType">
                   {{paymentType | pretty}}
                 </mat-option>
@@ -67,10 +67,10 @@
             <mat-form-field>
               <input type="text"
                      placeholder="Delivery Location"
-                     aria-label="Number"
                      matInput
                      formControlName="deliveryLocation"
-                     [matAutocomplete]="auto">
+                     [matAutocomplete]="auto"
+                     required>
               <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                   {{option}}

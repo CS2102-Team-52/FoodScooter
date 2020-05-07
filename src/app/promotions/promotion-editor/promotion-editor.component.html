@@ -12,29 +12,29 @@
           <td>
             <mat-form-field>
               <mat-label>Name</mat-label>
-              <input matInput placeholder="Name" formControlName="name">
+              <input matInput placeholder="Name" formControlName="name" required>
             </mat-form-field>
           </td>
           <td>
             <mat-form-field>
               <mat-label>Start Date</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="startDate">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
+              <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" required>
+              <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #startDatePicker></mat-datepicker>
             </mat-form-field>
           </td>
           <td>
             <mat-form-field>
               <mat-label>End Date</mat-label>
-              <input matInput [matDatepicker]="picker2" formControlName="endDate">
-              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-              <mat-datepicker #picker2></mat-datepicker>
+              <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" required>
+              <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #endDatePicker></mat-datepicker>
             </mat-form-field>
           </td>
           <td>
             <mat-form-field>
               <mat-label>Discount</mat-label>
-              <input matInput placeholder="Discount" formControlName="discount">
+              <input matInput placeholder="Discount" formControlName="discount" required>
             </mat-form-field>
           </td>
         </tr>
