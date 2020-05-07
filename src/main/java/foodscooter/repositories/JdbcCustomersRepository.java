@@ -3,13 +3,16 @@ package foodscooter.repositories;
 import foodscooter.model.Promotion;
 import foodscooter.model.PromotionType;
 import foodscooter.model.orders.CustomerOrderOptions;
+import foodscooter.model.orders.PaymentType;
 import foodscooter.model.users.customer.CustomerProfile;
 import foodscooter.repositories.specifications.CustomersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class JdbcCustomersRepository implements CustomersRepository {
@@ -54,17 +57,9 @@ public class JdbcCustomersRepository implements CustomersRepository {
       new Object[] { customerId },
       (rs, rowNum) -> rs.getInt(1));
 
-    List<String> recentDeliveryLocations = jdbcTemplate.query(
-      "SELECT deliverylocation "
-      + "FROM CustomerRecentDeliveryLocations "
-      + "WHERE cid = ?;",
-      new Object[] { customerId },
-      (rs, rowNum) -> rs.getString(1)
-    );
-
     List<Promotion> availablePromotions = jdbcTemplate.query(
       "SELECT * "
-      + "FROM Promotions; ",
+        + "FROM Promotions; ",
       (rs, rowNum) -> new Promotion(
         rs.getInt(1),
         rs.getString(2),
@@ -75,10 +70,33 @@ public class JdbcCustomersRepository implements CustomersRepository {
       )
     );
 
+    Set<PaymentType> paymentTypes = new HashSet<>();
+    paymentTypes.add(PaymentType.CASH);
+    String creditCardNumber = jdbcTemplate.queryForObject(
+      "SELECT COALESCE(creditCardNumber, '') "
+      + "FROM Customers "
+      + "WHERE cid = ?; ",
+      new Object[] { customerId },
+      (rs, rowNum) -> rs.getString(1)
+    );
+    if (!creditCardNumber.isEmpty()) {
+      paymentTypes.add(PaymentType.CREDIT_CARD);
+    }
+
+    List<String> recentDeliveryLocations = jdbcTemplate.query(
+      "SELECT deliverylocation "
+      + "FROM CustomerRecentDeliveryLocations "
+      + "WHERE cid = ?;",
+      new Object[] { customerId },
+      (rs, rowNum) -> rs.getString(1)
+    );
+
     return new CustomerOrderOptions(
       rewardPoints,
-      recentDeliveryLocations,
-      availablePromotions);
+      availablePromotions,
+      paymentTypes,
+      recentDeliveryLocations
+    );
   }
 
   //TODO implement conditional updates

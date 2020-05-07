@@ -10,14 +10,14 @@
             <tr>
               <td>
                 <mat-form-field>
-                  <input matInput placeholder="Username" formControlName="username">
+                  <input matInput placeholder="Username" formControlName="username" required>
                 </mat-form-field>
               </td>
             </tr>
             <tr>
               <td>
                 <mat-form-field>
-                  <input matInput placeholder="Password" formControlName="password" type="password">
+                  <input matInput placeholder="Password" formControlName="password" type="password" required>
                 </mat-form-field>
               </td>
             </tr>
@@ -42,14 +42,14 @@
             <tr>
               <td>
                 <mat-form-field>
-                  <input matInput placeholder="Username" formControlName="username">
+                  <input matInput placeholder="Username" formControlName="username" required>
                 </mat-form-field>
               </td>
             </tr>
             <tr>
               <td>
                 <mat-form-field>
-                  <input matInput placeholder="Password" formControlName="password" type="password">
+                  <input matInput placeholder="Password" formControlName="password" type="password" required>
                 </mat-form-field>
               </td>
             </tr>
@@ -57,7 +57,7 @@
               <td>
                 <mat-form-field>
                   <mat-label>User Type</mat-label>
-                  <mat-select formControlName="userType" (selectionChange)="checkIfRequireOtherInputOptions()">
+                  <mat-select formControlName="userType" (selectionChange)="checkIfRequireOtherInputOptions()" required>
                     <mat-option *ngFor="let userType of userTypes" [value]="userType">
                       {{userType | pretty}}
                     </mat-option>
@@ -69,7 +69,7 @@
               <td>
                 <mat-form-field *ngIf="toShowRiderTypeInputField">
                   <mat-label>Rider Type</mat-label>
-                  <mat-select formControlName="riderType">
+                  <mat-select formControlName="riderType" required>
                     <mat-option *ngFor="let riderType of riderTypes" [value]="riderType">
                       {{riderType | pretty}}
                     </mat-option>
@@ -81,7 +81,7 @@
               <td>
                 <mat-form-field *ngIf="toShowRestaurantInputField">
                   <mat-label>Restaurant</mat-label>
-                  <mat-select formControlName="restaurant">
+                  <mat-select formControlName="restaurant" required>
                     <mat-option *ngFor="let restaurant of restaurants" [value]="restaurant.name">
                       {{restaurant.name}}
                     </mat-option>

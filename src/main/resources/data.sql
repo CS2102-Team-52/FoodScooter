@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS Promotions CASCADE;
 DROP TABLE IF EXISTS RestaurantPromotions CASCADE;
 DROP TABLE IF EXISTS FoodItems CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
+DROP TABLE IF EXISTS OrderFoodItems CASCADE;
 DROP TABLE IF EXISTS Reviews CASCADE;
 
 DROP TRIGGER IF EXISTS hashPasswordTrigger ON Users CASCADE;
@@ -23,6 +24,7 @@ DROP TRIGGER IF EXISTS checkAcceptOneOrderTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS checkPartTimeRiderShiftBreakTrigger ON PTShifts CASCADE;
 DROP TRIGGER IF EXISTS checkPartTimeRiderShiftHoursTrigger ON PTShifts CASCADE;
 DROP TRIGGER IF EXISTS removePromotionTrigger ON RestaurantPromotions CASCADE;
+DROP TRIGGER IF EXISTS updateFoodItemAvailabilityTrigger ON OrderFoodItems CASCADE;
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
@@ -151,6 +153,14 @@ CREATE TABLE Orders (
     FOREIGN KEY (cid) REFERENCES Customers (cid),
     FOREIGN KEY (drid) REFERENCES DeliveryRiders (drid),
     FOREIGN KEY (rid) REFERENCES Restaurants (rid)
+);
+
+CREATE TABLE OrderFoodItems (
+    oid INTEGER,
+    fid INTEGER,
+    quantity INTEGER,
+    PRIMARY KEY (oid, fid),
+    FOREIGN KEY (oid) REFERENCES Orders (oid)
 );
 
 CREATE TABLE Reviews (
@@ -346,6 +356,27 @@ CREATE TRIGGER removePromotionTrigger
     ON RestaurantPromotions
     FOR EACH ROW
     EXECUTE FUNCTION removePromotion();
+
+CREATE OR REPLACE FUNCTION updateFoodItemAvailability() RETURNS TRIGGER AS $$
+    DECLARE
+        restaurantId INTEGER;
+    BEGIN
+        SELECT O.rid INTO restaurantId
+        FROM Orders O NATURAL JOIN OrderFoodItems;
+
+        UPDATE FoodItems
+        SET availability = availability - NEW.quantity
+        WHERE rid = restaurantId AND fid = NEW.fid;
+
+        RETURN NEW;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER updateFoodItemAvailabilityTrigger
+    AFTER INSERT
+    ON OrderFoodItems
+    FOR EACH ROW
+    EXECUTE FUNCTION updateFoodItemAvailability();
 
 INSERT INTO FTShift
 VALUES (1, 10, 14, 15, 19),

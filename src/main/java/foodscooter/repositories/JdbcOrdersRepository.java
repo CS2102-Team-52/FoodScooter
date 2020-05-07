@@ -42,6 +42,17 @@ public class JdbcOrdersRepository implements OrdersRepository {
       customerOrder.getDeliveryLocation(),
       customerOrder.getOrderTime()
     );
+
+    int size = customerOrder.getFoodItems().size();
+    for (int i = 0; i < size; i++) {
+      jdbcTemplate.update(
+        "INSERT INTO OrderFoodItems "
+        + "VALUES(?, ?, ?);",
+        orderId,
+        customerOrder.getFoodItems().get(i),
+        customerOrder.getQuantity().get(i)
+      );
+    }
   }
 
   @Override

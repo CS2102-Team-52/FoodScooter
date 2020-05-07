@@ -64,6 +64,10 @@ export class PromotionsComponent implements OnInit {
       this.promotionsDataSource.data.forEach(row => this.selectedPromotions.select(row));
   }
 
+  isOneSelected() {
+    return this.selectedPromotions.selected.length == 1;
+  }
+
   addPromotion() {
     this.promotionEditorMode = PromotionEditMode.ADD;
     this.toShowPromotionEditor = true;
@@ -96,6 +100,11 @@ export class PromotionsComponent implements OnInit {
     const promotion: Promotion = event as Promotion;
     const data = this.promotionsDataSource.data;
     if (promotion.id == null) {
+      this.promotionsService.fetchPromotions(this.restaurantId).subscribe(
+        (data: Promotion[]) => {
+          this.promotionsDataSource.data = data;
+        }
+      );
       data.push(promotion);
       this.promotionsDataSource.data = data;
     } else {

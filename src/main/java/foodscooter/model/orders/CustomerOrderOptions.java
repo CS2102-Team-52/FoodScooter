@@ -3,19 +3,24 @@ package foodscooter.model.orders;
 import foodscooter.model.Promotion;
 
 import java.util.List;
+import java.util.Set;
 
 public class CustomerOrderOptions {
   private int rewardPoints;
-  private List<String> recentDeliveryLocations;
+  private Set<PaymentType> paymentTypes;
   private List<Promotion> availablePromotions;
+  private List<String> recentDeliveryLocations;
 
   public CustomerOrderOptions(
     int rewardPoints,
-    List<String> recentDeliveryLocations,
-    List<Promotion> availablePromotions) {
+    List<Promotion> availablePromotions,
+    Set<PaymentType> paymentTypes,
+    List<String> recentDeliveryLocations
+  ) {
     this.rewardPoints = rewardPoints;
-    this.recentDeliveryLocations = recentDeliveryLocations;
     this.availablePromotions = availablePromotions;
+    this.paymentTypes = paymentTypes;
+    this.recentDeliveryLocations = recentDeliveryLocations;
   }
 
   public int getRewardPoints() {
@@ -26,12 +31,12 @@ public class CustomerOrderOptions {
     this.rewardPoints = rewardPoints;
   }
 
-  public List<String> getRecentDeliveryLocations() {
-    return recentDeliveryLocations;
+  public Set<PaymentType> getPaymentTypes() {
+    return paymentTypes;
   }
 
-  public void setRecentDeliveryLocations(List<String> recentDeliveryLocations) {
-    this.recentDeliveryLocations = recentDeliveryLocations;
+  public void setPaymentTypes(Set<PaymentType> paymentTypes) {
+    this.paymentTypes = paymentTypes;
   }
 
   public List<Promotion> getAvailablePromotions() {
@@ -40,5 +45,13 @@ public class CustomerOrderOptions {
 
   public void setAvailablePromotions(List<Promotion> availablePromotions) {
     this.availablePromotions = availablePromotions;
+  }
+
+  public List<String> getRecentDeliveryLocations() {
+    return recentDeliveryLocations;
+  }
+
+  public void setRecentDeliveryLocations(List<String> recentDeliveryLocations) {
+    this.recentDeliveryLocations = recentDeliveryLocations;
   }
 }

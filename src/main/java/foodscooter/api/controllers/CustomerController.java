@@ -9,7 +9,6 @@ import foodscooter.model.users.customer.CustomerProfile;
 import foodscooter.repositories.JdbcCustomersRepository;
 import foodscooter.repositories.JdbcReviewsRepository;
 import foodscooter.repositories.JdbcOrdersRepository;
-import foodscooter.repositories.JdbcRestaurantsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,18 +25,15 @@ import java.util.List;
 public class CustomerController extends BaseController {
   private final JdbcCustomersRepository customersRepository;
   private final JdbcOrdersRepository orderRepository;
-  private final JdbcRestaurantsRepository restaurantsRepository;
   private final JdbcReviewsRepository feedbackRepository;
 
   @Autowired
   public CustomerController(
     JdbcCustomersRepository customersRepository,
     JdbcOrdersRepository orderRepository,
-    JdbcRestaurantsRepository restaurantsRepository,
     JdbcReviewsRepository feedbackRepository) {
     this.customersRepository = customersRepository;
     this.orderRepository = orderRepository;
-    this.restaurantsRepository = restaurantsRepository;
     this.feedbackRepository = feedbackRepository;
   }
 
@@ -66,15 +62,6 @@ public class CustomerController extends BaseController {
 
   @PostMapping("/orders")
   public ResponseEntity<?> postOrders(@RequestBody CustomerOrder customerOrder) {
-    List<Integer> foodItems = customerOrder.getFoodItems();
-    List<Integer> quantity = customerOrder.getQuantity();
-
-    int foodItemsCount = foodItems.size();
-    int restaurantId = customerOrder.getRestaurantId();
-    for (int i = 0; i <  foodItemsCount; i++) {
-      restaurantsRepository.updateAvailability(restaurantId, foodItems.get(i), quantity.get(i));
-    }
-
     orderRepository.add(customerOrder);
     return ResponseEntity.ok().build();
   }
