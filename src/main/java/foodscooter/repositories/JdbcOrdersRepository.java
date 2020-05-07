@@ -40,7 +40,7 @@ public class JdbcOrdersRepository implements OrdersRepository {
       customerOrder.getRewardPointsUsed(),
       customerOrder.getPaymentType().toString(),
       customerOrder.getDeliveryLocation(),
-      customerOrder.getOrderTime()
+      customerOrder.getOrderTime().plusHours(8)
     );
 
     int size = customerOrder.getFoodItems().size();
