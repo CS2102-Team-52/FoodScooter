@@ -84,6 +84,20 @@
         <tr>
           <td>
             <mat-label>
+              Ordering Hours: 10AM - 10PM
+            </mat-label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-label>
+              Minimum Purchase Required: {{minimumCostRequired}}
+            </mat-label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-label>
               Total Cost: {{netCost}}
             </mat-label>
           </td>
@@ -91,7 +105,12 @@
         <br>
         <tr>
           <td>
-            <button mat-raised-button color="primary" type="submit" [disabled]="!orderForm.valid">Send Order</button>
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="!canSendOrder()">
+              Send Order</button>
           </td>
         </tr>
       </table>

@@ -11,6 +11,7 @@ import { map, startWith } from 'rxjs/operators';
 import { Promotion } from '../../../../promotions/promotion';
 import { MatTableDataSource } from '@angular/material/table';
 import { FoodItemQuantity } from './food-item-quantity';
+import { Restaurant } from '../../../../store/restaurant';
 
 @Component({
   selector: 'app-restaurant-order-placer',
@@ -41,6 +42,8 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
   deliveryLocationSuggestions: Observable<string[]>;
 
+  minimumCostRequired: number;
+  foodCost: number;
   netCost: number;
 
   constructor(
@@ -58,11 +61,14 @@ export class RestaurantOrderPlacerComponent implements OnInit {
     this.customerId = Number(this.activatedRoute.parent.snapshot.paramMap.get('customerId'));
     this.restaurantId = Number(this.activatedRoute.snapshot.paramMap.get('restaurantId'));
 
+    this.minimumCostRequired = 0;
+    this.foodCost = 0;
     this.netCost = 0;
   }
 
   ngOnInit(): void {
     this.getOrderOptions();
+    this.getMinimumCostRequired();
     this.deliveryLocationSuggestions = this.orderForm.get('deliveryLocation').valueChanges
       .pipe(
         startWith(''),
@@ -120,9 +126,9 @@ export class RestaurantOrderPlacerComponent implements OnInit {
   }
 
   public refreshNetCost() {
-    const foodCost = this.restaurantService.computeFoodCost(this.foodItemsOrdered);
+    this.foodCost = this.restaurantService.computeFoodCost(this.foodItemsOrdered);
     this.netCost = this.restaurantService.applyPriceReductions(
-      foodCost,
+      this.foodCost,
       this.orderForm.get('rewardPoints').value,
       this.orderForm.get('promotion').value
     );
@@ -138,6 +144,37 @@ export class RestaurantOrderPlacerComponent implements OnInit {
         this.recentDeliveryLocations = data.recentDeliveryLocations;
       }
     );
+  }
+
+  public getMinimumCostRequired() {
+    this.restaurantService.fetchRestaurant(this.restaurantId).subscribe(
+      (data: Restaurant) => {
+        console.log(data);
+        this.minimumCostRequired = data.minimumPurchase;
+      }
+    );
+  }
+
+  public canSendOrder() {
+    return this.orderForm.valid
+      && !this.isOrderEmpty()
+      && this.foodCost >= this.minimumCostRequired
+      && RestaurantOrderPlacerComponent.isWithinOperatingHours();
+  }
+
+  private isOrderEmpty() {
+    return this.foodItemsOrdered.size == 0;
+  }
+
+  private static isWithinOperatingHours() {
+    const start: Date = new Date();
+    start.setHours(10, 0, 0);
+
+    const end: Date = new Date();
+    end.setHours(22, 0, 0);
+
+    const now: Date = new Date();
+    return now >= start && now <= end;
   }
 
   public sendOrder() {
