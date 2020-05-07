@@ -9,6 +9,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Promotion } from '../../../../promotions/promotion';
+import { MatTableDataSource } from '@angular/material/table';
+import { FoodItemQuantity } from './food-item-quantity';
 
 @Component({
   selector: 'app-restaurant-order-placer',
@@ -16,14 +18,21 @@ import { Promotion } from '../../../../promotions/promotion';
   styleUrls: ['./restaurant-order-placer.component.css']
 })
 export class RestaurantOrderPlacerComponent implements OnInit {
+  private readonly customerId: number;
+  private readonly restaurantId: number;
+
+  foodItemsOrderedColumns: string[] = ['name', 'quantity'];
+
+  foodItemsOrderedDataSource: MatTableDataSource<FoodItemQuantity>;
+
   orderForm = this.formBuilder.group({
     rewardPoints: [0],
     promotion: [0],
     paymentType: ['', Validators.required],
     deliveryLocation: ['', Validators.required]
-  })
+  });
 
-  foodItemsInOrder: FoodItem[];
+  foodItemsOrdered: Map<FoodItem, number>;
   rewardPoints: number;
   promotionalDiscount: number;
   recentDeliveryLocations: string[];
@@ -32,16 +41,14 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
   filteredOptions: Observable<string[]>;
 
-  private readonly customerId: number;
-  private readonly restaurantId: number;
-
   constructor(
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private restaurantService: RestaurantsService
   ) {
     this.paymentTypes = Object.keys(PaymentType);
-    this.foodItemsInOrder = [];
+    this.foodItemsOrdered = new Map<FoodItem, number>();
+    this.foodItemsOrderedDataSource = new MatTableDataSource<FoodItemQuantity>([]);
 
     this.promotionalDiscount = 0;
     this.recentDeliveryLocations = [];
@@ -67,12 +74,40 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
   @Input()
   public add(foodItem: FoodItem) {
-    this.foodItemsInOrder.push(foodItem);
+    if (!this.foodItemsOrdered.has(foodItem)) {
+      this.foodItemsOrdered.set(foodItem, 0);
+    }
+    const quantity: number = this.foodItemsOrdered.get(foodItem);
+    this.foodItemsOrdered.set(foodItem, quantity + 1);
+    this.refreshDataSource();
   }
 
   @Input()
   public remove(foodItem: FoodItem) {
-    this.foodItemsInOrder = this.foodItemsInOrder.filter(item => item.id !== foodItem.id);
+    if (!this.foodItemsOrdered.has(foodItem) || this.foodItemsOrdered.get(foodItem) == 0) {
+      return;
+    }
+    const quantity = this.foodItemsOrdered.get(foodItem);
+    this.foodItemsOrdered.set(foodItem, quantity - 1);
+    this.refreshDataSource();
+  }
+
+  private refreshDataSource() {
+    let data: FoodItemQuantity[] = [];
+    this.foodItemsOrdered.forEach(
+      (quantity, foodItem) => {
+        const entry: FoodItemQuantity = {
+          foodItem: foodItem,
+          quantity: quantity
+        };
+        data.push(entry);
+      }
+    )
+    this.foodItemsOrderedDataSource.data = data;
+  }
+
+  public has(foodItem: FoodItem) {
+    return this.foodItemsOrdered.has(foodItem);
   }
 
   public getOrderOptions() {
@@ -101,6 +136,6 @@ export class RestaurantOrderPlacerComponent implements OnInit {
       quantity: null
     };
     console.log(incompleteCustomerOrder);
-    this.restaurantService.placeOrder(this.foodItemsInOrder, incompleteCustomerOrder).subscribe(_ => {});
+    this.restaurantService.placeOrder(this.foodItemsOrdered, incompleteCustomerOrder).subscribe(_ => {});
   }
 }

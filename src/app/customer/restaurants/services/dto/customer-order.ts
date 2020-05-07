@@ -9,6 +9,6 @@ export interface CustomerOrder {
   paymentType: PaymentType,
   deliveryLocation: string,
   orderTime: Date,
-  foodItems: string[],
+  foodItems: number[],
   quantity: number[]
 }

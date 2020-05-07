@@ -1,7 +1,13 @@
-#left {
-  float: left;
+table {
+  width: 100%;
 }
 
-#right {
-  float: right;
+#menu {
+  float: left;
+  width: 70%;
+}
+
+#order-placer {
+  float: left;
+  width: 30%;
 }

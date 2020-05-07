@@ -29,32 +29,34 @@ export class RestaurantsService {
     return this.httpClient.get(`${Util.baseURL}/restaurants/${restaurantId}/menu`);
   }
 
-  public placeOrder(foodItemsInOrder: FoodItem[], customerOrder: CustomerOrder) {
-    const order = RestaurantsService.constructOrder(foodItemsInOrder, customerOrder)
+  public placeOrder(foodItemsOrdered: Map<FoodItem, number>, customerOrder: CustomerOrder) {
+    const order = RestaurantsService.constructOrder(foodItemsOrdered, customerOrder)
     return this.httpClient.post(`${Util.baseURL}/orders`, order);
   }
 
-  private static constructOrder(foodItemsInOrder: FoodItem[], customerOrder: CustomerOrder) {
-    const nominalFoodCost = RestaurantsService.computeTotalFoodCost(foodItemsInOrder);
-    const totalFoodCost = RestaurantsService.applyPriceReductions(
+  private static constructOrder(foodItemsOrdered: Map<FoodItem, number>, customerOrder: CustomerOrder) {
+    const nominalFoodCost = RestaurantsService.computeTotalFoodCost(foodItemsOrdered);
+    customerOrder.foodCost = RestaurantsService.applyPriceReductions(
       nominalFoodCost,
       customerOrder.rewardPointsUsed,
       customerOrder.discountApplied
-    )
-    const items = RestaurantsService.consolidateFoodItems(foodItemsInOrder);
+    );
 
-    customerOrder.foodCost = totalFoodCost;
-    customerOrder.foodItems = Array.from(items.keys());
-    customerOrder.quantity = Array.from(items.values());
+    let formattedFoodItems: number[] = [];
+    for (const foodItem of foodItemsOrdered.keys()) {
+      formattedFoodItems.push(foodItem.id);
+    }
+    customerOrder.foodItems = formattedFoodItems;
+    customerOrder.quantity = Array.from(foodItemsOrdered.values());
 
     console.log(customerOrder);
     return customerOrder;
   }
 
-  private static computeTotalFoodCost(foodItemsInOrder: FoodItem[]) {
+  private static computeTotalFoodCost(foodItemsOrdered: Map<FoodItem, number>) {
     let totalCost = 0;
-    for (const foodItem of foodItemsInOrder) {
-      totalCost += foodItem.price;
+    for (const foodItem of foodItemsOrdered.keys()) {
+      totalCost += foodItemsOrdered.get(foodItem);
     }
     return totalCost;
   }
@@ -66,19 +68,6 @@ export class RestaurantsService {
     } else {
       return totalCost * (100 - discountApplied) / 100;
     }
-  }
-
-  private static consolidateFoodItems(foodItemsInOrder: FoodItem[]) {
-    const items = new Map();
-    for (const foodItem of foodItemsInOrder) {
-      if (items.has(foodItem.id)) {
-        const count = items.get(foodItem.id);
-        items.set(foodItem.id, count + 1);
-      } else {
-        items.set(foodItem.id, 1);
-      }
-    }
-    return items;
   }
 
   public fetchReviews(restaurantId: number) {

@@ -3,6 +3,8 @@ import { FoodItem } from '../food-item';
 import { RestaurantsService } from '../../services/restaurants.service';
 import { ActivatedRoute } from '@angular/router';
 import { RestaurantOrderPlacerComponent } from '../order-placer/restaurant-order-placer.component';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-restaurant-menu-viewer',
@@ -12,9 +14,12 @@ import { RestaurantOrderPlacerComponent } from '../order-placer/restaurant-order
 export class RestaurantMenuViewerComponent implements OnInit {
   private restaurantId: number;
 
-  foodItems: FoodItem[];
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(RestaurantOrderPlacerComponent) orderPlacer;
 
-  @ViewChild(RestaurantOrderPlacerComponent) orderPlacerComponent;
+  menuColumns: string[] = ['name', 'category', 'price', 'availability', 'actions'];
+
+  menuDataSource: MatTableDataSource<FoodItem>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -23,23 +28,33 @@ export class RestaurantMenuViewerComponent implements OnInit {
 
   ngOnInit(): void {
     this.restaurantId = Number(this.activatedRoute.snapshot.paramMap.get('restaurantId'));
-    this.fetchFoodItems(this.restaurantId);
+    this.fetchFoodItems();
   }
 
-  public fetchFoodItems(restaurantId: number) {
-    this.restaurantService.fetchFoodItems(restaurantId).subscribe(
+  public fetchFoodItems() {
+    this.restaurantService.fetchFoodItems(this.restaurantId).subscribe(
       (data: FoodItem[]) => {
         console.log(data);
-        this.foodItems = data;
+        this.menuDataSource = new MatTableDataSource<FoodItem>(data);
+        this.menuDataSource.sort = this.sort;
       }
     );
   }
 
   public add(foodItem: FoodItem) {
-    this.orderPlacerComponent.add(foodItem);
+    console.log(foodItem);
+    if (foodItem.availability == 0) {
+      alert("Item has run out");
+      return;
+    }
+    foodItem.availability -= 1;
+    this.orderPlacer.add(foodItem);
   }
 
   public remove(foodItem: FoodItem) {
-    this.orderPlacerComponent.remove(foodItem);
+    if (this.orderPlacer.has(foodItem)) {
+      this.orderPlacer.remove(foodItem);
+      foodItem.availability += 1;
+    }
   }
 }
