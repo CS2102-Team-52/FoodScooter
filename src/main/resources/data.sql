@@ -236,7 +236,7 @@ CREATE OR REPLACE FUNCTION updateCustomerRewardPoints() RETURNS TRIGGER AS $$
 $$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER updateCustomerRewardPointsTrigger
-    AFTER UPDATE
+    AFTER INSERT
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRewardPoints();
