@@ -3,6 +3,7 @@ package foodscooter.api.controllers;
 import foodscooter.model.orders.CustomerOrder;
 import foodscooter.model.orders.CustomerOrderOptions;
 import foodscooter.model.orders.Order;
+import foodscooter.model.orders.OrderReviewStatus;
 import foodscooter.model.reviews.CustomerReview;
 import foodscooter.model.reviews.Feedback;
 import foodscooter.model.users.customer.CustomerProfile;
@@ -58,6 +59,11 @@ public class CustomerController extends BaseController {
   @GetMapping("/customers/{customerId}/orders")
   public List<Order> getOrders(@PathVariable int customerId) {
     return orderRepository.getByCustomer(customerId);
+  }
+
+  @GetMapping("/customers/{customerId}/order-statuses")
+  public List<OrderReviewStatus> getOrderStatuses(@PathVariable int customerId) {
+    return orderRepository.getOrderStatusesByCustomer(customerId);
   }
 
   @PostMapping("/orders")

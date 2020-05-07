@@ -26,7 +26,7 @@ public class JdbcReviewsRepository implements ReviewsRepository {
 
   @Override
   public void add(Feedback feedback) {
-    int reviewId = idGenerator.generate("fid", "Feedback");
+    int reviewId = idGenerator.generate("rvid", "Reviews");
     jdbcTemplate.update(
       "INSERT INTO Reviews "
       + "VALUES(?, ?, ?, ?);",
