@@ -4,11 +4,10 @@ import foodscooter.api.dtos.login.AccountDetails;
 import foodscooter.api.dtos.login.Credentials;
 import foodscooter.api.dtos.login.LoginResponse;
 import foodscooter.model.users.User;
-import foodscooter.model.users.UserType;
-import foodscooter.model.users.rider.RiderType;
-import foodscooter.repositories.JdbcRidersRepository;
 import foodscooter.repositories.JdbcUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,16 +25,16 @@ public class LoginController extends BaseController {
   }
 
   @PostMapping("/login/existing")
-  public LoginResponse login(@RequestBody Credentials credentials) {
+  public ResponseEntity<?> login(@RequestBody Credentials credentials) {
     Optional<User> user = usersRepository.get(credentials.getUsername(), credentials.getPassword());
     return user
-      .map(u -> new LoginResponse(true, u.getUserType(), u.getId()))
-      .orElseGet(LoginResponse::fail);
+      .map(u -> ResponseEntity.ok(new LoginResponse(u.getUserType(), u.getId())))
+      .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
   }
 
   @PostMapping("/login/new")
   public LoginResponse createAccount(@RequestBody AccountDetails accountDetails) {
     int userId = usersRepository.add(accountDetails);
-    return new LoginResponse(true, accountDetails.getUserType(), userId);
+    return new LoginResponse(accountDetails.getUserType(), userId);
   }
 }
