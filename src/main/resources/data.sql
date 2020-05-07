@@ -286,53 +286,39 @@ CREATE CONSTRAINT TRIGGER checkPartTimeRiderShiftHoursTrigger
 
 CREATE OR REPLACE FUNCTION updateCustomerRecentDeliveryLocations() RETURNS TRIGGER AS $$
     BEGIN
-        CASE
-            WHEN
-                (SELECT COUNT(*) FROM CustomerRecentDeliveryLocations WHERE cid = NEW.cid) < 5
+        IF NEW.deliverylocation IN (
+            SELECT deliveryLocation
+            FROM CustomerRecentDeliveryLocations
+            WHERE cid = NEW.cid
+            )
+            THEN
+                UPDATE CustomerRecentDeliveryLocations
+                SET ordertime = NEW.ordertime
+                WHERE cid = NEW.cid
+                  AND deliverylocation = NEW.deliverylocation;
+        ELSE
+            CASE
+                WHEN
+                    (SELECT COUNT(*) FROM CustomerRecentDeliveryLocations WHERE cid = NEW.cid) < 5
                     THEN
-                        CASE NEW.deliverylocation IN (
-                            SELECT deliverylocation
-                            FROM CustomerRecentDeliveryLocations CRDL
-                            WHERE CRDL.cid = NEW.cid
-                            )
-                            WHEN TRUE THEN
-                                UPDATE CustomerRecentDeliveryLocations
-                                SET ordertime = NEW.ordertime
+                        INSERT INTO CustomerRecentDeliveryLocations
+                        VALUES (NEW.cid, NEW.deliverylocation, NEW.ordertime);
+                WHEN
+                    (SELECT COUNT(*) FROM CustomerRecentDeliveryLocations WHERE cid = NEW.cid) = 5
+                        THEN
+                            DELETE FROM CustomerRecentDeliveryLocations
+                            WHERE ordertime = (
+                                SELECT ordertime
+                                FROM CustomerRecentDeliveryLocations
                                 WHERE cid = NEW.cid
-                                AND deliverylocation = NEW.deliverylocation;
-                            WHEN FALSE THEN
-                                INSERT INTO CustomerRecentDeliveryLocations
-                                VALUES (NEW.cid, NEW.deliverylocation, NEW.ordertime);
-                            ELSE
-
-                        END CASE;
-            WHEN
-                (SELECT COUNT(*) FROM CustomerRecentDeliveryLocations WHERE cid = NEW.cid) = 5
-                    THEN
-                        CASE NEW.deliveryLocation IN (
-                            SELECT deliverylocation
-                            FROM CustomerRecentDeliveryLocations CRDL
-                            WHERE CRDL.cid = NEW.cid
-                            )
-                            WHEN TRUE THEN
-                                UPDATE CustomerRecentDeliveryLocations
-                                SET ordertime = NEW.ordertime
-                                WHERE cid = NEW.cid
-                                AND deliverylocation = NEW.deliverylocation;
-                            WHEN FALSE THEN
-                                DELETE FROM CustomerRecentDeliveryLocations
-                                WHERE ordertime = (
-                                    SELECT ordertime
-                                    FROM CustomerRecentDeliveryLocations
-                                    WHERE cid = NEW.cid
-                                    ORDER BY ordertime
-                                    LIMIT 1);
-                                INSERT INTO CustomerRecentDeliveryLocations
-                                VALUES (NEW.cid, NEW.deliverylocation, NEW.ordertime);
-                            ELSE
-
-                        END CASE;
-        END CASE;
+                                ORDER BY ordertime
+                                LIMIT 1);
+                            INSERT INTO CustomerRecentDeliveryLocations
+                            VALUES (NEW.cid, NEW.deliverylocation, NEW.ordertime);
+                ELSE
+                    /* will not reach here */
+            END CASE;
+        END IF;
         RETURN NEW;
     END;
 $$ LANGUAGE PLPGSQL;
