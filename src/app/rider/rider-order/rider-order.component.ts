@@ -31,20 +31,21 @@ export class RiderOrderComponent implements OnInit {
     this.riderOrderService.fetchAcceptedOrders(this.rider.id).subscribe((data: any[]) => {
       console.log(data);
       this.acceptedOrderList = data;
-    })
+    });
   }
 
   acceptOrder(orderId: number) {
     this.riderOrderService.acceptOrder(this.rider.id, orderId).subscribe((data: any[]) => {
       console.log(data);
       this.acceptedOrderList = data;
-    })
+      this.getOrder();
+    });
   }
 
   doneOrder(orderId: number) {
     this.riderOrderService.doneOrder(this.rider.id, orderId).subscribe((data: any[]) => {
-      console.log(data);
-    })
+      this.getAcceptedOrders();
+    });
   }
 
   getOrder(): void {
@@ -52,7 +53,7 @@ export class RiderOrderComponent implements OnInit {
       this.riderOrderService.fetchFullTimeOrders(this.rider.id).subscribe((data: any[]) => {
         console.log(data);
         this.orderList = data;
-      })
+      });
     } else {
       this.riderOrderService.fetchPartTimeOrders(this.rider.id).subscribe((data: any[]) => {
         console.log(data);
@@ -61,27 +62,17 @@ export class RiderOrderComponent implements OnInit {
     }
   }
 
-  refreshOrders(orderId: number) {
-    this.acceptOrder(orderId);
-    this.getOrder();
-  }
-
-  refreshAcceptedOrders(orderId: number) {
-    this.doneOrder(orderId);
-    this.getAcceptedOrders();
-  }
-
   reachRestaurant(orderId: number) {
     this.riderOrderService.reachRestaurant(this.rider.id, orderId).subscribe((data: any[]) => {
       console.log(data);
       this.acceptedOrderList = data;
-    })
+    });
   }
 
   leaveRestaurant(orderId: number) {
     this.riderOrderService.leaveRestaurant(this.rider.id, orderId).subscribe((data: any[]) => {
       console.log(data);
       this.acceptedOrderList = data;
-    })
+    });
   }
 }

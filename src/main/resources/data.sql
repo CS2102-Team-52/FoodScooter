@@ -23,6 +23,7 @@ DROP TRIGGER IF EXISTS checkAcceptedOrdersTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS checkAcceptOneOrderTrigger ON Orders CASCADE;
 DROP TRIGGER IF EXISTS checkPartTimeRiderShiftBreakTrigger ON PTShifts CASCADE;
 DROP TRIGGER IF EXISTS checkPartTimeRiderShiftHoursTrigger ON PTShifts CASCADE;
+DROP TRIGGER IF EXISTS checkPartTimeRiderShiftHoursDeleteTrigger ON PTShifts CASCADE;
 DROP TRIGGER IF EXISTS removePromotionTrigger ON RestaurantPromotions CASCADE;
 DROP TRIGGER IF EXISTS updateFoodItemAvailabilityTrigger ON OrderFoodItems CASCADE;
 
@@ -137,9 +138,9 @@ CREATE TABLE FoodItems (
 
 CREATE TABLE Orders (
     oid INTEGER PRIMARY KEY,
-    cid INTEGER,
+    cid INTEGER NOT NULL,
     drid INTEGER,
-    rid INTEGER,
+    rid INTEGER NOT NULL,
     foodCost NUMERIC(6, 2) NOT NULL CHECK (foodCost >= 0),
     deliveryFee NUMERIC(6, 2) NOT NULL CHECK (deliveryFee >= 0),
     rewardPointsUsed INTEGER NOT NULL CHECK (rewardPointsUsed >= 0),
@@ -195,7 +196,7 @@ CREATE OR REPLACE FUNCTION checkAcceptedOrders() RETURNS TRIGGER AS $$
         IF adrid IS NOT NULL THEN
 			RAISE exception '% has already accepted %', adrid, NEW.oid;
 		END IF;
-		RETURN NULL;
+		RETURN NEW;
     END;
 $$ LANGUAGE PLPGSQL;
 
@@ -278,11 +279,32 @@ CREATE OR REPLACE FUNCTION checkPartTimeRiderShiftHours() RETURNS TRIGGER AS $$
 $$ LANGUAGE PLPGSQL;
 
 CREATE CONSTRAINT TRIGGER checkPartTimeRiderShiftHoursTrigger
-    AFTER INSERT OR DELETE
+    AFTER INSERT
 	ON PTShifts
 	DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW
 	EXECUTE FUNCTION checkPartTimeRiderShiftHours();
+	
+CREATE OR REPLACE FUNCTION checkPartTimeRiderShiftHoursDelete() RETURNS TRIGGER AS $$
+	DECLARE
+		totalHours INTEGER;
+    BEGIN
+		SELECT SUM(P.endHour - P.startHour) INTO totalHours
+			FROM PTShifts P
+			WHERE P.drid = OLD.drid;
+        IF ((totalHours < 10) OR (totalHours > 48) OR (totalHours IS NULL)) THEN
+			RAISE exception 'Total work hours = %. Must be at least 10 and at most 48.', totalHours;
+		END IF;
+		RETURN NULL;
+    END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE CONSTRAINT TRIGGER checkPartTimeRiderShiftHoursDeleteTrigger
+    AFTER DELETE
+	ON PTShifts
+	DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW
+	EXECUTE FUNCTION checkPartTimeRiderShiftHoursDelete();
 
 CREATE OR REPLACE FUNCTION updateCustomerRecentDeliveryLocations() RETURNS TRIGGER AS $$
     BEGIN

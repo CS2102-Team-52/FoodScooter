@@ -13,4 +13,16 @@ public class GeneralSummary {
     this.numOrders = numOrders;
     this.totalCost = totalCost;
   }
+
+  public LocalDateTime getMonth() {
+    return month;
+  }
+
+  public int getNumOrders() {
+    return numOrders;
+  }
+
+  public String getTotalCost() {
+    return totalCost;
+  }
 }

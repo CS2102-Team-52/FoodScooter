@@ -29,7 +29,7 @@
             <mat-card-actions>
                 <button mat-raised-button (click)="reachRestaurant(o.id)" color="primary" *ngIf="!o. restaurantArrivalTime">Reach Restaurant</button>
                 <button mat-raised-button (click)="leaveRestaurant(o.id)" color="primary" *ngIf="o. restaurantArrivalTime && !o.restaurantDepartureTime">Leave Restaurant</button>
-                <button mat-raised-button (click)="refreshAcceptedOrders(o.id)" color="primary" *ngIf="o. restaurantArrivalTime && o.restaurantDepartureTime">Order delivered</button>
+                <button mat-raised-button (click)="doneOrder(o.id)" color="primary" *ngIf="o. restaurantArrivalTime && o.restaurantDepartureTime">Order delivered</button>
             </mat-card-actions>
         </mat-card>
     </mat-list>
@@ -64,7 +64,7 @@
                 </mat-list>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-raised-button (click)="refreshOrders(o.id)" color="primary">Accept Order</button>
+                <button mat-raised-button (click)="acceptOrder(o.id)" color="primary">Accept Order</button>
             </mat-card-actions>
         </mat-card>
     </mat-list>
