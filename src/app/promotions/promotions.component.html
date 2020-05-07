@@ -6,8 +6,8 @@
 <br>
 
 <button mat-raised-button (click)="addPromotion()">Add Promotion</button>
-<button mat-raised-button (click)="updatePromotion()">Update Promotion</button>
-<button mat-raised-button (click)="removePromotion()">Remove Promotion</button>
+<button mat-raised-button (click)="updatePromotion()" [disabled]="!isOneSelected()">Update Promotion</button>
+<button mat-raised-button (click)="removePromotion()" [disabled]="!isOneSelected()">Remove Promotion</button>
 
 <br>
 <br>
