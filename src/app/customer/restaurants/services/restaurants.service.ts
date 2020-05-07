@@ -25,22 +25,21 @@ export class RestaurantsService {
     return this.httpClient.get(`${Util.baseURL}/restaurants`)
   }
 
+  public fetchRestaurant(restaurantId: number) {
+    return this.httpClient.get(`${Util.baseURL}/restaurants/${restaurantId}`);
+  }
+
   public fetchFoodItems(restaurantId: number) {
     return this.httpClient.get(`${Util.baseURL}/restaurants/${restaurantId}/menu`);
   }
 
   public placeOrder(foodItemsOrdered: Map<FoodItem, number>, customerOrder: CustomerOrder) {
-    const order = RestaurantsService.constructOrder(foodItemsOrdered, customerOrder)
+    const order = this.constructOrder(foodItemsOrdered, customerOrder)
     return this.httpClient.post(`${Util.baseURL}/orders`, order);
   }
 
-  private static constructOrder(foodItemsOrdered: Map<FoodItem, number>, customerOrder: CustomerOrder) {
-    const nominalFoodCost = RestaurantsService.computeTotalFoodCost(foodItemsOrdered);
-    customerOrder.foodCost = RestaurantsService.applyPriceReductions(
-      nominalFoodCost,
-      customerOrder.rewardPointsUsed,
-      customerOrder.discountApplied
-    );
+  private constructOrder(foodItemsOrdered: Map<FoodItem, number>, customerOrder: CustomerOrder) {
+    customerOrder.foodCost = this.computeFoodCost(foodItemsOrdered);
 
     let formattedFoodItems: number[] = [];
     for (const foodItem of foodItemsOrdered.keys()) {
@@ -53,16 +52,19 @@ export class RestaurantsService {
     return customerOrder;
   }
 
-  private static computeTotalFoodCost(foodItemsOrdered: Map<FoodItem, number>) {
+  public computeFoodCost(foodItemsOrdered: Map<FoodItem, number>) {
     let totalCost = 0;
     for (const foodItem of foodItemsOrdered.keys()) {
-      totalCost += foodItemsOrdered.get(foodItem);
+      totalCost += foodItemsOrdered.get(foodItem) * foodItem.price;
     }
     return totalCost;
   }
 
-  private static applyPriceReductions(totalCost: number, rewardPointsUsed: number, discountApplied: number) {
+  public applyPriceReductions(totalCost: number, rewardPointsUsed: number, discountApplied: number) {
     totalCost -= rewardPointsUsed;
+    if (totalCost < 0) {
+      totalCost = 0;
+    }
     if (discountApplied == 0) {
       return totalCost;
     } else {

@@ -22,6 +22,10 @@ export class CustomerOrderHistoryService {
     return this.httpClient.get(`${Util.baseURL}/customers/${customerId}/orders`);
   }
 
+  public fetchOrderStatuses(customerId: number) {
+    return this.httpClient.get(`${Util.baseURL}/customers/${customerId}/order-statuses`)
+  }
+
   public deleteOrder(orderId: number) {
     return this.httpClient.delete(`${Util.baseURL}/orders/${orderId}`);
   }

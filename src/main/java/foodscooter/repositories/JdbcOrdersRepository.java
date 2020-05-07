@@ -2,6 +2,7 @@ package foodscooter.repositories;
 
 import foodscooter.model.orders.CustomerOrder;
 import foodscooter.model.orders.Order;
+import foodscooter.model.orders.OrderReviewStatus;
 import foodscooter.model.orders.PaymentType;
 import foodscooter.repositories.specifications.OrdersRepository;
 import foodscooter.repositories.util.IdGenerator;
@@ -100,6 +101,18 @@ public class JdbcOrdersRepository implements OrdersRepository {
           restaurantDepartureTime,
           deliveryTime);
       })
+    );
+  }
+
+  @Override
+  public List<OrderReviewStatus> getOrderStatusesByCustomer(int customerId) {
+    return jdbcTemplate.query(
+      "SELECT O.oid, COALESCE(R.rvid, 0) "
+      + "FROM Orders O LEFT JOIN Reviews R ON O.oid = R.oid;",
+      (rs, rowNum) -> new OrderReviewStatus(
+        rs.getInt(1),
+        rs.getInt(2)
+      )
     );
   }
 

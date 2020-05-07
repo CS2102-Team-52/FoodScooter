@@ -11,6 +11,7 @@ import { map, startWith } from 'rxjs/operators';
 import { Promotion } from '../../../../promotions/promotion';
 import { MatTableDataSource } from '@angular/material/table';
 import { FoodItemQuantity } from './food-item-quantity';
+import { Restaurant } from '../../../../store/restaurant';
 
 @Component({
   selector: 'app-restaurant-order-placer',
@@ -39,7 +40,11 @@ export class RestaurantOrderPlacerComponent implements OnInit {
   paymentTypes: string[];
   availablePromotions: Promotion[];
 
-  filteredOptions: Observable<string[]>;
+  deliveryLocationSuggestions: Observable<string[]>;
+
+  minimumCostRequired: number;
+  foodCost: number;
+  netCost: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -55,11 +60,16 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
     this.customerId = Number(this.activatedRoute.parent.snapshot.paramMap.get('customerId'));
     this.restaurantId = Number(this.activatedRoute.snapshot.paramMap.get('restaurantId'));
+
+    this.minimumCostRequired = 0;
+    this.foodCost = 0;
+    this.netCost = 0;
   }
 
   ngOnInit(): void {
     this.getOrderOptions();
-    this.filteredOptions = this.orderForm.get('deliveryLocation').valueChanges
+    this.getMinimumCostRequired();
+    this.deliveryLocationSuggestions = this.orderForm.get('deliveryLocation').valueChanges
       .pipe(
         startWith(''),
         map(value => this.filter(value))
@@ -80,6 +90,7 @@ export class RestaurantOrderPlacerComponent implements OnInit {
     const quantity: number = this.foodItemsOrdered.get(foodItem);
     this.foodItemsOrdered.set(foodItem, quantity + 1);
     this.refreshDataSource();
+    this.refreshNetCost();
   }
 
   @Input()
@@ -93,6 +104,7 @@ export class RestaurantOrderPlacerComponent implements OnInit {
       this.foodItemsOrdered.delete(foodItem);
     }
     this.refreshDataSource();
+    this.refreshNetCost();
   }
 
   private refreshDataSource() {
@@ -113,6 +125,15 @@ export class RestaurantOrderPlacerComponent implements OnInit {
     return this.foodItemsOrdered.has(foodItem);
   }
 
+  public refreshNetCost() {
+    this.foodCost = this.restaurantService.computeFoodCost(this.foodItemsOrdered);
+    this.netCost = this.restaurantService.applyPriceReductions(
+      this.foodCost,
+      this.orderForm.get('rewardPoints').value,
+      this.orderForm.get('promotion').value
+    );
+  }
+
   public getOrderOptions() {
     this.restaurantService.getCustomerOrderOptions(this.customerId).subscribe(
       (data: CustomerOrderOptions) => {
@@ -123,6 +144,37 @@ export class RestaurantOrderPlacerComponent implements OnInit {
         this.recentDeliveryLocations = data.recentDeliveryLocations;
       }
     );
+  }
+
+  public getMinimumCostRequired() {
+    this.restaurantService.fetchRestaurant(this.restaurantId).subscribe(
+      (data: Restaurant) => {
+        console.log(data);
+        this.minimumCostRequired = data.minimumPurchase;
+      }
+    );
+  }
+
+  public canSendOrder() {
+    return this.orderForm.valid
+      && !this.isOrderEmpty()
+      && this.foodCost >= this.minimumCostRequired
+      && RestaurantOrderPlacerComponent.isWithinOperatingHours();
+  }
+
+  private isOrderEmpty() {
+    return this.foodItemsOrdered.size == 0;
+  }
+
+  private static isWithinOperatingHours() {
+    const start: Date = new Date();
+    start.setHours(10, 0, 0);
+
+    const end: Date = new Date();
+    end.setHours(22, 0, 0);
+
+    const now: Date = new Date();
+    return now >= start && now <= end;
   }
 
   public sendOrder() {

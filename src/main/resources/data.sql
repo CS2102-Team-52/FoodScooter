@@ -237,7 +237,7 @@ CREATE OR REPLACE FUNCTION updateCustomerRewardPoints() RETURNS TRIGGER AS $$
 $$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER updateCustomerRewardPointsTrigger
-    AFTER UPDATE
+    AFTER INSERT
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRewardPoints();
@@ -308,59 +308,45 @@ CREATE CONSTRAINT TRIGGER checkPartTimeRiderShiftHoursDeleteTrigger
 
 CREATE OR REPLACE FUNCTION updateCustomerRecentDeliveryLocations() RETURNS TRIGGER AS $$
     BEGIN
-        CASE
-            WHEN
-                (SELECT COUNT(*) FROM CustomerRecentDeliveryLocations WHERE cid = NEW.cid) < 5
+        IF NEW.deliverylocation IN (
+            SELECT deliveryLocation
+            FROM CustomerRecentDeliveryLocations
+            WHERE cid = NEW.cid
+            )
+            THEN
+                UPDATE CustomerRecentDeliveryLocations
+                SET ordertime = NEW.ordertime
+                WHERE cid = NEW.cid
+                  AND deliverylocation = NEW.deliverylocation;
+        ELSE
+            CASE
+                WHEN
+                    (SELECT COUNT(*) FROM CustomerRecentDeliveryLocations WHERE cid = NEW.cid) < 5
                     THEN
-                        CASE NEW.deliverylocation IN (
-                            SELECT deliverylocation
-                            FROM CustomerRecentDeliveryLocations CRDL
-                            WHERE CRDL.cid = NEW.cid
-                            )
-                            WHEN TRUE THEN
-                                UPDATE CustomerRecentDeliveryLocations
-                                SET ordertime = NEW.ordertime
+                        INSERT INTO CustomerRecentDeliveryLocations
+                        VALUES (NEW.cid, NEW.deliverylocation, NEW.ordertime);
+                WHEN
+                    (SELECT COUNT(*) FROM CustomerRecentDeliveryLocations WHERE cid = NEW.cid) = 5
+                        THEN
+                            DELETE FROM CustomerRecentDeliveryLocations
+                            WHERE ordertime = (
+                                SELECT ordertime
+                                FROM CustomerRecentDeliveryLocations
                                 WHERE cid = NEW.cid
-                                AND deliverylocation = NEW.deliverylocation;
-                            WHEN FALSE THEN
-                                INSERT INTO CustomerRecentDeliveryLocations
-                                VALUES (NEW.cid, NEW.deliverylocation, NEW.ordertime);
-                            ELSE
-
-                        END CASE;
-            WHEN
-                (SELECT COUNT(*) FROM CustomerRecentDeliveryLocations WHERE cid = NEW.cid) = 5
-                    THEN
-                        CASE NEW.deliveryLocation IN (
-                            SELECT deliverylocation
-                            FROM CustomerRecentDeliveryLocations CRDL
-                            WHERE CRDL.cid = NEW.cid
-                            )
-                            WHEN TRUE THEN
-                                UPDATE CustomerRecentDeliveryLocations
-                                SET ordertime = NEW.ordertime
-                                WHERE cid = NEW.cid
-                                AND deliverylocation = NEW.deliverylocation;
-                            WHEN FALSE THEN
-                                DELETE FROM CustomerRecentDeliveryLocations
-                                WHERE ordertime = (
-                                    SELECT ordertime
-                                    FROM CustomerRecentDeliveryLocations
-                                    WHERE cid = NEW.cid
-                                    ORDER BY ordertime
-                                    LIMIT 1);
-                                INSERT INTO CustomerRecentDeliveryLocations
-                                VALUES (NEW.cid, NEW.deliverylocation, NEW.ordertime);
-                            ELSE
-
-                        END CASE;
-        END CASE;
+                                ORDER BY ordertime
+                                LIMIT 1);
+                            INSERT INTO CustomerRecentDeliveryLocations
+                            VALUES (NEW.cid, NEW.deliverylocation, NEW.ordertime);
+                ELSE
+                    /* will not reach here */
+            END CASE;
+        END IF;
         RETURN NEW;
     END;
 $$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER updateCustomerRecentDeliveryLocationsTrigger
-    AFTER UPDATE
+    AFTER INSERT
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRecentDeliveryLocations();
@@ -426,4 +412,11 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
        (2, 3, 'Cabbage with Sesame Oil', 'Singaporean', 3, 500),
        (3, 3, 'Char Siew', 'Singaporean', 3, 500);
 
-
+-- INSERT INTO Users
+-- VALUES (1, 'customer', 'customer', 'Customer');
+--
+-- INSERT INTO Customers
+-- VALUES (1, '');
+--
+-- INSERT INTO Orders
+-- VALUES (1, 1, NULL, 1, 100, 2, 0, 'Cash', 'Tampines', '2020-05-07 15:41:39.539000');

@@ -1,27 +1,19 @@
 # FoodScooter
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.1.
+## What
+* A food delivery system.
 
-## Development server
+## Setup
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### Prerequisites
+* Install Java
+* Install Angular
+* Install npm (Node Package Manager)
 
-## Code scaffolding
+### Running
+We recommend using an IDE like Intellij for running the program, but it is not a necessity. The following steps take place in the home folder of the project.
+1. Run the command `./gradlew build`
+2. Run the command `./gradlew bootRun`
+3. Run the command `ng serve`
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Commands 1 and 2 sets up the backend system. Command 3 sets up the frontend system.
