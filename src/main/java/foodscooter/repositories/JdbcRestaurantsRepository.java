@@ -121,14 +121,4 @@ public class JdbcRestaurantsRepository implements RestaurantsRepository {
         rs.getInt(5))
     );
   }
-
-  @Override
-  public void updateAvailability(int restaurantId, int foodItemId, int delta) {
-    jdbcTemplate.update(
-      "UPDATE FoodItems "
-      + "SET availability = availability + ?"
-      + "WHERE rid = ? AND fid = ?;",
-      delta, restaurantId, foodItemId
-    );
-  }
 }

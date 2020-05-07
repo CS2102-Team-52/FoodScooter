@@ -84,11 +84,14 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
   @Input()
   public remove(foodItem: FoodItem) {
-    if (!this.foodItemsOrdered.has(foodItem) || this.foodItemsOrdered.get(foodItem) == 0) {
+    if (!this.foodItemsOrdered.has(foodItem)) {
       return;
     }
     const quantity = this.foodItemsOrdered.get(foodItem);
     this.foodItemsOrdered.set(foodItem, quantity - 1);
+    if (quantity - 1 == 0) {
+      this.foodItemsOrdered.delete(foodItem);
+    }
     this.refreshDataSource();
   }
 
