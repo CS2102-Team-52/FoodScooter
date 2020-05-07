@@ -1,29 +1,16 @@
-# FoodScooter User Guide
+# FoodScooter
 
-## Create Account
+## Setup
 
-Create a new user account.
-* Customer
-* Delivery Rider: Full-time / Part-time
-* Restaurant Staff
-* FDS Manager
+### Prerequisites
+* Install Java
+* Install Angular
+* Install npm (Node Package Manager)
 
-## Login
+### Running
+We recommend using an IDE like Intellij for running the program, but it is not a necessity. The following steps take place in the home folder of the project.
+1. Run the command `./gradlew build`
+2. Run the command `./gradlew bootRun`
+3. Run the command `ng serve`
 
-### Delivery Rider
-
-#### View Order Tab
-* View accepted orders
-* View available orders
-
-#### Rider Summary Tab
-* View order summary
-* View salary summary
-
-#### Rider Profile Tab
-##### Full-time 
-* View and edit the full-time schedule.
-
-##### Part-time 
-* Must add part-time shift before able to view orders.
-* View and edit part-time shift. [10 <= total hours per week <= 48]
+Commands 1 and 2 sets up the backend system. Command 3 sets up the frontend system.
