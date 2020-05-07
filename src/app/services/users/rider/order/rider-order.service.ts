@@ -25,7 +25,7 @@ export class RiderOrderService {
   }
 
   public acceptOrder(drid: number, orderId: number) {
-    return this.httpClient.put(`${Util.baseURL}/rider/${drid}/acceptOrder/`, orderId);
+    return this.httpClient.put(`${Util.baseURL}/rider/${drid}/acceptOrder/`, orderId).pipe(catchError(this.handleError));
   }
 
   public doneOrder(drid: number, orderId: number) {
@@ -41,7 +41,7 @@ export class RiderOrderService {
   }
 
   public fetchAcceptedOrders(drid: number) {
-    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/acceptedOrders/`).pipe(catchError(this.handleError));
+    return this.httpClient.get(`${Util.baseURL}/rider/${drid}/acceptedOrders/`);
   }
 
   handleError(error: HttpErrorResponse) {

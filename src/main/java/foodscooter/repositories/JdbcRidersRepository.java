@@ -122,7 +122,7 @@ public class JdbcRidersRepository implements RidersRepository {
   @Override
   public List<Order> getOrderSummary(int drid) {
     return jdbcTemplate.query(
-      "SELECT * FROM Orders WHERE drid = ?;",
+      "SELECT * FROM Orders WHERE drid = ? AND deliveryTime IS NOT NULL;",
       new Object[] { drid },
       ((rs, rowNum) -> {
         LocalDateTime orderTime = null;
@@ -167,7 +167,7 @@ public class JdbcRidersRepository implements RidersRepository {
   @Override
   public List<Order> getAcceptedOrders(int drid) {
     return jdbcTemplate.query(
-      "SELECT * FROM Orders WHERE drid = ? AND deliveryTime IS NOT NULL;",
+      "SELECT * FROM Orders WHERE drid = ? AND deliveryTime IS NULL;",
       new Object[] { drid },
       ((rs, rowNum) -> {
         LocalDateTime orderTime = null;
