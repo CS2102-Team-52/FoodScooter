@@ -80,8 +80,9 @@ export class RestaurantOrderPlacerComponent implements OnInit {
       (data: CustomerOrderOptions) => {
         console.log(data);
         this.rewardPoints = data.rewardPoints;
-        this.recentDeliveryLocations = data.recentDeliveryLocations;
         this.availablePromotions = data.availablePromotions;
+        this.paymentTypes = data.paymentTypes;
+        this.recentDeliveryLocations = data.recentDeliveryLocations;
       }
     );
   }
