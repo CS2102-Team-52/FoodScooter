@@ -88,9 +88,12 @@ export class LoginComponent implements OnInit {
       username: this.loginForm.get('username').value,
       password: this.loginForm.get('password').value
     };
-    this.loginService.login(credentials).subscribe((data: LoginResponse) => {
-      this.navigateToUserPage(data);
-    });
+    this.loginService.login(credentials).subscribe(
+      (data: LoginResponse) => {
+        this.navigateToUserPage(data);
+      },
+      _ => alert("user not found")
+    );
   }
 
   createAccount() {
@@ -126,9 +129,6 @@ export class LoginComponent implements OnInit {
   }
 
   private navigateToUserPage(response: LoginResponse) {
-    if (!response.isAuthenticated) {
-      return; // do nothing
-    }
     let type;
     switch (UserType[response.userType]) {
       case UserType.DELIVERY_RIDER:
@@ -146,7 +146,6 @@ export class LoginComponent implements OnInit {
       default:
       // do nothing
     }
-    this.loginService.setLoginResponse(response);
     this.path = `${type}/${response.userId}`;
     this.router.navigate([this.path]).then(() => {
     });
