@@ -1,6 +1,7 @@
 export interface PromotionSummary {
   pid: number;
-  duration: Date;
+  name: string;
+  duration: string;
   promotionType: string;
   discount: number;
   avgOrders: number;

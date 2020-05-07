@@ -4,13 +4,13 @@
     <mat-card-content>
       <mat-list *ngFor="let o of restaurantSummaryList">
         <mat-list-item>
-          {{o.month}}
+          Month: {{o.month}}
         </mat-list-item>
         <mat-list-item>
-          {{o.numOrders}}
+          Number of Orders: {{o.numOrders}}
         </mat-list-item>
         <mat-list-item>
-          {{o.totalCost}}
+          Total Cost: {{o.totalCost}}
         </mat-list-item>
       </mat-list>
     </mat-card-content>
@@ -23,19 +23,22 @@
     <mat-card-content>
       <mat-list *ngFor="let o of promotionSummaryList">
         <mat-list-item>
-          {{o.pid}}
+          Promotion ID: {{o.pid}}
         </mat-list-item>
         <mat-list-item>
-          {{o.duration}}
+          Name: {{o.name}}
         </mat-list-item>
         <mat-list-item>
-          {{o.promotionType}}
+          Duration: {{o.duration}}
         </mat-list-item>
         <mat-list-item>
-          {{o.discount}}
+          Promotion Type: {{o.promotionType}}
         </mat-list-item>
         <mat-list-item>
-          {{o.avgOrders}}
+          Discount: {{o.discount}}
+        </mat-list-item>
+        <mat-list-item>
+          Average Orders: {{o.avgOrders}}
         </mat-list-item>
       </mat-list>
     </mat-card-content>
