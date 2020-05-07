@@ -35,7 +35,8 @@
               tickInterval="1000"
               min="0"
               [max]="rewardPoints"
-              formControlName="rewardPoints">
+              formControlName="rewardPoints"
+              (change)="refreshNetCost()">
             </mat-slider>
           </td>
         </tr>
@@ -43,7 +44,7 @@
           <td>
             <mat-form-field>
               <mat-label>Available Promotions</mat-label>
-              <mat-select formControlName="promotion">
+              <mat-select formControlName="promotion" (selectionChange)="refreshNetCost()">
                 <mat-option *ngFor="let promotion of availablePromotions" [value]="promotion.discount">
                   {{promotion.name + ' ' + promotion.type + ' ' + promotion.discount}}
                 </mat-option>
@@ -73,13 +74,21 @@
                      [matAutocomplete]="auto"
                      required>
               <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                <mat-option *ngFor="let option of deliveryLocationSuggestions | async" [value]="option">
                   {{option}}
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
           </td>
         </tr>
+        <tr>
+          <td>
+            <mat-label>
+              Total Cost: {{netCost}}
+            </mat-label>
+          </td>
+        </tr>
+        <br>
         <tr>
           <td>
             <button mat-raised-button color="primary" type="submit" [disabled]="!orderForm.valid">Send Order</button>

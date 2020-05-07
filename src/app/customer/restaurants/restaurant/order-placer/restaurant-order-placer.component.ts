@@ -39,7 +39,9 @@ export class RestaurantOrderPlacerComponent implements OnInit {
   paymentTypes: string[];
   availablePromotions: Promotion[];
 
-  filteredOptions: Observable<string[]>;
+  deliveryLocationSuggestions: Observable<string[]>;
+
+  netCost: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -55,11 +57,13 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
     this.customerId = Number(this.activatedRoute.parent.snapshot.paramMap.get('customerId'));
     this.restaurantId = Number(this.activatedRoute.snapshot.paramMap.get('restaurantId'));
+
+    this.netCost = 0;
   }
 
   ngOnInit(): void {
     this.getOrderOptions();
-    this.filteredOptions = this.orderForm.get('deliveryLocation').valueChanges
+    this.deliveryLocationSuggestions = this.orderForm.get('deliveryLocation').valueChanges
       .pipe(
         startWith(''),
         map(value => this.filter(value))
@@ -80,6 +84,7 @@ export class RestaurantOrderPlacerComponent implements OnInit {
     const quantity: number = this.foodItemsOrdered.get(foodItem);
     this.foodItemsOrdered.set(foodItem, quantity + 1);
     this.refreshDataSource();
+    this.refreshNetCost();
   }
 
   @Input()
@@ -93,6 +98,7 @@ export class RestaurantOrderPlacerComponent implements OnInit {
       this.foodItemsOrdered.delete(foodItem);
     }
     this.refreshDataSource();
+    this.refreshNetCost();
   }
 
   private refreshDataSource() {
@@ -111,6 +117,15 @@ export class RestaurantOrderPlacerComponent implements OnInit {
 
   public has(foodItem: FoodItem) {
     return this.foodItemsOrdered.has(foodItem);
+  }
+
+  public refreshNetCost() {
+    const foodCost = this.restaurantService.computeFoodCost(this.foodItemsOrdered);
+    this.netCost = this.restaurantService.applyPriceReductions(
+      foodCost,
+      this.orderForm.get('rewardPoints').value,
+      this.orderForm.get('promotion').value
+    );
   }
 
   public getOrderOptions() {
