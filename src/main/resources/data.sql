@@ -165,10 +165,11 @@ CREATE TABLE OrderFoodItems (
 );
 
 CREATE TABLE Reviews (
-    rvid INTEGER PRIMARY KEY,
+    rvid INTEGER,
     rid INTEGER,
     oid INTEGER,
     content VARCHAR(1000) NOT NULL,
+    PRIMARY KEY (rvid, oid),
     FOREIGN KEY (rid) REFERENCES Restaurants (rid),
     FOREIGN KEY (oid) REFERENCES Orders (oid)
 );
@@ -284,7 +285,7 @@ CREATE CONSTRAINT TRIGGER checkPartTimeRiderShiftHoursTrigger
 	DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW
 	EXECUTE FUNCTION checkPartTimeRiderShiftHours();
-	
+
 CREATE OR REPLACE FUNCTION checkPartTimeRiderShiftHoursDelete() RETURNS TRIGGER AS $$
 	DECLARE
 		totalHours INTEGER;
@@ -411,12 +412,3 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
        (1, 3, 'Regular Chicken Rice', 'Singaporean', 3, 500),
        (2, 3, 'Cabbage with Sesame Oil', 'Singaporean', 3, 500),
        (3, 3, 'Char Siew', 'Singaporean', 3, 500);
-
--- INSERT INTO Users
--- VALUES (1, 'customer', 'customer', 'Customer');
---
--- INSERT INTO Customers
--- VALUES (1, '');
---
--- INSERT INTO Orders
--- VALUES (1, 1, NULL, 1, 100, 2, 0, 'Cash', 'Tampines', '2020-05-07 15:41:39.539000');
