@@ -338,7 +338,7 @@ CREATE OR REPLACE FUNCTION updateCustomerRecentDeliveryLocations() RETURNS TRIGG
 $$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER updateCustomerRecentDeliveryLocationsTrigger
-    AFTER UPDATE
+    AFTER INSERT
     ON Orders
     FOR EACH ROW
     EXECUTE FUNCTION updateCustomerRecentDeliveryLocations();
@@ -404,4 +404,11 @@ VALUES (1, 1, 'Swedish Meatballs', 'Swedish', 5, 100),
        (2, 3, 'Cabbage with Sesame Oil', 'Singaporean', 3, 500),
        (3, 3, 'Char Siew', 'Singaporean', 3, 500);
 
-
+-- INSERT INTO Users
+-- VALUES (1, 'customer', 'customer', 'Customer');
+--
+-- INSERT INTO Customers
+-- VALUES (1, '');
+--
+-- INSERT INTO Orders
+-- VALUES (1, 1, NULL, 1, 100, 2, 0, 'Cash', 'Tampines', '2020-05-07 15:41:39.539000');
